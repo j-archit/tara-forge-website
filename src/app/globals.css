@@ -24,6 +24,18 @@
   --celestial-glow-primary: 0 0 40px rgba(56, 189, 248, 0.35);
   --celestial-glow-amber: 0 0 40px rgba(251, 191, 36, 0.4);
   --celestial-glow-soft: 0 0 80px rgba(30, 64, 175, 0.55);
+
+  /* Brand Palette (Additive) */
+  --brand-void: #06070F;
+  --brand-deep-space: #0C0D1A;
+  --brand-nebula: #161828;
+  --brand-gold: #C9A84C;
+  --brand-gold-bright: #E8C46A;
+  --brand-stardust: #D4C9A8;
+  --brand-moonlight: #8A8070;
+  --brand-forge-white: #F0EBE0;
+
+  --brand-glow-gold: 0 0 30px rgba(201, 168, 76, 0.4);
 }
 
 @theme inline {
@@ -39,6 +51,10 @@
   --color-celestial-card: var(--celestial-card);
   --color-celestial-border: var(--celestial-border);
   --color-celestial-glass: var(--celestial-glass);
+
+  --color-brand-gold: var(--brand-gold);
+  --color-brand-gold-bright: var(--brand-gold-bright);
+  --color-brand-stardust: var(--brand-stardust);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -101,13 +117,19 @@ body {
   background: linear-gradient(
     120deg,
     #e5e7eb 0%,
-    #38bdf8 30%,
-    #a855f7 55%,
-    #f97316 80%
+    var(--brand-gold) 25%,
+    #38bdf8 50%,
+    #a855f7 75%,
+    #f97316 100%
   );
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+.brand-gold-text {
+  color: var(--brand-gold);
+  text-shadow: 0 0 20px rgba(201, 168, 76, 0.3);
 }
 
 .celestial-grid {

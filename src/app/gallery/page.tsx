@@ -4,6 +4,7 @@ import * as React from "react";
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { Logo } from "@/components/Logo";
 import { fadeIn, staggerChildren } from "@/lib/animations";
 
 const galleryItems = [
@@ -84,10 +85,13 @@ export default function GalleryPage() {
       <section className="relative overflow-hidden pt-16 pb-12 sm:pt-20 sm:pb-16 lg:pt-24 lg:pb-20">
         <div className="section-max-width px-6 lg:px-4">
           <motion.div {...fadeIn(0.05)}>
-            <h1 className="text-4xl font-semibold tracking-tight text-slate-50 sm:text-5xl lg:text-6xl text-center sm:text-left">
-              The <span className="celestial-gradient-text">Gallery</span>
-            </h1>
-            <p className="mt-6 max-w-2xl text-pretty text-base text-slate-300 text-center sm:text-left">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-8">
+               <Logo size={64} className="drop-shadow-[var(--brand-glow-gold)]" />
+               <h1 className="text-4xl font-semibold tracking-tight text-slate-50 sm:text-5xl lg:text-6xl text-center sm:text-left">
+                The <span className="celestial-gradient-text">Gallery</span>
+              </h1>
+            </div>
+            <p className="max-w-2xl text-pretty text-base text-slate-300 text-center sm:text-left">
               Explore the constellation of parts we've forged. From rapid prototypes to small batch manufacturing, every print is treated with celestial care.
             </p>
           </motion.div>
@@ -178,7 +182,7 @@ export default function GalleryPage() {
             <h2 className="text-3xl font-semibold text-slate-50 mb-6">Ready to forge your next piece?</h2>
             <a
               href="mailto:taraforgeindia@gmail.com"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-celestial-accent px-8 py-3 text-base font-semibold text-slate-950 shadow-[var(--celestial-glow-primary)] transition hover:bg-celestial-accent-strong hover:scale-105"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-gold px-8 py-3 text-base font-semibold text-slate-950 shadow-[var(--brand-glow-gold)] transition hover:bg-brand-gold-bright hover:scale-105"
             >
               Get a Quote Now
             </a>

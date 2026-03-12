@@ -3,6 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Logo } from "./Logo";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -37,19 +38,25 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-slate-800/80 bg-slate-950/70 backdrop-blur-2xl">
       <div className="section-max-width flex items-center justify-between px-6 py-5 lg:px-4">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           <Link
             href="/"
-            className="forge-pill px-4 py-1.5 text-[13px] font-semibold uppercase tracking-[0.2em] text-slate-100 shadow-[var(--celestial-glow-primary)]"
+            className="flex items-center gap-3 transition-transform hover:scale-105"
             aria-label="Tara Forge"
-            title={`${current.text} (${current.label})`}
           >
-            <span lang={current.lang} className="inline-block min-w-[5ch] transition-all duration-500">
-              {current.text}
-            </span>{" "}
-            Forge
+            <Logo size={42} className="drop-shadow-[var(--brand-glow-gold)]" />
+            <div className="flex flex-col">
+              <span className="text-[14px] font-bold uppercase tracking-[0.25em] text-slate-100 leading-none">
+                <span lang={current.lang} className="inline-block min-w-[5ch] transition-all duration-500">
+                  {current.text}
+                </span>
+              </span>
+              <span className="text-[14px] font-bold uppercase tracking-[0.25em] text-brand-gold leading-none mt-1">
+                Forge
+              </span>
+            </div>
           </Link>
-          <span className="hidden text-sm font-medium text-slate-400 sm:inline">
+          <span className="hidden text-[10px] font-medium uppercase tracking-widest text-slate-500 sm:inline ml-2 border-l border-slate-800 pl-4 py-1">
             Forged in the stars
           </span>
         </div>
@@ -74,7 +81,7 @@ export function Navbar() {
           </Link>
           <a
             href="mailto:taraforgeindia@gmail.com"
-            className="rounded-full bg-slate-50 px-6 py-2 text-xs font-bold text-slate-900 shadow-[var(--celestial-glow-amber)] transition-all hover:scale-105 hover:bg-celestial-accent hover:text-slate-950 active:scale-95"
+            className="rounded-full bg-brand-gold px-6 py-2 text-xs font-bold text-slate-950 shadow-[var(--brand-glow-gold)] transition-all hover:scale-105 hover:bg-brand-gold-bright active:scale-95"
           >
             Get a quote
           </a>

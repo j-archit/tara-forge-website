@@ -14,8 +14,8 @@ function HeroSection() {
           className="mx-auto max-w-2xl text-center sm:text-left"
           {...fadeIn(0.05)}
         >
-          <p className="inline-flex items-center gap-2 rounded-full border border-slate-700/70 bg-slate-900/60 px-2.5 py-1 text-[11px] font-medium text-slate-300 shadow-[var(--celestial-glow-primary)]">
-            <span className="h-1.5 w-1.5 rounded-full bg-celestial-amber shadow-[var(--celestial-glow-amber)]" />
+          <p className="inline-flex items-center gap-2 rounded-full border border-slate-700/70 bg-slate-900/60 px-2.5 py-1 text-[11px] font-medium text-slate-300 shadow-[var(--brand-glow-gold)]">
+            <span className="h-1.5 w-1.5 rounded-full bg-brand-gold shadow-[var(--brand-glow-gold)]" />
             Forged in the stars
             <span className="h-px w-6 bg-slate-600/80" />
             3D Printing Studio
@@ -35,17 +35,17 @@ function HeroSection() {
           <div className="mt-6 flex flex-col gap-3 text-sm sm:flex-row sm:items-center">
             <a
               href="mailto:taraforgeindia@gmail.com"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-celestial-accent px-5 py-2.5 text-sm font-semibold text-slate-950 shadow-[var(--celestial-glow-primary)] transition hover:bg-celestial-accent-strong"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-gold px-5 py-2.5 text-sm font-semibold text-slate-950 shadow-[var(--brand-glow-gold)] transition hover:bg-brand-gold-bright hover:scale-105"
             >
               Get a quote
               <span className="text-xs text-slate-900/80">— send your file</span>
             </a>
             <a
               href="/gallery"
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-600/70 bg-slate-900/40 px-4 py-2 text-xs font-medium text-slate-100 transition hover:border-celestial-accent hover:text-celestial-accent"
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-600/70 bg-slate-900/40 px-4 py-2 text-xs font-medium text-slate-100 transition hover:border-brand-gold hover:text-brand-gold hover:scale-105"
             >
               See recent prints
-              <span className="h-1.5 w-1.5 rounded-full bg-celestial-accent-soft" />
+              <span className="h-1.5 w-1.5 rounded-full bg-brand-gold opacity-50" />
             </a>
           </div>
 
@@ -135,7 +135,7 @@ function ServiceCards() {
           {services.map((service) => (
             <motion.article
               key={service.label}
-              className="group glass-surface flex flex-col justify-between rounded-2xl p-4 shadow-[0_18px_60px_rgba(15,23,42,0.85)] transition hover:border-celestial-accent/70 hover:shadow-[0_20px_90px_rgba(15,23,42,0.95)]"
+              className="group glass-surface flex flex-col justify-between rounded-2xl p-4 shadow-[0_18px_60px_rgba(15,23,42,0.85)] transition hover:border-brand-gold/60 hover:shadow-[0_20px_90px_rgba(15,23,42,0.95)]"
             >
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
@@ -152,7 +152,7 @@ function ServiceCards() {
                 <span className="rounded-full bg-slate-900/60 px-3 py-1 text-slate-200">
                   {service.tag}
                 </span>
-                <span className="text-slate-400 transition group-hover:text-celestial-accent">
+                <span className="text-slate-400 transition group-hover:text-brand-gold">
                   Learn more →
                 </span>
               </div>

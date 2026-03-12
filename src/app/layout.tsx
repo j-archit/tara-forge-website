@@ -23,9 +23,15 @@ export const metadata: Metadata = {
     "3D printed parts",
     "3D printed prototypes",
     "custom 3D prints",
-    "miniatures",
-    "cosplay props",
+    "functional 3D printing",
+    "PLA printing",
+    "PETG printing",
+    "small batch manufacturing India",
   ],
+  icons: {
+    icon: "/Logo.svg",
+    apple: "/Logo.svg",
+  },
   openGraph: {
     title: "Tara Forge • 3D Printing Studio",
     description:
