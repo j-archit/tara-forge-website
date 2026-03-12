@@ -2,95 +2,13 @@
 
 import * as React from "react";
 import { motion } from "framer-motion";
-
-const fadeIn = (delay = 0) => ({
-  initial: { opacity: 0, y: 24 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, amount: 0.3 },
-  transition: { duration: 0.7, delay, ease: [0.22, 0.61, 0.36, 1] as const },
-});
-
-const staggerChildren = {
-  initial: { opacity: 0, y: 12 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, amount: 0.4 },
-  transition: { duration: 0.6, staggerChildren: 0.07, ease: [0.22, 0.61, 0.36, 1] as const },
-};
-
-function Navbar() {
-  const scripts: Array<{ text: string; lang: string; label: string }> = [
-    { text: "Tara", lang: "en", label: "Latin" },
-    { text: "तारा", lang: "hi", label: "Devanagari" },
-    { text: "তারা", lang: "bn", label: "Bangla" },
-    { text: "તારા", lang: "gu", label: "Gujarati" },
-    { text: "ତାରା", lang: "or", label: "Odia" },
-    { text: "ਤਾੜਾ", lang: "pa", label: "Gurmukhi" },
-    { text: "తారా", lang: "te", label: "Telugu" },
-    { text: "ತಾರಾ", lang: "kn", label: "Kannada" },
-  ];
-
-  const [scriptIndex, setScriptIndex] = React.useState(0);
-
-  React.useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (media.matches) return;
-
-    const interval = window.setInterval(() => {
-      setScriptIndex((prev) => (prev + 1) % scripts.length);
-    }, 1200);
-
-    return () => window.clearInterval(interval);
-  }, [scripts.length]);
-
-  const current = scripts[scriptIndex] ?? scripts[0]!;
-
-  return (
-    <header className="sticky top-0 z-50 border-b border-slate-800/80 bg-slate-950/70 backdrop-blur-2xl">
-      <div className="section-max-width flex items-center justify-between px-4 py-5 sm:px-6 lg:px-4">
-        <div className="flex items-center gap-3">
-          <div
-            className="forge-pill px-4 py-1.5 text-[13px] font-semibold uppercase tracking-[0.2em] text-slate-100 shadow-[var(--celestial-glow-primary)]"
-            aria-label="Tara Forge"
-            title={`${current.text} (${current.label})`}
-          >
-            <span lang={current.lang} className="inline-block min-w-[5ch] transition-all duration-500">
-              {current.text}
-            </span>{" "}
-            Forge
-          </div>
-          <span className="hidden text-sm font-medium text-slate-400 sm:inline">
-            Forged in the stars
-          </span>
-        </div>
-        <nav className="hidden items-center gap-8 text-sm font-medium text-slate-300 sm:flex">
-          <a href="#services" className="hover:text-celestial-accent transition-colors">
-            Services
-          </a>
-          <a href="#gallery" className="hover:text-celestial-accent transition-colors">
-            Gallery
-          </a>
-          <a href="#about" className="hover:text-celestial-accent transition-colors">
-            Why Tara
-          </a>
-          <a
-            href="#contact"
-            className="rounded-full bg-slate-50 px-6 py-2 text-xs font-bold text-slate-900 shadow-[var(--celestial-glow-amber)] transition-all hover:scale-105 hover:bg-celestial-accent hover:text-slate-950 active:scale-95"
-          >
-            Get a quote
-          </a>
-        </nav>
-      </div>
-    </header>
-  );
-}
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
+import { fadeIn, staggerChildren } from "@/lib/animations";
 
 function HeroSection() {
   return (
     <section className="relative overflow-hidden pb-16 pt-12 sm:pb-20 sm:pt-16 lg:pb-24 lg:pt-20">
-      <div className="celestial-grid" />
-
       <div className="section-max-width relative px-4 sm:px-6 lg:px-4">
         <motion.div
           className="mx-auto max-w-2xl text-center sm:text-left"
@@ -116,14 +34,14 @@ function HeroSection() {
 
           <div className="mt-6 flex flex-col gap-3 text-sm sm:flex-row sm:items-center">
             <a
-              href="#contact"
+              href="mailto:taraforgeindia@gmail.com"
               className="inline-flex items-center justify-center gap-2 rounded-full bg-celestial-accent px-5 py-2.5 text-sm font-semibold text-slate-950 shadow-[var(--celestial-glow-primary)] transition hover:bg-celestial-accent-strong"
             >
               Get a quote
               <span className="text-xs text-slate-900/80">— send your file</span>
             </a>
             <a
-              href="#gallery"
+              href="/gallery"
               className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-600/70 bg-slate-900/40 px-4 py-2 text-xs font-medium text-slate-100 transition hover:border-celestial-accent hover:text-celestial-accent"
             >
               See recent prints
@@ -264,10 +182,17 @@ function GalleryShowcase() {
               from the forge.
             </p>
           </div>
-          <p className="max-w-xs text-xs text-slate-400">
-            These are placeholder tiles for now—swap them with photos of your real prints
-            as you add them to `public/`.
-          </p>
+          <div className="flex flex-col gap-2 items-start sm:items-end">
+             <p className="max-w-xs text-xs text-slate-400 text-left sm:text-right">
+              Explore our full collection and customer feedback on our dedicated page.
+            </p>
+            <a
+              href="/gallery"
+              className="text-xs font-semibold text-celestial-accent hover:text-celestial-accent-strong transition-colors"
+            >
+              View Full Gallery →
+            </a>
+          </div>
         </motion.div>
 
         <motion.div
@@ -368,37 +293,6 @@ function AboutTara() {
         </motion.div>
       </div>
     </section>
-  );
-}
-
-function Footer() {
-  return (
-    <footer
-      id="contact"
-      className="border-t border-slate-800/80 bg-slate-950/90 py-8 text-xs text-slate-400"
-    >
-      <div className="section-max-width flex flex-col gap-4 px-4 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-4">
-        <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">
-            Tara Forge
-          </p>
-          <p className="mt-1 text-xs text-slate-300">
-            A 3D printing studio inspired by “Tara” (Star) — focused on prototypes, custom parts, and functional prints. Forged in the Stars.
-          </p>
-        </div>
-        <div className="flex flex-col gap-2 sm:items-end">
-          <p className="text-[11px] text-slate-400">
-            Send an STL/STEP and a note about size, material, and finish.
-          </p>
-          <a
-            href="mailto:taraforgeindia@gmail.com"
-            className="text-[11px] font-semibold text-celestial-accent hover:text-celestial-accent-strong"
-          >
-            taraforgeindia@gmail.com
-          </a>
-        </div>
-      </div>
-    </footer>
   );
 }
 

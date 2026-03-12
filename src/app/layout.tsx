@@ -41,6 +41,8 @@ export const metadata: Metadata = {
   },
 };
 
+import { CelestialBackground } from "@/components/CelestialBackground";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -51,7 +53,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >
-        <div className="celestial-stars" />
+        <CelestialBackground />
         {children}
       </body>
     </html>
