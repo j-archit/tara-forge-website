@@ -4,6 +4,7 @@ import * as React from "react";
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { Logo } from "@/components/Logo";
 import { fadeIn, staggerChildren } from "@/lib/animations";
 
 function HeroSection() {
@@ -251,6 +252,49 @@ function GalleryShowcase() {
   );
 }
 
+function ShopHighlight() {
+  return (
+    <section id="shop" className="relative border-y border-slate-800/70 bg-slate-900/10 py-16 sm:py-24">
+      <div className="section-max-width px-4 sm:px-6 lg:px-4">
+        <div className="flex flex-col lg:flex-row items-center gap-12">
+          <motion.div 
+            className="flex-1 text-center lg:text-left"
+            {...fadeIn(0.05)}
+          >
+            <h2 className="text-sm font-semibold uppercase tracking-[0.22em] text-brand-gold">
+              The Stellar Collection
+            </h2>
+            <p className="mt-4 text-3xl font-semibold text-slate-50 sm:text-4xl">
+              Artifacts of the forge <span className="celestial-gradient-text">made for all</span>
+            </p>
+            <p className="mt-6 text-base text-slate-300 leading-relaxed max-w-xl mx-auto lg:mx-0">
+              Own a piece of the stars. We've curated a series of our signature designs—ready to ship, batch-refined for precision, and finished with otherworldly detail.
+            </p>
+            <div className="mt-10">
+              <a
+                href="/shop"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-gold px-8 py-3.5 text-sm font-bold text-slate-950 shadow-[var(--brand-glow-gold)] transition hover:bg-brand-gold-bright hover:scale-105 active:scale-95"
+              >
+                Visit the Shop
+              </a>
+            </div>
+          </motion.div>
+          
+          <motion.div 
+            className="flex-1 relative aspect-square max-w-md w-full"
+            {...fadeIn(0.1)}
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/20 to-transparent rounded-full blur-3xl opacity-20 animate-pulse" />
+            <div className="relative glass-surface rounded-3xl p-8 flex items-center justify-center aspect-square shadow-[0_30px_100px_rgba(0,0,0,0.6)]">
+              <Logo size={200} className="drop-shadow-[var(--brand-glow-gold)] opacity-80" />
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function AboutTara() {
   return (
     <section
@@ -303,6 +347,7 @@ export default function Home() {
       <HeroSection />
       <ServiceCards />
       <GalleryShowcase />
+      <ShopHighlight />
       <AboutTara />
       <Footer />
     </main>

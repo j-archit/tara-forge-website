@@ -4,18 +4,28 @@ import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Logo } from "./Logo";
+import { Menu, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export function Navbar() {
   const pathname = usePathname();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  
   const scripts: Array<{ text: string; lang: string; label: string }> = [
     { text: "Tara", lang: "en", label: "Latin" },
     { text: "तारा", lang: "hi", label: "Devanagari" },
-    { text: "তারা", lang: "bn", label: "Bangla" },
+    { text: "তারা", lang: "bn", label: "Bengali" },
+    { text: "তৰা", lang: "as", label: "Assamese" },
     { text: "તારા", lang: "gu", label: "Gujarati" },
     { text: "ତାରା", lang: "or", label: "Odia" },
-    { text: "ਤਾੜਾ", lang: "pa", label: "Gurmukhi" },
+    { text: "ਤਾਰਾ", lang: "pa", label: "Gurmukhi" },
     { text: "తారా", lang: "te", label: "Telugu" },
     { text: "ತಾರಾ", lang: "kn", label: "Kannada" },
+    { text: "தாரா", lang: "ta", label: "Tamil" },
+    { text: "താര", lang: "ml", label: "Malayalam" },
+    { text: "تارا", lang: "ur", label: "Perso-Arabic" },
+    { text: "ꯇꯥꯔꯥ", lang: "mni", label: "Meetei Mayek" },
+    { text: "ᱛᱟᱨᱟ", lang: "sat", label: "Ol Chiki" },
   ];
 
   const [scriptIndex, setScriptIndex] = React.useState(0);
@@ -35,50 +45,51 @@ export function Navbar() {
 
   const current = scripts[scriptIndex] ?? scripts[0]!;
 
+  const navLinks = [
+    { href: "/#services", label: "Services" },
+    { href: "/gallery", label: "Gallery" },
+    { href: "/shop", label: "Shop" },
+    { href: "/#about", label: "Why Tara" },
+  ];
+
   return (
     <header className="sticky top-0 z-50 border-b border-slate-800/80 bg-slate-950/70 backdrop-blur-2xl">
-      <div className="section-max-width flex items-center justify-between px-6 py-5 lg:px-4">
+      <div className="section-max-width flex items-center justify-between px-6 py-4 lg:px-4">
         <div className="flex items-center gap-4">
           <Link
             href="/"
             className="flex items-center gap-3 transition-transform hover:scale-105"
             aria-label="Tara Forge"
+            onClick={() => setIsMobileMenuOpen(false)}
           >
-            <Logo size={42} className="drop-shadow-[var(--brand-glow-gold)]" />
+            <Logo size={40} className="drop-shadow-[var(--brand-glow-gold)] sm:size-[42px]" />
             <div className="flex flex-col">
-              <span className="text-[14px] font-bold uppercase tracking-[0.25em] text-slate-100 leading-none">
+              <span className="text-[12px] sm:text-[14px] font-bold uppercase tracking-[0.25em] text-slate-100 leading-none">
                 <span lang={current.lang} className="inline-block min-w-[5ch] transition-all duration-500">
                   {current.text}
                 </span>
               </span>
-              <span className="text-[14px] font-bold uppercase tracking-[0.25em] text-brand-gold leading-none mt-1">
+              <span className="text-[12px] sm:text-[14px] font-bold uppercase tracking-[0.25em] text-brand-gold leading-none mt-1">
                 Forge
               </span>
             </div>
           </Link>
-          <span className="hidden text-[10px] font-medium uppercase tracking-widest text-slate-500 sm:inline ml-2 border-l border-slate-800 pl-4 py-1">
+          <span className="hidden text-[10px] font-medium uppercase tracking-widest text-slate-500 md:inline ml-2 border-l border-slate-800 pl-4 py-1">
             Forged in the stars
           </span>
         </div>
+
+        {/* Desktop Nav */}
         <nav className="hidden items-center gap-8 text-sm font-medium text-slate-300 sm:flex">
-          <Link 
-            href="/#services" 
-            className={`hover:text-celestial-accent transition-colors ${pathname === '/' ? 'text-slate-300' : ''}`}
-          >
-            Services
-          </Link>
-          <Link 
-            href="/gallery" 
-            className={`hover:text-celestial-accent transition-colors ${pathname === '/gallery' ? 'text-celestial-accent' : ''}`}
-          >
-            Gallery
-          </Link>
-          <Link 
-            href="/#about" 
-            className="hover:text-celestial-accent transition-colors"
-          >
-            Why Tara
-          </Link>
+          {navLinks.map((link) => (
+            <Link 
+              key={link.href}
+              href={link.href} 
+              className={`hover:text-celestial-accent transition-colors ${pathname === link.href ? 'text-celestial-accent' : ''}`}
+            >
+              {link.label}
+            </Link>
+          ))}
           <a
             href="mailto:taraforgeindia@gmail.com"
             className="rounded-full bg-brand-gold px-6 py-2 text-xs font-bold text-slate-950 shadow-[var(--brand-glow-gold)] transition-all hover:scale-105 hover:bg-brand-gold-bright active:scale-95"
@@ -86,7 +97,50 @@ export function Navbar() {
             Get a quote
           </a>
         </nav>
+
+        {/* Mobile Menu Toggle */}
+        <button 
+          className="flex items-center justify-center p-2 text-slate-100 sm:hidden"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label="Toggle navigation"
+        >
+          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
       </div>
+
+      {/* Mobile Nav Overlay */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.nav 
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="absolute left-0 right-0 top-full border-b border-slate-800 bg-slate-950/95 p-6 backdrop-blur-xl sm:hidden"
+          >
+            <ul className="flex flex-col gap-6">
+              {navLinks.map((link) => (
+                <li key={link.href}>
+                  <Link 
+                    href={link.href} 
+                    className={`text-lg font-medium transition-colors ${pathname === link.href ? 'text-brand-gold' : 'text-slate-300'}`}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+              <li className="pt-4 border-t border-slate-800">
+                <a
+                  href="mailto:taraforgeindia@gmail.com"
+                  className="flex w-full items-center justify-center rounded-xl bg-brand-gold py-4 text-sm font-bold text-slate-950 shadow-[var(--brand-glow-gold)]"
+                >
+                  Get a quote
+                </a>
+              </li>
+            </ul>
+          </motion.nav>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
