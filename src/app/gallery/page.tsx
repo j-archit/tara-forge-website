@@ -9,50 +9,50 @@ import { fadeIn, staggerChildren } from "@/lib/animations";
 
 const galleryItems = [
   {
-    title: "Fit-check Prototype",
+    title: "Project Artifact Alpha",
     category: "Prototyping",
-    description: "Rapid iteration part printed to validate form, clearance, and assembly before committing to final material.",
-    tags: ["PLA", "0.2mm Layer"],
+    description: "Brief description of the mechanical or aesthetic validation process for this specific print.",
+    tags: ["Material", "Layer Height"],
     gradient: "from-indigo-900 via-slate-950 to-slate-950",
     accent: "rgba(96,165,250,0.55)"
   },
   {
-    title: "Functional Bracket",
+    title: "Project Artifact Beta",
     category: "Functional Parts",
-    description: "Strength-focused print tuned for layer direction, infill, and real-world loads—built to be used, not just admired.",
-    tags: ["PETG", "Solid Infill"],
+    description: "Summary of how this part was optimized for strength, durability, and real-world application.",
+    tags: ["Material", "Infill Setting"],
     gradient: "from-emerald-900 via-slate-950 to-slate-950",
     accent: "rgba(45,212,191,0.55)"
   },
   {
-    title: "Custom Enclosure",
+    title: "Project Artifact Gamma",
     category: "Batching",
-    description: "Durable PETG enclosure for electronics, designed with specific wall thicknesses for impact resistance and thermal stability.",
-    tags: ["PETG", "Batch of 50"],
+    description: "Details regarding small-batch production consistency, turnaround time, and quality control.",
+    tags: ["Material", "Batch Size"],
     gradient: "from-fuchsia-900 via-slate-950 to-slate-950",
     accent: "rgba(244,114,182,0.6)"
   },
   {
-    title: "Mechanical Linkage",
-    category: "Functional Parts",
-    description: "High-precision mechanical component with moving joints, printed as a single assembly for mechanism validation.",
-    tags: ["PLA+", "Mech-Link"],
+    title: "Project Artifact Delta",
+    category: "Prototyping",
+    description: "Overview of iterative design improvements and how 3D printing accelerated the development cycle.",
+    tags: ["Material", "Feature Highlight"],
     gradient: "from-blue-900 via-slate-950 to-slate-950",
     accent: "rgba(59,130,246,0.5)"
   },
   {
-    title: "Custom Air Intake",
-    category: "Prototyping",
-    description: "Functional automotive prototype for air flow testing, featuring complex internal geometries only possible with 3D printing.",
-    tags: ["PETG", "Heat Resistant"],
+    title: "Project Artifact Epsilon",
+    category: "Functional Parts",
+    description: "Technical breakdown of the part's performance characteristics under specific stress or environmental conditions.",
+    tags: ["Material", "Custom Spec"],
     gradient: "from-amber-900 via-slate-950 to-slate-950",
     accent: "rgba(251,191,36,0.5)"
   },
   {
-    title: "Ergonomic Handle",
-    category: "Prototyping",
-    description: "Comfort-focused handle design for industrial tooling, iteratively printed to find the perfect grip and weight distribution.",
-    tags: ["PLA", "Iterative"],
+    title: "Project Artifact Zeta",
+    category: "Design Validation",
+    description: "Insights into how this physical model helped refine ergonomics or visual language before mass production.",
+    tags: ["Material", "Iteration Phase"],
     gradient: "from-rose-900 via-slate-950 to-slate-950",
     accent: "rgba(244,63,94,0.5)"
   }
@@ -60,19 +60,19 @@ const galleryItems = [
 
 const testimonials = [
   {
-    quote: "The tolerance on the fit-check parts was incredible. Saved us weeks in development time.",
-    author: "Siddharth V.",
-    role: "Product Designer"
+    quote: "Placeholder for client feedback regarding the speed, precision, or overall quality of the forged components.",
+    author: "Client Name",
+    role: "Company / Role"
   },
   {
-    quote: "Tara Forge delivered 50 custom enclosures in less than 3 days. Quality was consistent across the entire batch.",
-    author: "Rahul M.",
-    role: "Electronics Hobbyist"
+    quote: "A second placeholder illustrating how our batch production services solved a specific manufacturing challenge.",
+    author: "Client Name",
+    role: "Company / Role"
   },
   {
-    quote: "Finally a 3D printing studio that understands PETG properly. The mechanical parts are solid and useable.",
-    author: "Ananya K.",
-    role: "Mechanical Engineer"
+    quote: "A third placeholder highlighting the otherworldly finish and attention to detail provided by Tara Forge.",
+    author: "Client Name",
+    role: "Company / Role"
   }
 ];
 
