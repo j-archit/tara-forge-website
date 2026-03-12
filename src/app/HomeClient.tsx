@@ -39,6 +39,7 @@ export function ServiceCards() {
 
   return (
     <section id="services" className="section-max-width px-6 py-20 lg:px-4 lg:py-32">
+      <h2 className="sr-only">Our 3D Printing Services</h2>
       <motion.div 
         className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3"
         {...staggerChildren}

@@ -57,7 +57,11 @@ export const metadata: Metadata = {
     canonical: "https://taraforge.in/",
   },
   icons: {
-    icon: "/Logo.svg",
+    icon: [
+      { url: "/Logo.svg", type: "image/svg+xml" },
+      { url: "/Logo.svg", sizes: "32x32", type: "image/svg+xml" },
+    ],
+    shortcut: "/Logo.svg",
     apple: "/Logo.svg",
   },
   openGraph: {
@@ -100,6 +104,25 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "Tara Forge",
+              "url": "https://taraforge.in",
+              "logo": "https://taraforge.in/Logo.svg",
+              "image": "https://taraforge.in/Logo.svg",
+              "description": "Premium 3D printing studio specializing in prototypes and custom parts.",
+              "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Bangalore",
+                "addressCountry": "IN"
+              }
+            }),
+          }}
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}

@@ -95,7 +95,7 @@ export default function HomePage() {
                   <span className="text-brand-gold">✶</span>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-slate-100">Precision Focus</h4>
+                  <h3 className="font-semibold text-slate-100">Precision Focus</h3>
                   <p className="mt-1 text-sm text-slate-500">Tight tolerances for mechanical parts.</p>
                 </div>
               </div>
@@ -104,7 +104,7 @@ export default function HomePage() {
                   <span className="text-brand-gold">✶</span>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-slate-100">Material Mastery</h4>
+                  <h3 className="font-semibold text-slate-100">Material Mastery</h3>
                   <p className="mt-1 text-sm text-slate-500">Optimized for PETG durability and PLA aesthetics.</p>
                 </div>
               </div>
