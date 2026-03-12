@@ -64,14 +64,21 @@ export const metadata: Metadata = {
     siteName: "Tara Forge",
     locale: "en_IN",
     type: "website",
-    images: ["/Logo.svg"], // Placeholder for OG image
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Tara Forge • 3D Printing Studio Showcase",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Tara Forge • 3D Printing Studio",
     description:
       "Tara Forge is a 3D printing studio inspired by “Tara” (Star). We turn ideas into real parts, prototypes, and keepsakes — Forged in the Stars.",
-    images: ["/Logo.svg"], // Placeholder for Twitter image
+    images: ["/og-image.png"],
   },
 };
 
