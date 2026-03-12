@@ -10,19 +10,19 @@ export default function HomePage() {
       <Navbar />
 
       {/* Hero Section - Optimized for LCP */}
-      <section className="relative overflow-hidden pb-16 pt-12 sm:pb-20 sm:pt-16 lg:pb-24 lg:pt-20">
+      <section className="relative overflow-hidden pt-12 pb-4 sm:pt-16 sm:pb-6 lg:pt-20 lg:pb-8">
         <div className="section-max-width relative px-4 sm:px-6 lg:px-4">
           <HeroClient>
             <p className="inline-flex items-center gap-2 rounded-full border border-slate-700/70 bg-slate-900/60 px-2.5 py-1 text-[11px] font-medium text-slate-300 shadow-[var(--brand-glow-gold)]">
               <span className="h-1.5 w-1.5 rounded-full bg-brand-gold shadow-[var(--brand-glow-gold)]" />
-              Forged in the stars
+              Precision in every layer
               <span className="h-px w-6 bg-slate-600/80" />
               3D Printing Studio
             </p>
 
             <h1 className="mt-5 text-balance text-4xl font-semibold tracking-tight text-slate-50 sm:text-5xl lg:text-6xl">
               Ideas{" "}
-              <span className="celestial-gradient-text">forged into real parts</span>
+              <span className="celestial-gradient-text">engineered into reality</span>
             </h1>
 
             <p className="mt-4 max-w-xl text-pretty text-sm leading-relaxed text-slate-300 sm:text-base">
@@ -70,7 +70,7 @@ export default function HomePage() {
                   Promise
                 </dt>
                 <dd className="mt-1 font-medium text-slate-100">
-                  Forged in the stars ✶
+                  Precision in every layer ✶
                 </dd>
               </div>
             </dl>
@@ -88,7 +88,7 @@ export default function HomePage() {
           <div>
             <h2 className="text-3xl font-semibold text-slate-50 sm:text-4xl">Why Tara Forge?</h2>
             <p className="mt-6 text-pretty text-base leading-relaxed text-slate-400 font-light">
-              We specialize in small-batch manufacturing and functional prototypes. Our workshop is equipped to handle complex geometries that standard machines struggle with.
+              We specialize in custom components and functional prototypes. We focus on the fine details—optimizing print orientation and material settings to deliver parts that are precise, durable, and ready for use.
             </p>
             <div className="mt-10 space-y-4">
               <div className="flex gap-4">

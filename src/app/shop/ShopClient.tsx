@@ -24,7 +24,7 @@ const products: Product[] = [
     id: "artifact-alpha-01",
     title: "Signature Product Alpha",
     category: "Category",
-    description: "Detailed description of this signature design, highlighting its unique geometry and celestial finish.",
+    description: "Detailed description of this signature design, highlighting its unique geometry and high-end technical finish.",
     price: 999,
     currency: "₹",
     imageGradient: "from-blue-900/40 via-slate-900 to-slate-950",
@@ -45,7 +45,7 @@ const products: Product[] = [
     id: "artifact-gamma-03",
     title: "Signature Product Gamma",
     category: "Category",
-    description: "Technical details about the printing process and material quality used to forge this specific artifact.",
+    description: "Technical details about the printing process and material quality used to engineer this specific artifact.",
     price: 999,
     currency: "₹",
     imageGradient: "from-amber-900/40 via-slate-900 to-slate-950",
@@ -55,7 +55,7 @@ const products: Product[] = [
     id: "artifact-delta-04",
     title: "Signature Product Delta",
     category: "Category",
-    description: "A summary of the design inspiration and the role this part plays in a modern maker's constellation.",
+    description: "A summary of the design inspiration and the role this part plays in a modern maker's toolkit.",
     price: 999,
     currency: "₹",
     imageGradient: "from-emerald-900/40 via-slate-900 to-slate-950",
@@ -75,12 +75,12 @@ const products: Product[] = [
     id: "artifact-zeta-06",
     title: "Signature Product Zeta",
     category: "Category",
-    description: "Description of the batch refinement process and the consistent quality applied to this fleet-ready item.",
+    description: "Description of the batch refinement process and the consistent quality applied to this multi-unit pack.",
     price: 999,
     currency: "₹",
     imageGradient: "from-slate-800 via-slate-900 to-slate-950",
     accent: "rgba(148, 163, 184, 0.4)",
-    tag: "Fleet Pack"
+    tag: "Batch Pack"
   }
 ];
 
@@ -98,7 +98,7 @@ export default function ShopClient() {
       <Navbar />
 
       {/* Header */}
-      <section className="relative overflow-hidden pt-16 pb-12 sm:pt-20 sm:pb-16 lg:pt-24 lg:pb-20">
+      <section className="relative overflow-hidden pt-16 pb-4 sm:pt-20 sm:pb-6 lg:pt-24 lg:pb-8">
         <div className="section-max-width px-6 lg:px-4">
           <motion.div {...fadeIn(0.05)}>
             <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-8">
@@ -108,14 +108,14 @@ export default function ShopClient() {
               </h1>
             </div>
             <p className="max-w-2xl text-pretty text-base text-slate-300 text-center sm:text-left">
-              Own a piece of the stars. Every item in our shop is designed in-house and 3D printed with the same precision we apply to industrial prototypes.
+              Own a piece of the stars. Every item in our shop is designed in-house and 3D printed with the same attention to detail we apply to professional prototypes.
             </p>
           </motion.div>
         </div>
       </section>
 
       {/* Products Grid */}
-      <section className="py-12 sm:py-16">
+      <section className="pb-16 sm:pb-24 pt-4">
         <div className="section-max-width px-6 lg:px-4">
           <motion.div 
             className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3"
@@ -190,7 +190,7 @@ export default function ShopClient() {
             </div>
             <div className="text-center border-l border-slate-800">
               <p className="text-sm font-bold text-slate-200">Pan-India Shipping</p>
-              <p className="text-[10px] text-slate-500 uppercase tracking-widest mt-1">From the forge to you</p>
+              <p className="text-[10px] text-slate-500 uppercase tracking-widest mt-1">Direct from Mumbai/Bangalore</p>
             </div>
           </div>
         </div>
@@ -203,15 +203,15 @@ export default function ShopClient() {
             className="glass-surface max-w-3xl mx-auto rounded-3xl p-8 sm:p-12 shadow-[0_30px_100px_rgba(0,0,0,0.6)]"
             {...fadeIn(0.1)}
           >
-            <h2 className="text-3xl font-semibold text-slate-50 mb-4">Volume Partnerships & Fleet Orders</h2>
+            <h2 className="text-3xl font-semibold text-slate-50 mb-4">Bulk Orders & Custom Series</h2>
             <p className="text-slate-400 text-sm mb-8 max-w-xl mx-auto">
-              Looking for 100+ units for a gala, corporate mission, or retail? We offer specialized tiered pricing and can master-forge your own branding into our designs.
+              Looking for 100+ units for a specific project or retail need? We offer competitive tiered pricing and can integrate your own branding into our designs.
             </p>
             <a
               href="mailto:taraforgeindia@gmail.com"
               className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-gold px-10 py-4 text-sm font-bold text-slate-950 shadow-[var(--brand-glow-gold)] transition hover:bg-brand-gold-bright hover:scale-105 active:scale-95"
             >
-              Request Fleet Quote
+              Request Batch Quote
             </a>
           </motion.div>
         </div>

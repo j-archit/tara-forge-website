@@ -32,14 +32,14 @@ export function ServiceCards() {
     },
     {
       label: "Component batching",
-      title: "Reliable production for high-volume needs",
-      body: "Need 100+ precision parts? We optimize for repeat consistency and mechanical integrity across large print runs.",
+      title: "Reliable production for batch needs",
+      body: "Need 100+ precision parts? We optimize for repeat consistency and mechanical integrity across small print runs.",
       tag: "Small-scale MFG",
     },
   ];
 
   return (
-    <section id="services" className="section-max-width px-6 py-20 lg:px-4 lg:py-32">
+    <section id="services" className="mx-auto max-w-7xl px-6 pb-20 pt-8 lg:px-4 lg:pb-32 lg:pt-12">
       <h2 className="sr-only">Our 3D Printing Services</h2>
       <motion.div 
         className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3"
@@ -86,7 +86,7 @@ export function ShopHighlight() {
         <motion.div {...fadeIn(0.1)}>
           <h2 className="text-3xl font-semibold text-slate-50 sm:text-4xl">The Stellar Collection</h2>
           <p className="mx-auto mt-6 max-w-2xl text-pretty text-base text-slate-400 lg:text-lg">
-            Every artifact in our collection is precision-forged. We don't just print; we obsess over geometry, layer adhesion, and otherworldly finishes.
+            Every artifact in our collection is precision-engineered. We don't just print; we optimize for geometric accuracy, layer adhesion, and professional-grade finishes.
           </p>
           <div className="mt-10">
             <a
@@ -124,7 +124,7 @@ export function CoreValues() {
     },
     {
       title: "Unwavering Accountability",
-      description: "If a part isn't right, we fix it. We take full ownership of the quality that leaves our forge.",
+      description: "If a part isn't right, we fix it. We take full ownership of the quality that leaves our print studio.",
       icon: <ShieldCheck className="w-5 h-5 text-purple-400" />,
       highlight: false
     },
@@ -145,7 +145,7 @@ export function CoreValues() {
   return (
     <section className="section-max-width px-6 py-20 lg:px-4 lg:py-32 border-t border-slate-800/40">
       <div className="max-w-2xl mb-16">
-        <h2 className="text-3xl font-semibold text-slate-50 sm:text-4xl">Our Forging Ethos</h2>
+        <h2 className="text-3xl font-semibold text-slate-50 sm:text-4xl">Our Craft & Ethos</h2>
         <p className="mt-4 text-slate-400 font-light">The values that guide every layer we print and every partnership we build.</p>
       </div>
 

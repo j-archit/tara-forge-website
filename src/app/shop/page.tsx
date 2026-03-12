@@ -3,7 +3,7 @@ import ShopClient from "./ShopClient";
 
 export const metadata: Metadata = {
   title: "The Shop",
-  description: "Browse the Stellar Collection—our signature 3D printed designs, ready for your fleet or collection.",
+  description: "Browse the Stellar Collection—a curated selection of our signature 3D printed designs, available for individual purchase and small batches.",
 };
 
 export default function ShopPage() {

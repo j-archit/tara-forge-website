@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     template: "%s | Tara Forge"
   },
   description:
-    "Tara Forge is a 3D printing studio inspired by “Tara” (Star). We turn ideas into real parts, prototypes, and keepsakes — Forged in the Stars.",
+    "Tara Forge is a 3D printing studio providing refined prototypes, functional parts, and custom components with a premium quality finish.",
   keywords: [
     "Tara Forge",
     "3D printing India",
@@ -67,7 +67,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Tara Forge • 3D Printing Studio",
     description:
-      "Tara Forge is a 3D printing studio inspired by “Tara” (Star). We turn ideas into real parts, prototypes, and keepsakes — Forged in the Stars.",
+      "Tara Forge is a 3D printing studio providing refined prototypes, functional parts, and custom components with a premium quality finish.",
     url: "https://taraforge.in/",
     siteName: "Tara Forge",
     locale: "en_IN",
@@ -85,7 +85,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Tara Forge • 3D Printing Studio",
     description:
-      "Tara Forge is a 3D printing studio inspired by “Tara” (Star). We turn ideas into real parts, prototypes, and keepsakes — Forged in the Stars.",
+      "Tara Forge is a 3D printing studio providing refined prototypes, functional parts, and custom components with a premium quality finish.",
     images: ["/og-image.png"],
   },
 };

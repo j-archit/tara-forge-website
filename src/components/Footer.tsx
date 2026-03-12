@@ -1,35 +1,107 @@
 "use client";
 
+import Link from "next/link";
 import { Logo } from "./Logo";
+import { Mail, Instagram, Twitter, MoveUpRight } from "lucide-react";
 
 export function Footer() {
+  const currentYear = new Date().getFullYear();
+
+  const footerLinks = {
+    explore: [
+      { label: "Gallery", href: "/gallery" },
+      { label: "Shop", href: "/shop" },
+      { label: "Services", href: "/#services" },
+      { label: "Why Tara", href: "/#about" },
+    ],
+    connect: [
+      { label: "Email", href: "mailto:taraforgeindia@gmail.com", icon: <Mail className="w-3.5 h-3.5" /> },
+      { label: "Instagram", href: "#", icon: <Instagram className="w-3.5 h-3.5" /> },
+      { label: "Twitter", href: "#", icon: <Twitter className="w-3.5 h-3.5" /> },
+    ]
+  };
+
   return (
     <footer
       id="contact"
-      className="border-t border-slate-800/80 bg-slate-950/90 py-8 text-xs text-slate-400"
+      className="relative border-t border-slate-800/60 bg-slate-950/40 py-20 backdrop-blur-md overflow-hidden"
     >
-      <div className="section-max-width flex flex-col gap-4 px-4 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-4">
-        <div className="flex items-center gap-4">
-          <Logo size={48} className="opacity-80 grayscale hover:grayscale-0 transition-all drop-shadow-[var(--brand-glow-gold)]" />
-          <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-gold">
-              Tara Forge
-            </p>
-            <p className="mt-1 text-xs text-slate-300 max-w-sm">
-              A 3D printing studio inspired by “Tara” (Star) — focused on prototypes, custom parts, and functional prints. Forged in the Stars.
+      {/* Subtle Background Glow */}
+      <div className="absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-brand-gold/5 blur-[100px]" />
+      <div className="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-blue-500/5 blur-[100px]" />
+
+      <div className="section-max-width px-6 lg:px-4">
+        <div className="grid gap-12 lg:grid-cols-4 lg:gap-8">
+          
+          {/* Brand Column */}
+          <div className="lg:col-span-2">
+            <div className="flex items-center gap-4">
+              <Logo size={64} className="drop-shadow-[var(--brand-glow-gold)]" />
+              <div>
+                <h2 className="text-sm font-bold uppercase tracking-[0.25em] text-brand-gold">
+                  Tara Forge
+                </h2>
+                <p className="mt-1 text-xs font-medium text-slate-500 tracking-wider">
+                  Engineered for excellence ✶
+                </p>
+              </div>
+            </div>
+            <p className="mt-6 max-w-sm text-sm leading-relaxed text-slate-400 font-light">
+              A 3D printing studio specialized in custom parts and functional prototyping. We help you bring your designs to life with high-detail prints, thoughtful material choices, and a focus on reliability.
             </p>
           </div>
+
+          {/* Links Columns */}
+          <div>
+            <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-6">
+              Explore
+            </h3>
+            <ul className="space-y-4">
+              {footerLinks.explore.map((link) => (
+                <li key={link.label}>
+                  <Link 
+                    href={link.href}
+                    className="group flex items-center text-sm text-slate-400 hover:text-brand-gold transition-colors"
+                  >
+                    <span>{link.label}</span>
+                    <MoveUpRight className="ml-1 w-2.5 h-2.5 opacity-0 -translate-y-0.5 translate-x-0.5 group-hover:opacity-100 transition-all" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-6">
+              Connect
+            </h3>
+            <ul className="space-y-4">
+              {footerLinks.connect.map((link) => (
+                <li key={link.label}>
+                  <a 
+                    href={link.href}
+                    className="flex items-center gap-3 text-sm text-slate-400 hover:text-slate-100 transition-colors"
+                  >
+                    <span className="p-1.5 rounded-lg bg-slate-900 border border-slate-800">
+                      {link.icon}
+                    </span>
+                    <span>{link.label}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
-        <div className="flex flex-col gap-2 sm:items-end">
-          <p className="text-[11px] text-slate-400">
-            Send an STL/STEP and a note about size, material, and finish.
+
+        {/* Bottom Bar */}
+        <div className="mt-20 pt-8 border-t border-slate-800/40 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs text-slate-500 font-light">
+            © {currentYear} Tara Forge. Engineered in India.
           </p>
-          <a
-            href="mailto:taraforgeindia@gmail.com"
-            className="text-[11px] font-semibold text-brand-gold hover:text-brand-gold-bright transition-colors"
-          >
-            taraforgeindia@gmail.com
-          </a>
+          <div className="flex gap-8 text-[10px] uppercase tracking-widest text-slate-600 font-bold">
+            <span className="hover:text-slate-400 cursor-default transition-colors">Privacy</span>
+            <span className="hover:text-slate-400 cursor-default transition-colors">Terms</span>
+          </div>
         </div>
       </div>
     </footer>

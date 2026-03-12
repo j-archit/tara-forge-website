@@ -60,7 +60,7 @@ const galleryItems = [
 
 const testimonials = [
   {
-    quote: "Placeholder for client feedback regarding the speed, precision, or overall quality of the forged components.",
+    quote: "Placeholder for client feedback regarding the speed, quality, or finish of their custom prints.",
     author: "Client Name",
     role: "Company / Role"
   },
@@ -82,7 +82,7 @@ export default function GalleryClient() {
       <Navbar />
       
       {/* Header */}
-      <section className="relative overflow-hidden pt-16 pb-12 sm:pt-20 sm:pb-16 lg:pt-24 lg:pb-20">
+      <section className="relative overflow-hidden pt-16 pb-4 sm:pt-20 sm:pb-6 lg:pt-24 lg:pb-8">
         <div className="section-max-width px-6 lg:px-4">
           <motion.div {...fadeIn(0.05)}>
             <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-8">
@@ -92,14 +92,14 @@ export default function GalleryClient() {
               </h1>
             </div>
             <p className="max-w-2xl text-pretty text-base text-slate-300 text-center sm:text-left">
-              Explore the constellation of parts we've forged. From rapid prototypes to small batch manufacturing, every print is treated with celestial care.
+              Browse our portfolio of custom components and prototypes. From singular one-offs to small-batch production, every print reflects our commitment to quality.
             </p>
           </motion.div>
         </div>
       </section>
 
       {/* Gallery Grid */}
-      <section className="py-12 sm:py-16">
+      <section className="pb-16 sm:pb-24 pt-4">
         <div className="section-max-width px-6 lg:px-4">
           <motion.div 
             className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
@@ -145,10 +145,10 @@ export default function GalleryClient() {
         <div className="section-max-width px-6 lg:px-4">
           <motion.div className="text-center mb-12 sm:mb-16" {...fadeIn(0.05)}>
             <h2 className="text-sm font-semibold uppercase tracking-[0.22em] text-slate-400">
-              Voices of the Forge
+              Our Professional Commitment
             </h2>
             <p className="mt-4 text-2xl font-medium text-slate-50">
-              What creators say about our <span className="celestial-gradient-text">precision</span>
+              Recent projects and <span className="celestial-gradient-text">client stories</span>
             </p>
           </motion.div>
 
@@ -179,7 +179,7 @@ export default function GalleryClient() {
       <section className="py-20">
         <div className="section-max-width px-6 text-center">
           <motion.div {...fadeIn(0.1)}>
-            <h2 className="text-3xl font-semibold text-slate-50 mb-6">Ready to forge your next piece?</h2>
+            <h2 className="text-3xl font-semibold text-slate-50 mb-6">Ready to start your next project?</h2>
             <a
               href="mailto:taraforgeindia@gmail.com"
               className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-gold px-8 py-3 text-base font-semibold text-slate-950 shadow-[var(--brand-glow-gold)] transition hover:bg-brand-gold-bright hover:scale-105"
