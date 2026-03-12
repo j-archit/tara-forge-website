@@ -79,8 +79,8 @@ export default function HomePage() {
       </section>
 
       <ServiceCards />
-      <ShopHighlight />
       <CoreValues />
+      <ShopHighlight />
 
       {/* About / Why Section */}
       <section id="about" className="section-max-width px-6 py-20 lg:px-4 lg:py-32">
