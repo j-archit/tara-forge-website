@@ -24,7 +24,7 @@ function Navbar() {
     { text: "তারা", lang: "bn", label: "Bangla" },
     { text: "તારા", lang: "gu", label: "Gujarati" },
     { text: "ତାରା", lang: "or", label: "Odia" },
-    { text: "ਤਾਰਾ", lang: "pa", label: "Gurmukhi" },
+    { text: "ਤਾੜਾ", lang: "pa", label: "Gurmukhi" },
     { text: "తారా", lang: "te", label: "Telugu" },
     { text: "ತಾರಾ", lang: "kn", label: "Kannada" },
   ];
@@ -39,7 +39,7 @@ function Navbar() {
 
     const interval = window.setInterval(() => {
       setScriptIndex((prev) => (prev + 1) % scripts.length);
-    }, 1000);
+    }, 1200);
 
     return () => window.clearInterval(interval);
   }, [scripts.length]);
@@ -47,24 +47,24 @@ function Navbar() {
   const current = scripts[scriptIndex] ?? scripts[0]!;
 
   return (
-    <header className="sticky top-0 z-30 border-b border-slate-800/60 bg-slate-950/60 backdrop-blur-xl">
-      <div className="section-max-width flex items-center justify-between px-4 py-3 sm:px-6 lg:px-4">
-        <div className="flex items-center gap-2">
+    <header className="sticky top-0 z-50 border-b border-slate-800/80 bg-slate-950/70 backdrop-blur-2xl">
+      <div className="section-max-width flex items-center justify-between px-4 py-5 sm:px-6 lg:px-4">
+        <div className="flex items-center gap-3">
           <div
-            className="forge-pill px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-slate-100 shadow-[var(--celestial-glow-primary)]"
+            className="forge-pill px-4 py-1.5 text-[13px] font-semibold uppercase tracking-[0.2em] text-slate-100 shadow-[var(--celestial-glow-primary)]"
             aria-label="Tara Forge"
             title={`${current.text} (${current.label})`}
           >
-            <span lang={current.lang} className="inline-block min-w-[5ch]">
+            <span lang={current.lang} className="inline-block min-w-[5ch] transition-all duration-500">
               {current.text}
             </span>{" "}
             Forge
           </div>
-          <span className="hidden text-xs text-slate-400 sm:inline">
+          <span className="hidden text-sm font-medium text-slate-400 sm:inline">
             Forged in the stars
           </span>
         </div>
-        <nav className="hidden items-center gap-6 text-xs font-medium text-slate-300 sm:flex">
+        <nav className="hidden items-center gap-8 text-sm font-medium text-slate-300 sm:flex">
           <a href="#services" className="hover:text-celestial-accent transition-colors">
             Services
           </a>
@@ -76,7 +76,7 @@ function Navbar() {
           </a>
           <a
             href="#contact"
-            className="rounded-full bg-slate-50 px-4 py-1.5 text-[11px] font-semibold text-slate-900 shadow-[var(--celestial-glow-amber)] transition hover:bg-celestial-accent hover:text-slate-950"
+            className="rounded-full bg-slate-50 px-6 py-2 text-xs font-bold text-slate-900 shadow-[var(--celestial-glow-amber)] transition-all hover:scale-105 hover:bg-celestial-accent hover:text-slate-950 active:scale-95"
           >
             Get a quote
           </a>
@@ -145,7 +145,7 @@ function HeroSection() {
                 Materials
               </dt>
               <dd className="mt-1 font-medium text-slate-100">
-                PLA, PETG, resin
+                PLA, PETG
               </dd>
             </div>
             <div>
@@ -178,10 +178,10 @@ function ServiceCards() {
       tag: "Functional prints",
     },
     {
-      label: "Miniatures & props",
-      title: "Detail-first prints with stellar finishing",
-      body: "Clean supports, crisp details, and optional finishing. Ideal for miniatures, cosplay props, and display pieces.",
-      tag: "Resin & finishing",
+      label: "Component batching",
+      title: "Small batch manufacturing made easy",
+      body: "Need 10 or 50 of the same part? We optimize plate layouts and settings to deliver consistent, high-quality batches efficiently.",
+      tag: "PLA & PETG",
     },
   ];
 
@@ -311,14 +311,13 @@ function GalleryShowcase() {
             <div className="relative flex h-full flex-col justify-between">
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-200">
-                  Resin miniature
+                  Custom Enclosure
                 </p>
                 <p className="mt-2 text-xs text-slate-200">
-                  High-detail resin print with clean supports and optional finishing for a
-                  crisp, display-ready surface.
+                  Durable PETG enclosure for electronics, designed with specific wall thicknesses for impact resistance and thermal stability.
                 </p>
               </div>
-              <p className="text-[11px] text-slate-300">Detail • Resin & finishing</p>
+              <p className="text-[11px] text-slate-300">Functional • PETG batch</p>
             </div>
           </motion.div>
         </motion.div>
@@ -362,7 +361,7 @@ function AboutTara() {
               </li>
               <li className="flex gap-2">
                 <span className="mt-1 h-1.5 w-1.5 rounded-full bg-fuchsia-300" />
-                Optional cleanup / finishing for display pieces
+                Specialized in PLA and PETG for strength and utility
               </li>
             </ul>
           </div>
@@ -384,8 +383,7 @@ function Footer() {
             Tara Forge
           </p>
           <p className="mt-1 text-xs text-slate-300">
-            A 3D printing studio inspired by “Tara” (Star) — prototypes, custom parts,
-            miniatures, and keepsakes. Forged in the Stars.
+            A 3D printing studio inspired by “Tara” (Star) — focused on prototypes, custom parts, and functional prints. Forged in the Stars.
           </p>
         </div>
         <div className="flex flex-col gap-2 sm:items-end">
