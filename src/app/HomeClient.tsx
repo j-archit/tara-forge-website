@@ -3,6 +3,7 @@
 import * as React from "react";
 import { motion } from "framer-motion";
 import { fadeIn, staggerChildren, heroFadeIn } from "@/lib/animations";
+import { ShieldCheck, Leaf, Eye, UserCheck, Zap, Heart } from "lucide-react";
 
 export function HeroClient({ children }: { children: React.ReactNode }) {
   return (
@@ -96,6 +97,80 @@ export function ShopHighlight() {
             </a>
           </div>
         </motion.div>
+      </div>
+    </section>
+  );
+}
+
+export function CoreValues() {
+  const values = [
+    {
+      title: "Precision & Interaction",
+      description: "Tight tolerances meet best-in-class customer support. We don't just ship parts; we ensure they solve your problems.",
+      icon: <UserCheck className="w-5 h-5 text-brand-gold" />,
+      highlight: false
+    },
+    {
+      title: "Environment Forward",
+      description: "We take every step to combat waste that comes with 3D printing—from optimizing supports to material recycling.",
+      icon: <Leaf className="w-5 h-5 text-emerald-400" />,
+      highlight: true
+    },
+    {
+      title: "Radical Transparency",
+      description: "Open communication about lead times, material capabilities, and technical constraints. No surprises, ever.",
+      icon: <Eye className="w-5 h-5 text-blue-400" />,
+      highlight: false
+    },
+    {
+      title: "Unwavering Accountability",
+      description: "If a part isn't right, we fix it. We take full ownership of the quality that leaves our forge.",
+      icon: <ShieldCheck className="w-5 h-5 text-purple-400" />,
+      highlight: false
+    },
+    {
+      title: "Iterative Excellence",
+      description: "We treat every project as a chance to refine our craft, constantly benchmarking the latest additive tech.",
+      icon: <Zap className="w-5 h-5 text-amber-400" />,
+      highlight: false
+    },
+    {
+      title: "Maker Spirit",
+      description: "We approach industrial problems with a maker's curiosity and a pro's discipline. We love what we do.",
+      icon: <Heart className="w-5 h-5 text-red-400" />,
+      highlight: false
+    }
+  ];
+
+  return (
+    <section className="section-max-width px-6 py-20 lg:px-4 lg:py-32 border-t border-slate-800/40">
+      <div className="max-w-2xl mb-16">
+        <h2 className="text-3xl font-semibold text-slate-50 sm:text-4xl">Our Forging Ethos</h2>
+        <p className="mt-4 text-slate-400 font-light">The values that guide every layer we print and every partnership we build.</p>
+      </div>
+
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {values.map((v, i) => (
+          <motion.div
+            key={i}
+            {...fadeIn(i * 0.05)}
+            className={`p-6 rounded-2xl border ${
+              v.highlight 
+                ? 'border-emerald-500/30 bg-emerald-500/5 shadow-[0_0_20px_-10px_rgba(16,185,129,0.2)]' 
+                : 'border-slate-800/60 bg-slate-900/20'
+            } transition-colors hover:border-slate-700/80`}
+          >
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-2 rounded-lg bg-slate-800/50">
+                {v.icon}
+              </div>
+              <h3 className="font-semibold text-slate-100">{v.title}</h3>
+            </div>
+            <p className="text-sm leading-relaxed text-slate-400 font-light">
+              {v.description}
+            </p>
+          </motion.div>
+        ))}
       </div>
     </section>
   );

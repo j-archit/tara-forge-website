@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { HeroClient, ServiceCards, ShopHighlight } from "./HomeClient";
+import { HeroClient, ServiceCards, ShopHighlight, CoreValues } from "./HomeClient";
 import Link from "next/link";
 
 export default function HomePage() {
@@ -80,6 +80,7 @@ export default function HomePage() {
 
       <ServiceCards />
       <ShopHighlight />
+      <CoreValues />
 
       {/* About / Why Section */}
       <section id="about" className="section-max-width px-6 py-20 lg:px-4 lg:py-32">
@@ -106,6 +107,15 @@ export default function HomePage() {
                 <div>
                   <h3 className="font-semibold text-slate-100">Material Mastery</h3>
                   <p className="mt-1 text-sm text-slate-500">Optimized for PETG durability and PLA aesthetics.</p>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-slate-900 border border-slate-800">
+                  <span className="text-brand-gold">✶</span>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-slate-100">Accessible Pricing</h3>
+                  <p className="mt-1 text-sm text-slate-500">Best-in-class 3D printing with budget-friendly rates for every project.</p>
                 </div>
               </div>
             </div>
