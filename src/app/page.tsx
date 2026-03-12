@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import { motion } from "framer-motion";
 
 const fadeIn = (delay = 0) => ({
@@ -17,12 +18,47 @@ const staggerChildren = {
 };
 
 function Navbar() {
+  const scripts: Array<{ text: string; lang: string; label: string }> = [
+    { text: "Tara", lang: "en", label: "Latin" },
+    { text: "तारा", lang: "hi", label: "Devanagari" },
+    { text: "তারা", lang: "bn", label: "Bangla" },
+    { text: "તારા", lang: "gu", label: "Gujarati" },
+    { text: "ତାରା", lang: "or", label: "Odia" },
+    { text: "ਤਾਰਾ", lang: "pa", label: "Gurmukhi" },
+    { text: "తారా", lang: "te", label: "Telugu" },
+    { text: "ತಾರಾ", lang: "kn", label: "Kannada" },
+  ];
+
+  const [scriptIndex, setScriptIndex] = React.useState(0);
+
+  React.useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (media.matches) return;
+
+    const interval = window.setInterval(() => {
+      setScriptIndex((prev) => (prev + 1) % scripts.length);
+    }, 1000);
+
+    return () => window.clearInterval(interval);
+  }, [scripts.length]);
+
+  const current = scripts[scriptIndex] ?? scripts[0]!;
+
   return (
     <header className="sticky top-0 z-30 border-b border-slate-800/60 bg-slate-950/60 backdrop-blur-xl">
       <div className="section-max-width flex items-center justify-between px-4 py-3 sm:px-6 lg:px-4">
         <div className="flex items-center gap-2">
-          <div className="forge-pill px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-slate-100 shadow-[var(--celestial-glow-primary)]">
-            Tara Forge
+          <div
+            className="forge-pill px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-slate-100 shadow-[var(--celestial-glow-primary)]"
+            aria-label="Tara Forge"
+            title={`${current.text} (${current.label})`}
+          >
+            <span lang={current.lang} className="inline-block min-w-[5ch]">
+              {current.text}
+            </span>{" "}
+            Forge
           </div>
           <span className="hidden text-xs text-slate-400 sm:inline">
             Forged in the stars
@@ -357,10 +393,10 @@ function Footer() {
             Send an STL/STEP and a note about size, material, and finish.
           </p>
           <a
-            href="mailto:hello@taraforge.studio"
+            href="mailto:taraforgeindia@gmail.com"
             className="text-[11px] font-semibold text-celestial-accent hover:text-celestial-accent-strong"
           >
-            hello@taraforge.studio
+            taraforgeindia@gmail.com
           </a>
         </div>
       </div>
