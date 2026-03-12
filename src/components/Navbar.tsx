@@ -11,7 +11,7 @@ export function Navbar() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   
-  const scripts: Array<{ text: string; lang: string; label: string }> = [
+  const scripts = React.useMemo(() => [
     { text: "Tara", lang: "en", label: "Latin" },
     { text: "तारा", lang: "hi", label: "Devanagari" },
     { text: "তারা", lang: "bn", label: "Bengali" },
@@ -26,7 +26,14 @@ export function Navbar() {
     { text: "تارا", lang: "ur", label: "Perso-Arabic" },
     { text: "ꯇꯥꯔꯥ", lang: "mni", label: "Meetei Mayek" },
     { text: "ᱛᱟᱨᱟ", lang: "sat", label: "Ol Chiki" },
-  ];
+  ], []);
+
+  const navLinks = React.useMemo(() => [
+    { href: "/#services", label: "Services" },
+    { href: "/gallery", label: "Gallery" },
+    { href: "/shop", label: "Shop" },
+    { href: "/#about", label: "Why Tara" },
+  ], []);
 
   const [scriptIndex, setScriptIndex] = React.useState(0);
 
@@ -44,13 +51,6 @@ export function Navbar() {
   }, [scripts.length]);
 
   const current = scripts[scriptIndex] ?? scripts[0]!;
-
-  const navLinks = [
-    { href: "/#services", label: "Services" },
-    { href: "/gallery", label: "Gallery" },
-    { href: "/shop", label: "Shop" },
-    { href: "/#about", label: "Why Tara" },
-  ];
 
   return (
     <header className="sticky top-0 z-50 border-b border-slate-800/80 bg-slate-950/70 backdrop-blur-2xl">

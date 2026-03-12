@@ -7,8 +7,29 @@ export const CelestialBackground = () => {
   const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {
-    setMounted(true);
+    // Delay non-critical background decor to prioritize LCP rendering
+    const timer = setTimeout(() => setMounted(true), 100);
+    return () => clearTimeout(timer);
   }, []);
+
+  const stars = React.useMemo(() => 
+    [...Array(20)].map((_, i) => ({
+      id: i,
+      top: `${Math.round(Math.random() * 1000) / 10}%`,
+      left: `${Math.round(Math.random() * 1000) / 10}%`,
+      duration: 2 + Math.random() * 3,
+      delay: Math.random() * 5,
+      scale: 0.5 + Math.random() * 0.7
+    })), []);
+
+  const shootingStars = React.useMemo(() => 
+    [...Array(3)].map((_, i) => ({
+      id: i,
+      top: `${Math.round(Math.random() * 500) / 10}%`,
+      left: `${50 + Math.round(Math.random() * 500) / 10}%`,
+      duration: 10 + Math.random() * 20,
+      delay: Math.random() * 15
+    })), []);
 
   return (
     <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none bg-slate-950">
@@ -61,35 +82,35 @@ export const CelestialBackground = () => {
       {mounted && (
         <>
           {/* Animated Stars (Twinkling) */}
-          {[...Array(20)].map((_, i) => (
+          {stars.map((star) => (
             <motion.div
-              key={i}
-              initial={{ opacity: Math.random(), scale: Math.random() }}
-              animate={{ opacity: [0.2, 1, 0.2], scale: [1, 1.2, 1] }}
+              key={star.id}
+              initial={{ opacity: 0.2, scale: star.scale }}
+              animate={{ opacity: [0.2, 1, 0.2], scale: [star.scale, star.scale * 1.2, star.scale] }}
               transition={{ 
-                duration: 2 + Math.random() * 3, 
+                duration: star.duration, 
                 repeat: Infinity, 
-                delay: Math.random() * 5 
+                delay: star.delay 
               }}
               className="absolute w-1 h-1 bg-white rounded-full shadow-[0_0_8px_white]"
               style={{ 
-                top: `${Math.random() * 100}%`, 
-                left: `${Math.random() * 100}%` 
+                top: star.top, 
+                left: star.left 
               }}
             />
           ))}
 
           {/* Shooting Stars */}
           <div className="absolute top-0 right-0 w-[500px] h-[500px]">
-            {[...Array(3)].map((_, i) => (
+            {shootingStars.map((star) => (
                 <div 
-                    key={i}
+                    key={star.id}
                     className="shooting-star"
                     style={{ 
-                        top: `${Math.random() * 50}%`,
-                        left: `${50 + Math.random() * 50}%`,
-                        animation: `shooting-star ${10 + Math.random() * 20}s linear infinite`,
-                        animationDelay: `${Math.random() * 15}s`
+                        top: star.top,
+                        left: star.left,
+                        animation: `shooting-star ${star.duration}s linear infinite`,
+                        animationDelay: `${star.delay}s`
                     }}
                 />
             ))}

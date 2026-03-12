@@ -11,3 +11,9 @@ export const staggerChildren = {
   viewport: { once: true, amount: 0.4 },
   transition: { duration: 0.6, staggerChildren: 0.07, ease: [0.22, 0.61, 0.36, 1] as const },
 };
+
+export const heroFadeIn = {
+  initial: { opacity: 0.001, y: 15 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as const },
+};

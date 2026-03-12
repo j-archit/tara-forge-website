@@ -15,6 +15,8 @@ const nextConfig: NextConfig = {
     unoptimized: true,
   },
   trailingSlash: true,
+  // Add experimental optimization if needed, but defaults are solid.
+  // Ensuring the manifest is clean.
 };
 
 export default nextConfig;

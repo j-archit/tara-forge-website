@@ -30,9 +30,11 @@ function buildRingSegs(
   orbitRot: number, 
   orbitSW: number, 
   offsetYpx: number, 
-  dimFactor: number
+  dimFactor: number,
+  size: number
 ): RingSeg[] {
-  const SEGMENTS = 120;
+  // Use fewer segments for smaller logos to improve performance
+  const SEGMENTS = size < 100 ? 50 : 120;
   const rotRad = (orbitRot * Math.PI) / 180;
   const r3 = (n: number) => Math.round(n * 1000) / 1000;
 
@@ -103,9 +105,10 @@ export function Logo({ size = 200, className = "" }: { size?: number, className?
   const orbitRot = -30, orbitSW = sw*0.42;
   const gap = size * 0.052;
 
-  const allRings = RING_LAYERS.map(r =>
-    buildRingSegs(cx, cy, baseRx, baseRy, orbitRot, orbitSW, r.offsetY * gap, r.dim)
-  );
+  const allRings = React.useMemo(() => 
+    RING_LAYERS.map(r =>
+      buildRingSegs(cx, cy, baseRx, baseRy, orbitRot, orbitSW, r.offsetY * gap, r.dim, size)
+    ), [cx, cy, baseRx, baseRy, orbitRot, orbitSW, gap, size]);
 
   return (
     <svg 
