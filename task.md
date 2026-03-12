@@ -1,0 +1,24 @@
+# Tara Forge Website Task List
+
+- [x] **Phase 1: Planning and Design**
+    - [x] Brainstorm tech stack
+    - [x] Refine implementation plan with Next.js and Component Library
+    - [x] Select and document component library choice (Shadcn/UI selected)
+- [x] **Phase 2: Project Initialization**
+    - [x] Initialize Next.js app with Tailwind and TypeScript
+    - [x] Configure for GitHub Pages (Static Export)
+    - [x] Configure component library (Shadcn/UI)
+    - [x] Set up global theme and CSS variables (Celestial theme)
+- [/] **Phase 3: Core Components**
+    - [x] Navbar (Glassmorphic)
+    - [x] Hero Section (Celestial Forge visuals)
+    - [x] Service Cards
+    - [x] Gallery Showcase
+    - [x] Footer
+- [x] **Phase 4: Content and Polish**
+    - [x] Add copy and "Forged in the stars" branding
+    - [x] Implement scroll animations (Framer Motion)
+    - [x] Responsive design check
+- [x] **Phase 5: Deployment Prep**
+    - [x] Static export configuration (`output: 'export'`)
+    - [x] SEO audit (Meta tags, titles)

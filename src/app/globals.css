@@ -1,0 +1,131 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Base palette */
+  --background: #020617; /* deep space */
+  --foreground: #e5e7eb;
+
+  /* Celestial Forge brand colors */
+  --celestial-bg: radial-gradient(circle at top, #1d4ed8 0, #020617 55%);
+  --celestial-accent: #38bdf8;
+  --celestial-accent-soft: rgba(56, 189, 248, 0.2);
+  --celestial-accent-strong: #7dd3fc;
+  --celestial-amber: #fbbf24;
+  --celestial-card: rgba(15, 23, 42, 0.85);
+  --celestial-border: rgba(148, 163, 184, 0.35);
+  --celestial-glass: rgba(15, 23, 42, 0.65);
+  --celestial-ring: rgba(129, 140, 248, 0.45);
+
+  /* Radiance + glow */
+  --celestial-glow-primary: 0 0 40px rgba(56, 189, 248, 0.35);
+  --celestial-glow-amber: 0 0 40px rgba(251, 191, 36, 0.4);
+  --celestial-glow-soft: 0 0 80px rgba(30, 64, 175, 0.55);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  --color-celestial-accent: var(--celestial-accent);
+  --color-celestial-accent-soft: var(--celestial-accent-soft);
+  --color-celestial-accent-strong: var(--celestial-accent-strong);
+  --color-celestial-amber: var(--celestial-amber);
+  --color-celestial-card: var(--celestial-card);
+  --color-celestial-border: var(--celestial-border);
+  --color-celestial-glass: var(--celestial-glass);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #020617;
+    --foreground: #e5e7eb;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background: var(--celestial-bg);
+  color: var(--foreground);
+}
+
+/* Subtle starfield background */
+.celestial-stars {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(248, 250, 252, 0.12) 0, transparent 45%),
+    radial-gradient(circle at 80% 10%, rgba(56, 189, 248, 0.18) 0, transparent 55%),
+    radial-gradient(circle at 50% 80%, rgba(129, 140, 248, 0.22) 0, transparent 55%);
+  opacity: 0.42;
+  mix-blend-mode: screen;
+  z-index: -1;
+}
+
+.celestial-orbit {
+  position: absolute;
+  border-radius: 9999px;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  box-shadow: var(--celestial-glow-soft);
+}
+
+.glass-surface {
+  background: var(--celestial-glass);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--celestial-border);
+}
+
+.forge-pill {
+  border-radius: 999px;
+  background: radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.7), transparent 50%),
+    rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.55);
+  box-shadow: var(--celestial-glow-primary);
+}
+
+.celestial-gradient-text {
+  background: linear-gradient(
+    120deg,
+    #e5e7eb 0%,
+    #38bdf8 30%,
+    #a855f7 55%,
+    #f97316 80%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.celestial-grid {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+      to right,
+      rgba(148, 163, 184, 0.25) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, rgba(148, 163, 184, 0.18) 1px, transparent 1px);
+  background-size: 80px 80px;
+  opacity: 0.15;
+  mask-image: radial-gradient(circle at center, black 30%, transparent 75%);
+}
+
+.section-max-width {
+  max-width: 1120px;
+  margin-left: auto;
+  margin-right: auto;
+}
