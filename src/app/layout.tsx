@@ -13,6 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://taraforge.in"),
   title: "Tara Forge • 3D Printing Studio",
   description:
     "Tara Forge is a 3D printing studio inspired by “Tara” (Star). We turn ideas into real parts, prototypes, and keepsakes — Forged in the Stars.",
@@ -29,6 +30,7 @@ export const metadata: Metadata = {
     title: "Tara Forge • 3D Printing Studio",
     description:
       "A 3D printing studio inspired by “Tara” (Star). Prototypes, custom parts, and prints — Forged in the Stars.",
+    url: "https://taraforge.in",
     siteName: "Tara Forge",
   },
   twitter: {
