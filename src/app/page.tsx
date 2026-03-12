@@ -13,7 +13,7 @@ export default function HomePage() {
       <section className="relative overflow-hidden pt-12 pb-4 sm:pt-16 sm:pb-6 lg:pt-20 lg:pb-8">
         <div className="section-max-width relative px-4 sm:px-6 lg:px-4">
           <HeroClient>
-            <p className="inline-flex items-center gap-2 rounded-full border border-slate-700/70 bg-slate-900/60 px-2.5 py-1 text-[11px] font-medium text-slate-300 shadow-[var(--brand-glow-gold)]">
+            <p className="inline-flex items-center gap-2 rounded-full border border-slate-700/70 bg-slate-900/60 px-3 py-1.5 text-xs font-semibold text-slate-200 shadow-[var(--brand-glow-gold)]">
               <span className="h-1.5 w-1.5 rounded-full bg-brand-gold shadow-[var(--brand-glow-gold)]" />
               Precision in every layer
               <span className="h-px w-6 bg-slate-600/80" />
@@ -25,7 +25,7 @@ export default function HomePage() {
               <span className="celestial-gradient-text">engineered into reality</span>
             </h1>
 
-            <p className="mt-4 max-w-xl text-pretty text-sm leading-relaxed text-slate-300 sm:text-base">
+            <p className="mt-6 max-w-xl text-pretty text-base leading-relaxed text-slate-300 lg:text-lg">
               Tara Forge is inspired by “Tara” — meaning <span className="text-slate-100 font-medium">Star</span> in multiple Indian languages.
               We 3D print prototypes, custom parts, and keepsakes with a finish that feels
               otherworldly.
@@ -48,9 +48,9 @@ export default function HomePage() {
               </Link>
             </div>
 
-            <dl className="mt-7 grid grid-cols-3 gap-4 text-left text-xs text-slate-300 sm:max-w-md">
+            <dl className="mt-10 grid grid-cols-3 gap-6 text-left text-sm text-slate-300 sm:max-w-md">
               <div>
-                <dt className="text-[11px] uppercase tracking-[0.18em] text-slate-400">
+                <dt className="text-[12px] font-bold uppercase tracking-[0.22em] text-slate-400">
                   Prints
                 </dt>
                 <dd className="mt-1 font-medium text-slate-100">
@@ -58,7 +58,7 @@ export default function HomePage() {
                 </dd>
               </div>
               <div>
-                <dt className="text-[11px] uppercase tracking-[0.18em] text-slate-400">
+                <dt className="text-[12px] font-bold uppercase tracking-[0.22em] text-slate-400">
                   Materials
                 </dt>
                 <dd className="mt-1 font-medium text-slate-100">
@@ -66,7 +66,7 @@ export default function HomePage() {
                 </dd>
               </div>
               <div>
-                <dt className="text-[11px] uppercase tracking-[0.18em] text-slate-400">
+                <dt className="text-[12px] font-bold uppercase tracking-[0.22em] text-slate-400">
                   Promise
                 </dt>
                 <dd className="mt-1 font-medium text-slate-100">
