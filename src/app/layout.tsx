@@ -14,20 +14,44 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://taraforge.in"),
-  title: "Tara Forge • 3D Printing Studio",
+  title: {
+    default: "Tara Forge • 3D Printing Studio",
+    template: "%s | Tara Forge"
+  },
   description:
     "Tara Forge is a 3D printing studio inspired by “Tara” (Star). We turn ideas into real parts, prototypes, and keepsakes — Forged in the Stars.",
   keywords: [
     "Tara Forge",
-    "3D printing",
-    "3D printed parts",
-    "3D printed prototypes",
-    "custom 3D prints",
-    "functional 3D printing",
-    "PLA printing",
-    "PETG printing",
-    "small batch manufacturing India",
+    "3D printing India",
+    "3D printing Bangalore",
+    "custom 3D parts",
+    "functional prototyping",
+    "PETG batch manufacturing",
+    "PLA printing services",
+    "industrial 3D printing India",
   ],
+  authors: [{ name: "Tara Forge" }],
+  creator: "Tara Forge",
+  publisher: "Tara Forge",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  alternates: {
+    canonical: "https://taraforge.in/",
+  },
   icons: {
     icon: "/Logo.svg",
     apple: "/Logo.svg",
@@ -35,15 +59,19 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Tara Forge • 3D Printing Studio",
     description:
-      "A 3D printing studio inspired by “Tara” (Star). Prototypes, custom parts, and prints — Forged in the Stars.",
-    url: "https://taraforge.in",
+      "Tara Forge is a 3D printing studio inspired by “Tara” (Star). We turn ideas into real parts, prototypes, and keepsakes — Forged in the Stars.",
+    url: "https://taraforge.in/",
     siteName: "Tara Forge",
+    locale: "en_IN",
+    type: "website",
+    images: ["/Logo.svg"], // Placeholder for OG image
   },
   twitter: {
     card: "summary_large_image",
     title: "Tara Forge • 3D Printing Studio",
     description:
-      "3D printed prototypes, custom parts, and miniatures inspired by “Tara” (Star). Forged in the Stars.",
+      "Tara Forge is a 3D printing studio inspired by “Tara” (Star). We turn ideas into real parts, prototypes, and keepsakes — Forged in the Stars.",
+    images: ["/Logo.svg"], // Placeholder for Twitter image
   },
 };
 
