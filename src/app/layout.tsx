@@ -132,7 +132,7 @@ export default function RootLayout({
                   "@type": "LocalBusiness",
                   "@id": "https://taraforge.in/#localbusiness",
                   "name": "Tara Forge",
-                  "description": "Specialized 3D printing services in Mumbai and Bangalore.",
+                  "description": "Specialized 3D printing services based in Bangalore, serving all of India.",
                   "url": "https://taraforge.in",
                   "telephone": "+91-XXXXXXXXXX",
                   "address": {
@@ -142,8 +142,7 @@ export default function RootLayout({
                     "addressCountry": "IN"
                   },
                   "areaServed": [
-                    { "@type": "City", "name": "Mumbai" },
-                    { "@type": "City", "name": "Bangalore" }
+                    { "@type": "Country", "name": "India" }
                   ]
                 },
                 {

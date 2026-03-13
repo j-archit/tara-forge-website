@@ -81,10 +81,6 @@ export default function HomePage() {
 
       <ServiceCards />
       <CoreValues />
-      <ShopHighlight />
-      <FAQSection />
-
-      {/* About / Why Section */}
       <section id="about" className="section-max-width px-6 py-20 lg:px-4 lg:py-32">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <div>
@@ -130,6 +126,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      <FAQSection />
+      <ShopHighlight />
 
       <Footer />
     </main>

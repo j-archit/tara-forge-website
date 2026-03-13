@@ -12,7 +12,7 @@ interface FAQItem {
 const faqs: FAQItem[] = [
   {
     question: "Where is Tara Forge located?",
-    answer: "We are a boutique 3D printing studio operating across Mumbai and Bangalore, serving creators and engineers across India with high-quality custom prints."
+    answer: "We are a boutique 3D printing studio based in Bangalore, serving creators, engineers, and makers across all of India with high-quality custom prints."
   },
   {
     question: "What materials do you print with?",
@@ -58,7 +58,9 @@ export function FAQSection() {
       
       <div className="grid gap-12 lg:grid-cols-2">
         <div>
-          <h2 className="text-3xl font-semibold text-slate-50 sm:text-4xl">Common Inquiries</h2>
+          <h2 className="text-3xl font-semibold text-slate-50 sm:text-4xl">
+            Common <span className="celestial-gradient-text">Inquiries</span>
+          </h2>
           <p className="mt-6 text-slate-400 font-light max-w-lg leading-relaxed">
             Everything you need to know about our boutique 3D printing process, materials, and batch capabilities. Engineered for transparency.
           </p>
@@ -70,14 +72,20 @@ export function FAQSection() {
             return (
               <div 
                 key={idx}
-                className="overflow-hidden rounded-2xl border border-slate-800/60 bg-slate-900/20 transition-all hover:border-slate-700/80"
+                className={`overflow-hidden rounded-2xl border transition-all duration-300 ${
+                  isOpen 
+                    ? "border-brand-gold/40 bg-slate-900/40 shadow-[var(--brand-glow-gold)]" 
+                    : "border-slate-800/60 bg-slate-900/20 hover:border-slate-700/80"
+                }`}
               >
                 <button
                   onClick={() => setOpenIndex(isOpen ? null : idx)}
-                  className="flex w-full items-center justify-between p-6 text-left"
+                  className="flex w-full items-center justify-between p-6 text-left group"
                 >
-                  <span className="text-base font-medium text-slate-100">{faq.question}</span>
-                  <ChevronDown className={`h-5 w-5 text-slate-500 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
+                  <span className={`text-base font-medium transition-colors duration-300 ${isOpen ? "text-brand-gold" : "text-slate-100 group-hover:text-slate-50"}`}>
+                    {faq.question}
+                  </span>
+                  <ChevronDown className={`h-5 w-5 transition-all duration-300 ${isOpen ? "rotate-180 text-brand-gold" : "text-slate-500 group-hover:text-slate-300"}`} />
                 </button>
                 <AnimatePresence>
                   {isOpen && (
@@ -87,7 +95,7 @@ export function FAQSection() {
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.3, ease: "easeInOut" }}
                     >
-                      <div className="px-6 pb-6 text-sm leading-relaxed text-slate-400 font-light border-t border-slate-800/40 pt-4">
+                      <div className="px-6 pb-6 text-sm leading-relaxed text-slate-400 font-light border-t border-brand-gold/10 pt-4">
                         {faq.answer}
                       </div>
                     </motion.div>

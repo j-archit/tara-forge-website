@@ -190,7 +190,7 @@ export default function ShopClient() {
             </div>
             <div className="text-center border-l border-slate-800">
               <p className="text-sm font-bold text-slate-200">Pan-India Shipping</p>
-              <p className="text-[10px] text-slate-500 uppercase tracking-widest mt-1">Direct from Mumbai/Bangalore</p>
+              <p className="text-[10px] text-slate-500 uppercase tracking-widest mt-1">Direct from Bangalore to all India</p>
             </div>
           </div>
         </div>
