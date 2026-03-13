@@ -10,7 +10,7 @@ export default function HomePage() {
       <Navbar />
 
       {/* Hero Section - Optimized for LCP */}
-      <section className="relative overflow-hidden pt-12 pb-4 sm:pt-16 sm:pb-6 lg:pt-20 lg:pb-8">
+      <section className="relative flex min-h-[calc(100dvh-4rem)] flex-col justify-center overflow-hidden py-20 lg:min-h-[calc(100dvh-5rem)]">
         <div className="section-max-width relative px-4 sm:px-6 lg:px-4">
           <HeroClient>
             <p className="inline-flex items-center gap-2 rounded-full border border-slate-700/70 bg-slate-900/60 px-3 py-1.5 text-xs font-semibold text-slate-200 shadow-[var(--brand-glow-gold)]">

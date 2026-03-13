@@ -54,13 +54,13 @@ export function ServiceCards() {
         <h2 className="text-3xl font-semibold text-slate-50 sm:text-4xl">Specialized <span className="celestial-gradient-text">Services</span></h2>
         <p className="mt-4 text-slate-400 font-light max-w-2xl">Precision printing solutions optimized for your specific project needs.</p>
       </div>
-      <motion.div 
+      <div 
         className="grid gap-8 sm:grid-cols-2 lg:grid-cols-2"
-        {...staggerChildren}
       >
         {services.map((item, i) => (
           <motion.div 
             key={i}
+            {...fadeIn(i * 0.1)}
             whileHover={{ y: -8 }}
             className="group relative h-full flex flex-col overflow-hidden rounded-3xl border border-slate-800/80 bg-slate-900/30 p-8 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.5)] transition-all hover:border-brand-gold/40 hover:bg-slate-900/40"
           >
@@ -87,7 +87,7 @@ export function ServiceCards() {
             </div>
           </motion.div>
         ))}
-      </motion.div>
+      </div>
       </div>
     </section>
   );

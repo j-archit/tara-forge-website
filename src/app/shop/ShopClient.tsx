@@ -117,13 +117,13 @@ export default function ShopClient() {
       {/* Products Grid */}
       <section className="pb-16 sm:pb-24 pt-4">
         <div className="section-max-width px-6 lg:px-4">
-          <motion.div 
+          <div 
             className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3"
-            {...staggerChildren}
           >
-            {products.map((product) => (
+            {products.map((product, idx) => (
               <motion.article 
                 key={product.id}
+                {...fadeIn(idx * 0.1)}
                 className="group relative flex flex-col overflow-hidden rounded-2xl border border-slate-800/80 bg-slate-900/30 transition-all hover:border-brand-gold/50 shadow-[0_15px_50px_-15px_rgba(0,0,0,0.5)]"
               >
                 <div className={`relative aspect-square overflow-hidden bg-gradient-to-br ${product.imageGradient}`}>
@@ -168,7 +168,7 @@ export default function ShopClient() {
                 </div>
               </motion.article>
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
 

@@ -86,13 +86,13 @@ export default function GalleryClient() {
       {/* Gallery Grid */}
       <section className="pb-16 sm:pb-24 pt-4">
         <div className="section-max-width px-6 lg:px-4">
-          <motion.div 
+          <div 
             className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
-            {...staggerChildren}
           >
             {galleryItems.map((item, idx) => (
               <motion.div 
                 key={idx}
+                {...fadeIn(idx * 0.1)}
                 className={`relative aspect-[4/3] overflow-hidden rounded-2xl border border-slate-800/80 bg-gradient-to-br ${item.gradient} p-6 shadow-[0_20px_90px_rgba(15,23,42,0.95)] group`}
               >
                 <div 
@@ -121,7 +121,7 @@ export default function GalleryClient() {
                 </div>
               </motion.div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
 
