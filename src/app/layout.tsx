@@ -107,19 +107,53 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
+            __html:            JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "Organization",
-              "name": "Tara Forge",
-              "url": "https://taraforge.in",
-              "logo": "https://taraforge.in/Logo.svg",
-              "image": "https://taraforge.in/Logo.svg",
-              "description": "Premium 3D printing studio specializing in prototypes and custom parts.",
-              "address": {
-                "@type": "PostalAddress",
-                "addressLocality": "Bangalore",
-                "addressCountry": "IN"
-              }
+              "@graph": [
+                {
+                  "@type": "Organization",
+                  "@id": "https://taraforge.in/#organization",
+                  "name": "Tara Forge",
+                  "url": "https://taraforge.in",
+                  "logo": "https://taraforge.in/Logo.svg",
+                  "image": "https://taraforge.in/Logo.svg",
+                  "description": "Boutique 3D printing studio specializing in refined prototypes, functional parts, and small-batch manufacturing.",
+                  "address": {
+                    "@type": "PostalAddress",
+                    "addressLocality": "Bangalore",
+                    "addressRegion": "Karnataka",
+                    "addressCountry": "IN"
+                  },
+                  "sameAs": [
+                    "https://www.instagram.com/taraforge"
+                  ]
+                },
+                {
+                  "@type": "LocalBusiness",
+                  "@id": "https://taraforge.in/#localbusiness",
+                  "name": "Tara Forge",
+                  "description": "Specialized 3D printing services in Mumbai and Bangalore.",
+                  "url": "https://taraforge.in",
+                  "telephone": "+91-XXXXXXXXXX",
+                  "address": {
+                    "@type": "PostalAddress",
+                    "addressLocality": "Bangalore",
+                    "addressRegion": "Karnataka",
+                    "addressCountry": "IN"
+                  },
+                  "areaServed": [
+                    { "@type": "City", "name": "Mumbai" },
+                    { "@type": "City", "name": "Bangalore" }
+                  ]
+                },
+                {
+                  "@type": "Service",
+                  "name": "Custom 3D Printing & Prototyping",
+                  "provider": { "@id": "https://taraforge.in/#organization" },
+                  "description": "Functional prototypes, custom parts, and small batch 3D printing in PLA and PETG.",
+                  "areaServed": "IN"
+                }
+              ]
             }),
           }}
         />

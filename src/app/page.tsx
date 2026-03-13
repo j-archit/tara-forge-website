@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { HeroClient, ServiceCards, ShopHighlight, CoreValues } from "./HomeClient";
+import { HeroClient, ServiceCards, ShopHighlight, CoreValues, FAQSection } from "./HomeClient";
 import Link from "next/link";
 
 export default function HomePage() {
@@ -42,8 +42,9 @@ export default function HomePage() {
               <Link
                 href="/gallery"
                 className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-600/70 bg-slate-900/40 px-4 py-2 text-xs font-medium text-slate-100 transition hover:border-brand-gold hover:text-brand-gold hover:scale-105"
+                aria-label="Explore our custom 3D print gallery and portfolio"
               >
-                See recent prints
+                Explore Custom Print Gallery
                 <span className="h-1.5 w-1.5 rounded-full bg-brand-gold opacity-50" />
               </Link>
             </div>
@@ -81,6 +82,7 @@ export default function HomePage() {
       <ServiceCards />
       <CoreValues />
       <ShopHighlight />
+      <FAQSection />
 
       {/* About / Why Section */}
       <section id="about" className="section-max-width px-6 py-20 lg:px-4 lg:py-32">

@@ -4,6 +4,9 @@ import * as React from "react";
 import { motion } from "framer-motion";
 import { fadeIn, staggerChildren, heroFadeIn } from "@/lib/animations";
 import { ShieldCheck, Leaf, Eye, UserCheck, Zap, Heart } from "lucide-react";
+import { FAQSection } from "@/components/FAQSection";
+
+export { FAQSection };
 
 export function HeroClient({ children }: { children: React.ReactNode }) {
   return (
