@@ -81,10 +81,10 @@ export default function HomePage() {
 
       <ServiceCards />
       <CoreValues />
-      <section id="about" className="section-max-width px-6 py-20 lg:px-4 lg:py-32">
+      <section id="about" className="section-max-width px-6 py-12 lg:px-4 lg:py-20">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <div>
-            <h2 className="text-3xl font-semibold text-slate-50 sm:text-4xl">Why Tara Forge?</h2>
+            <h2 className="text-3xl font-semibold text-slate-50 sm:text-4xl">Why <span className="celestial-gradient-text">Tara Forge?</span></h2>
             <p className="mt-6 text-pretty text-base leading-relaxed text-slate-400 font-light">
               We specialize in custom components and functional prototypes. We focus on the fine details—optimizing print orientation and material settings to deliver parts that are precise, durable, and ready for use.
             </p>
@@ -94,7 +94,7 @@ export default function HomePage() {
                   <span className="text-brand-gold">✶</span>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-slate-100">Precision Focus</h3>
+                  <h3 className="font-semibold text-brand-gold">Precision Focus</h3>
                   <p className="mt-1 text-sm text-slate-500">Tight tolerances for mechanical parts.</p>
                 </div>
               </div>
@@ -103,7 +103,7 @@ export default function HomePage() {
                   <span className="text-brand-gold">✶</span>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-slate-100">Material Mastery</h3>
+                  <h3 className="font-semibold text-brand-gold">Material Mastery</h3>
                   <p className="mt-1 text-sm text-slate-500">Optimized for PETG durability and PLA aesthetics.</p>
                 </div>
               </div>
@@ -112,7 +112,7 @@ export default function HomePage() {
                   <span className="text-brand-gold">✶</span>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-slate-100">Accessible Pricing</h3>
+                  <h3 className="font-semibold text-brand-gold">Accessible Pricing</h3>
                   <p className="mt-1 text-sm text-slate-500">Best-in-class 3D printing with budget-friendly rates for every project.</p>
                 </div>
               </div>

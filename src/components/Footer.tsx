@@ -53,7 +53,7 @@ export function Footer() {
 
           {/* Links Columns */}
           <div>
-            <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-6">
+            <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-gold/80 mb-6">
               Explore
             </h3>
             <ul className="space-y-4">
@@ -72,7 +72,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-6">
+            <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-gold/80 mb-6">
               Connect
             </h3>
             <ul className="space-y-4">

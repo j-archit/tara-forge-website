@@ -144,7 +144,7 @@ export default function GalleryClient() {
       <section className="relative border-y border-slate-800/70 bg-slate-950/70 py-16 sm:py-24">
         <div className="section-max-width px-6 lg:px-4">
           <motion.div className="text-center mb-12 sm:mb-16" {...fadeIn(0.05)}>
-            <h2 className="text-sm font-semibold uppercase tracking-[0.22em] text-slate-400">
+            <h2 className="text-sm font-semibold uppercase tracking-[0.22em] text-brand-gold/80">
               Our Professional Commitment
             </h2>
             <p className="mt-4 text-2xl font-medium text-slate-50">

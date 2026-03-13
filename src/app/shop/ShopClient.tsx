@@ -177,19 +177,19 @@ export default function ShopClient() {
         <div className="section-max-width px-6">
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
             <div className="text-center">
-              <p className="text-sm font-bold text-slate-200">Precision Batches</p>
+              <p className="text-sm font-bold text-brand-gold">Precision Batches</p>
               <p className="text-[10px] text-slate-500 uppercase tracking-widest mt-1">High-volume reliability</p>
             </div>
             <div className="text-center border-l border-slate-800">
-              <p className="text-sm font-bold text-slate-200">Custom Finishes</p>
+              <p className="text-sm font-bold text-brand-gold">Custom Finishes</p>
               <p className="text-[10px] text-slate-500 uppercase tracking-widest mt-1">Hand-inspected quality</p>
             </div>
             <div className="text-center border-l border-slate-800">
-              <p className="text-sm font-bold text-slate-200">Secure Packaging</p>
+              <p className="text-sm font-bold text-brand-gold">Secure Packaging</p>
               <p className="text-[10px] text-slate-500 uppercase tracking-widest mt-1">Stellar protection</p>
             </div>
             <div className="text-center border-l border-slate-800">
-              <p className="text-sm font-bold text-slate-200">Pan-India Shipping</p>
+              <p className="text-sm font-bold text-brand-gold">Pan-India Shipping</p>
               <p className="text-[10px] text-slate-500 uppercase tracking-widest mt-1">Direct from Bangalore to all India</p>
             </div>
           </div>

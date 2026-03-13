@@ -39,13 +39,22 @@ export function ServiceCards() {
       body: "Need 100+ precision parts? We optimize for repeat consistency and mechanical integrity across small print runs.",
       tag: "Small-scale MFG",
     },
+    {
+      label: "Figurines & Giftables",
+      title: "Artistic prints with a stellar finish",
+      body: "From custom tabletop miniatures to unique corporate gifts—we provide high-resolution prints that highlight every fine detail.",
+      tag: "Custom Art",
+    },
   ];
 
   return (
-    <section id="services" className="mx-auto max-w-7xl px-6 pb-20 pt-8 lg:px-4 lg:pb-32 lg:pt-12">
-      <h2 className="sr-only">Our 3D Printing Services</h2>
+    <section id="services" className="mx-auto max-w-7xl px-6 pb-12 pt-4 lg:px-4 lg:pb-20 lg:pt-8">
+      <div className="mb-16">
+        <h2 className="text-3xl font-semibold text-slate-50 sm:text-4xl">Specialized <span className="celestial-gradient-text">Services</span></h2>
+        <p className="mt-4 text-slate-400 font-light max-w-2xl">Precision printing solutions optimized for your specific project needs.</p>
+      </div>
       <motion.div 
-        className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3"
+        className="grid gap-8 sm:grid-cols-2 lg:grid-cols-2"
         {...staggerChildren}
       >
         {services.map((item, i) => (
@@ -60,7 +69,7 @@ export function ServiceCards() {
               <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-gold">
                 {item.label}
               </span>
-              <h3 className="mt-3 text-2xl font-semibold leading-snug text-slate-100 group-hover:text-brand-gold transition-colors">
+              <h3 className="mt-3 text-2xl font-semibold leading-snug text-brand-gold transition-colors">
                 {item.title}
               </h3>
             </header>
@@ -84,11 +93,11 @@ export function ServiceCards() {
 
 export function ShopHighlight() {
   return (
-    <section className="border-y border-slate-800/60 bg-slate-950/40 py-24 sm:py-32">
+    <section className="border-y border-slate-800/60 bg-slate-950/40 py-16 sm:py-24">
       <div className="section-max-width px-6 lg:px-4 text-center">
         <motion.div {...fadeIn(0.1)}>
-          <h2 className="text-3xl font-semibold text-slate-50 sm:text-4xl">The Stellar Collection</h2>
-          <p className="mx-auto mt-6 max-w-2xl text-pretty text-base text-slate-400 lg:text-lg">
+          <h2 className="text-3xl font-semibold text-slate-50 sm:text-4xl">The <span className="celestial-gradient-text">Stellar Collection</span></h2>
+          <p className="mx-auto mt-6 max-w-2xl text-pretty text-base text-slate-400 lg:text-lg text-center">
             Every artifact in our collection is precision-engineered. We don't just print; we optimize for geometric accuracy, layer adhesion, and professional-grade finishes.
           </p>
           <div className="mt-10">
@@ -146,9 +155,9 @@ export function CoreValues() {
   ];
 
   return (
-    <section className="section-max-width px-6 py-20 lg:px-4 lg:py-32 border-t border-slate-800/40">
-      <div className="max-w-2xl mb-16">
-        <h2 className="text-3xl font-semibold text-slate-50 sm:text-4xl">Our Craft & Ethos</h2>
+    <section className="section-max-width px-6 py-12 lg:px-4 lg:py-20 border-t border-slate-800/40">
+      <div className="max-w-2xl mb-16 ml-auto text-right">
+        <h2 className="text-3xl font-semibold text-slate-50 sm:text-4xl">Our <span className="celestial-gradient-text">Craft & Ethos</span></h2>
         <p className="mt-4 text-slate-400 font-light">The values that guide every layer we print and every partnership we build.</p>
       </div>
 
@@ -167,7 +176,7 @@ export function CoreValues() {
               <div className="p-2 rounded-lg bg-slate-800/50">
                 {v.icon}
               </div>
-              <h3 className="font-semibold text-slate-100">{v.title}</h3>
+              <h3 className="font-semibold text-brand-gold">{v.title}</h3>
             </div>
             <p className="text-sm leading-relaxed text-slate-400 font-light">
               {v.description}

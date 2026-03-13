@@ -50,23 +50,14 @@ export function FAQSection() {
   };
 
   return (
-    <section id="faq" className="section-max-width px-6 py-20 lg:px-4 lg:py-32">
+    <section id="faq" className="section-max-width px-6 py-12 lg:px-4 lg:py-20">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       
       <div className="grid gap-12 lg:grid-cols-2">
-        <div>
-          <h2 className="text-3xl font-semibold text-slate-50 sm:text-4xl">
-            Common <span className="celestial-gradient-text">Inquiries</span>
-          </h2>
-          <p className="mt-6 text-slate-400 font-light max-w-lg leading-relaxed">
-            Everything you need to know about our boutique 3D printing process, materials, and batch capabilities. Engineered for transparency.
-          </p>
-        </div>
-
-        <div className="space-y-4">
+        <div className="order-2 lg:order-1 space-y-4">
           {faqs.map((faq, idx) => {
             const isOpen = openIndex === idx;
             return (
@@ -104,6 +95,15 @@ export function FAQSection() {
               </div>
             );
           })}
+        </div>
+
+        <div className="order-1 lg:order-2 text-right">
+          <h2 className="text-3xl font-semibold text-slate-50 sm:text-4xl">
+            Common <span className="celestial-gradient-text">Inquiries</span>
+          </h2>
+          <p className="mt-6 text-slate-400 font-light max-w-lg leading-relaxed ml-auto">
+            Everything you need to know about our boutique 3D printing process, materials, and batch capabilities. Engineered for transparency.
+          </p>
         </div>
       </div>
     </section>
