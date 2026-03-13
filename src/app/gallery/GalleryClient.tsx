@@ -6,6 +6,8 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Logo } from "@/components/Logo";
 import { fadeIn, staggerChildren } from "@/lib/animations";
+import { TestimonialMarquee } from "@/components/TestimonialMarquee";
+import { MoveRight } from "lucide-react";
 
 const galleryItems = [
   {
@@ -58,23 +60,6 @@ const galleryItems = [
   }
 ];
 
-const testimonials = [
-  {
-    quote: "Placeholder for client feedback regarding the speed, quality, or finish of their custom prints.",
-    author: "Client Name",
-    role: "Company / Role"
-  },
-  {
-    quote: "A second placeholder illustrating how our batch production services solved a specific manufacturing challenge.",
-    author: "Client Name",
-    role: "Company / Role"
-  },
-  {
-    quote: "A third placeholder highlighting the otherworldly finish and attention to detail provided by Tara Forge.",
-    author: "Client Name",
-    role: "Company / Role"
-  }
-];
 
 export default function GalleryClient() {
   return (
@@ -143,7 +128,7 @@ export default function GalleryClient() {
       {/* Testimonials */}
       <section className="relative border-y border-slate-800/70 bg-slate-950/70 py-16 sm:py-24">
         <div className="section-max-width px-6 lg:px-4">
-          <motion.div className="text-center mb-12 sm:mb-16" {...fadeIn(0.05)}>
+          <motion.div className="text-center mb-12" {...fadeIn(0.05)}>
             <h2 className="text-sm font-semibold uppercase tracking-[0.22em] text-brand-gold/80">
               Our Professional Commitment
             </h2>
@@ -151,28 +136,9 @@ export default function GalleryClient() {
               Recent projects and <span className="celestial-gradient-text">client stories</span>
             </p>
           </motion.div>
-
-          <motion.div 
-            className="grid gap-8 sm:grid-cols-3"
-            {...staggerChildren}
-          >
-            {testimonials.map((t, idx) => (
-              <motion.div 
-                key={idx}
-                className="glass-surface rounded-2xl p-8 flex flex-col justify-between shadow-[0_20px_80px_rgba(15,23,42,0.7)]"
-              >
-                <div className="text-celestial-amber text-2xl mb-4 italic">"</div>
-                <p className="text-sm text-slate-200 leading-relaxed font-light italic mb-6">
-                  {t.quote}
-                </p>
-                <div>
-                  <p className="text-[13px] font-semibold text-slate-100">{t.author}</p>
-                  <p className="text-[11px] text-slate-500 uppercase tracking-wider mt-0.5">{t.role}</p>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
         </div>
+        
+        <TestimonialMarquee />
       </section>
 
       {/* CTA */}

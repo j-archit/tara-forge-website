@@ -48,7 +48,8 @@ export function ServiceCards() {
   ];
 
   return (
-    <section id="services" className="mx-auto max-w-7xl px-6 pb-12 pt-4 lg:px-4 lg:pb-20 lg:pt-8">
+    <section id="services" className="relative border-b border-slate-800/40 bg-slate-950/20 px-6 pb-12 pt-4 lg:px-4 lg:pb-20 lg:pt-8">
+      <div className="section-max-width">
       <div className="mb-16">
         <h2 className="text-3xl font-semibold text-slate-50 sm:text-4xl">Specialized <span className="celestial-gradient-text">Services</span></h2>
         <p className="mt-4 text-slate-400 font-light max-w-2xl">Precision printing solutions optimized for your specific project needs.</p>
@@ -87,6 +88,7 @@ export function ServiceCards() {
           </motion.div>
         ))}
       </motion.div>
+      </div>
     </section>
   );
 }
@@ -155,7 +157,9 @@ export function CoreValues() {
   ];
 
   return (
-    <section className="section-max-width px-6 py-12 lg:px-4 lg:py-20 border-t border-slate-800/40">
+    <section className="relative border-b border-slate-800/40 px-6 py-12 lg:px-4 lg:py-20">
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-brand-gold/[0.01] to-transparent pointer-events-none" />
+      <div className="section-max-width relative">
       <div className="max-w-2xl mb-16 ml-auto text-right">
         <h2 className="text-3xl font-semibold text-slate-50 sm:text-4xl">Our <span className="celestial-gradient-text">Craft & Ethos</span></h2>
         <p className="mt-4 text-slate-400 font-light">The values that guide every layer we print and every partnership we build.</p>
@@ -183,6 +187,7 @@ export function CoreValues() {
             </p>
           </motion.div>
         ))}
+      </div>
       </div>
     </section>
   );

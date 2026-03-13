@@ -26,7 +26,7 @@ export default function HomePage() {
             </h1>
 
             <p className="mt-6 max-w-xl text-pretty text-base leading-relaxed text-slate-300 lg:text-lg">
-              Tara Forge is inspired by “Tara” — meaning <span className="text-slate-100 font-medium">Star</span> in multiple Indian languages.
+              Tara Forge is inspired by “Tara” — meaning <span className="text-slate-100 font-medium">Star</span>.
               We 3D print prototypes, custom parts, and keepsakes with a finish that feels
               otherworldly.
             </p>
@@ -81,7 +81,8 @@ export default function HomePage() {
 
       <ServiceCards />
       <CoreValues />
-      <section id="about" className="section-max-width px-6 py-12 lg:px-4 lg:py-20">
+      <section id="about" className="relative border-b border-slate-800/40 bg-slate-950/60 px-6 py-12 lg:px-4 lg:py-20">
+        <div className="section-max-width">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <div>
             <h2 className="text-3xl font-semibold text-slate-50 sm:text-4xl">Why <span className="celestial-gradient-text">Tara Forge?</span></h2>
@@ -125,7 +126,8 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
       <FAQSection />
       <ShopHighlight />

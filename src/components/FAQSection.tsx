@@ -50,7 +50,8 @@ export function FAQSection() {
   };
 
   return (
-    <section id="faq" className="section-max-width px-6 py-12 lg:px-4 lg:py-20">
+    <section id="faq" className="relative border-b border-slate-800/40 bg-slate-900/10 px-6 py-12 lg:px-4 lg:py-20">
+      <div className="section-max-width">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
@@ -105,6 +106,7 @@ export function FAQSection() {
             Everything you need to know about our boutique 3D printing process, materials, and batch capabilities. Engineered for transparency.
           </p>
         </div>
+      </div>
       </div>
     </section>
   );
