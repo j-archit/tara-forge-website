@@ -134,9 +134,12 @@ export default function HomePage() {
             </div>
             
             <div className="absolute bottom-6 left-6 z-30">
-              <div className="inline-flex items-center gap-2 rounded-full border border-slate-700/50 bg-slate-950/40 px-3 py-1 backdrop-blur-sm">
-                <span className="h-1.5 w-1.5 rounded-full bg-brand-gold shadow-[0_0_8px_var(--brand-gold)]" />
-                <span className="text-[10px] font-bold uppercase tracking-widest text-slate-300">Complex Assembly Print</span>
+              <div className="flex items-center gap-2 rounded-xl border border-slate-700/50 bg-slate-950/40 px-3 py-2 backdrop-blur-sm">
+                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-brand-gold shadow-[0_0_8px_var(--brand-gold)]" />
+                <div className="flex flex-col">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-slate-200 leading-tight">Jet Engine Model</span>
+                  <span className="text-[8px] font-bold uppercase tracking-widest text-brand-gold/70 leading-tight">Complex Assembly</span>
+                </div>
               </div>
             </div>
 
