@@ -3,7 +3,8 @@
 import * as React from "react";
 import { motion } from "framer-motion";
 import { fadeIn, heroFadeIn } from "@/lib/animations";
-import { ShieldCheck, Leaf, Eye, UserCheck, Zap, Heart } from "lucide-react";
+import { ShieldCheck, Leaf, Eye, UserCheck, Zap, Heart, ArrowRight } from "lucide-react";
+import Link from "next/link";
 import { FAQSection } from "@/components/FAQSection";
 
 export { FAQSection };
@@ -79,11 +80,17 @@ export function ServiceCards() {
               {item.body}
             </p>
             
-            <div className="mt-auto flex items-center justify-between pt-4 border-t border-slate-800/50">
+            <div className="mt-auto flex items-center justify-between pt-6 border-t border-slate-800/50">
+              <Link 
+                href="/services"
+                className="text-[11px] font-bold uppercase tracking-widest text-brand-gold hover:text-brand-gold-bright transition-colors flex items-center gap-1.5 group/link"
+              >
+                Learn More
+                <ArrowRight className="w-3 h-3 transition-transform group-hover/link:translate-x-0.5" />
+              </Link>
               <span className="text-[10px] font-medium text-slate-500 italic">
                 {item.tag}
               </span>
-              <div className="h-2 w-2 rounded-full bg-brand-gold/30 shadow-[0_0_8px_var(--brand-gold)]" />
             </div>
           </motion.div>
         ))}

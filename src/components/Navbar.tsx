@@ -30,7 +30,7 @@ export function Navbar() {
 
   const navLinks = React.useMemo(() => [
     { href: "/", label: "Home" },
-    { href: "/#services", label: "Services" },
+    { href: "/services", label: "Services" },
     { href: "/gallery", label: "Gallery" },
     { href: "/shop", label: "Shop" },
     { href: "/#about", label: "Why TaraForge" },

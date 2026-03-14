@@ -9,9 +9,9 @@ export function Footer() {
 
   const footerLinks = {
     explore: [
+      { label: "Services", href: "/services" },
       { label: "Gallery", href: "/gallery" },
       { label: "Shop", href: "/shop" },
-      { label: "Services", href: "/#services" },
       { label: "Why TaraForge", href: "/#about" },
     ],
     connect: [
