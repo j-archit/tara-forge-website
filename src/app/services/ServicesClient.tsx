@@ -30,7 +30,7 @@ const detailedServices = [
       "Fit-check and assembly validation",
       "Precision layer heights (0.12mm - 0.28mm)"
     ],
-    icon: <Timer className="w-6 h-6" />,
+    icon: Timer,
     gradient: "from-blue-600/20 to-indigo-600/20",
     accent: "text-blue-400"
   },
@@ -45,7 +45,7 @@ const detailedServices = [
       "High-density infill for mechanical integrity",
       "Chemical and heat resistant options"
     ],
-    icon: <Settings className="w-6 h-6" />,
+    icon: Settings,
     gradient: "from-emerald-600/20 to-teal-600/20",
     accent: "text-emerald-400"
   },
@@ -60,7 +60,7 @@ const detailedServices = [
       "Custom branding integration",
       "Repeatable manufacturing accuracy"
     ],
-    icon: <Layers className="w-6 h-6" />,
+    icon: Layers,
     gradient: "from-amber-600/20 to-orange-600/20",
     accent: "text-amber-400"
   },
@@ -75,7 +75,7 @@ const detailedServices = [
       "Specialty aesthetic filaments",
       "Custom display bases and assemblies"
     ],
-    icon: <Brush className="w-6 h-6" />,
+    icon: Brush,
     gradient: "from-purple-600/20 to-pink-600/20",
     accent: "text-purple-400"
   }
@@ -137,7 +137,7 @@ export default function ServicesClient() {
                 <div className="flex-1">
                   <div className={`relative aspect-square max-w-md mx-auto overflow-hidden rounded-3xl border border-white/5 bg-gradient-to-br ${service.gradient} flex items-center justify-center group`}>
                     <div className="p-8 rounded-full bg-slate-950/40 backdrop-blur-md border border-white/10 transition-transform duration-500 group-hover:scale-110 shadow-2xl">
-                      {React.cloneElement(service.icon as React.ReactElement, { className: `w-16 h-16 ${service.accent}` })}
+                      <service.icon className={`w-16 h-16 ${service.accent}`} />
                     </div>
                     {/* Subtle Brand Logo Watermark */}
                     <div className="absolute bottom-6 right-6 opacity-10">
