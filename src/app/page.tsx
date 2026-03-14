@@ -119,10 +119,32 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-          <div className="relative aspect-video overflow-hidden rounded-3xl border border-slate-800 bg-slate-900/50 shadow-2xl">
-            <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/10 via-transparent to-purple-500/5" />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-[10px] font-bold uppercase tracking-widest text-slate-600">Visual Placeholder</div>
+          <div className="relative aspect-[4/3] overflow-hidden group">
+            {/* The Model with CSS Mask for Background Removal */}
+            <div className="absolute inset-0 transition-transform duration-700 group-hover:scale-105">
+              <img 
+                src="/images/jet-engine.png" 
+                alt="3D Printed Jet Engine Model"
+                className="h-full w-full object-contain"
+                style={{
+                  maskImage: 'linear-gradient(to top, black 80%, transparent 100%)',
+                  WebkitMaskImage: 'linear-gradient(to top, black 80%, transparent 100%)',
+                }}
+              />
+            </div>
+            
+            <div className="absolute bottom-6 left-6 z-30">
+              <div className="inline-flex items-center gap-2 rounded-full border border-slate-700/50 bg-slate-950/40 px-3 py-1 backdrop-blur-sm">
+                <span className="h-1.5 w-1.5 rounded-full bg-brand-gold shadow-[0_0_8px_var(--brand-gold)]" />
+                <span className="text-[10px] font-bold uppercase tracking-widest text-slate-300">Complex Assembly Print</span>
+              </div>
+            </div>
+
+            {/* Legal Disclaimer */}
+            <div className="absolute bottom-6 right-6 z-30">
+              <p className="text-[10px] text-slate-500 font-light italic">
+                *Featured model printed for personal use
+              </p>
             </div>
           </div>
         </div>
