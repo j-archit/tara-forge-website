@@ -42,12 +42,12 @@ export function Footer() {
                   Tara Forge
                 </h2>
                 <p className="mt-1 text-xs font-medium text-slate-500 tracking-wider">
-                  Engineered for excellence ✶
+                  Crafted with precision ✶
                 </p>
               </div>
             </div>
             <p className="mt-6 max-w-sm text-sm leading-relaxed text-slate-400 font-light">
-              A 3D printing studio specialized in custom parts and functional prototyping. We help you bring your designs to life with high-detail prints, thoughtful material choices, and a focus on reliability.
+              A 3D printing studio for everyone—from complex prototypes to custom keepsakes. We help you bring your ideas to life with high-detail prints and a personal touch.
             </p>
           </div>
 
@@ -96,7 +96,7 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="mt-20 pt-8 border-t border-slate-800/40 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs text-slate-500 font-light">
-            © {currentYear} Tara Forge. Engineered in India.
+            © {currentYear} Tara Forge. Crafted in India.
           </p>
           <div className="flex gap-8 text-[10px] uppercase tracking-widest text-slate-600 font-bold">
             <span className="hover:text-slate-400 cursor-default transition-colors">Privacy</span>

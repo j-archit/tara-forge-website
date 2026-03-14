@@ -32,13 +32,13 @@ export default function HomePage() {
             </p>
 
             <div className="mt-6 flex flex-col gap-3 text-sm sm:flex-row sm:items-center">
-              <a
-                href="mailto:taraforgeindia@gmail.com"
+              <Link
+                href="/quote"
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-gold px-5 py-2.5 text-sm font-semibold text-slate-950 shadow-[var(--brand-glow-gold)] transition hover:bg-brand-gold-bright hover:scale-105"
               >
                 Get a quote
-                <span className="text-xs text-slate-900/80">— send your file</span>
-              </a>
+                <span className="text-xs text-slate-900/80">— upload designs</span>
+              </Link>
               <Link
                 href="/gallery"
                 className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-600/70 bg-slate-900/40 px-4 py-2 text-xs font-medium text-slate-100 transition hover:border-brand-gold hover:text-brand-gold hover:scale-105"

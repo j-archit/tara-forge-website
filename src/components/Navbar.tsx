@@ -90,12 +90,12 @@ export function Navbar() {
               {link.label}
             </Link>
           ))}
-          <a
-            href="mailto:taraforgeindia@gmail.com"
+          <Link
+            href="/quote"
             className="rounded-full bg-brand-gold px-6 py-2 text-xs font-bold text-slate-950 shadow-[var(--brand-glow-gold)] transition-all hover:scale-105 hover:bg-brand-gold-bright active:scale-95"
           >
             Get a quote
-          </a>
+          </Link>
         </nav>
 
         {/* Mobile Menu Toggle */}
@@ -130,12 +130,13 @@ export function Navbar() {
                 </li>
               ))}
               <li className="pt-4 border-t border-slate-800">
-                <a
-                  href="mailto:taraforgeindia@gmail.com"
+                <Link
+                  href="/quote"
+                  onClick={() => setIsMobileMenuOpen(false)}
                   className="flex w-full items-center justify-center rounded-xl bg-brand-gold py-4 text-sm font-bold text-slate-950 shadow-[var(--brand-glow-gold)]"
                 >
                   Get a quote
-                </a>
+                </Link>
               </li>
             </ul>
           </motion.nav>

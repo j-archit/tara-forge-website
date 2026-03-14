@@ -37,7 +37,7 @@ export function ServiceCards() {
       label: "Component batching",
       title: "Reliable production for batch needs",
       body: "Need 100+ precision parts? We optimize for repeat consistency and mechanical integrity across small print runs.",
-      tag: "Small-scale MFG",
+      tag: "Small-batch printing",
     },
     {
       label: "Figurines & Giftables",
@@ -100,7 +100,7 @@ export function ShopHighlight() {
         <motion.div {...fadeIn(0.1)}>
           <h2 className="text-3xl font-semibold text-slate-50 sm:text-4xl">The <span className="celestial-gradient-text">Stellar Collection</span></h2>
           <p className="mx-auto mt-6 max-w-2xl text-pretty text-base text-slate-400 lg:text-lg text-center">
-            Every artifact in our collection is precision-engineered. We don't just print; we optimize for geometric accuracy, layer adhesion, and professional-grade finishes.
+            Every artifact in our collection is crafted with intention. We don't just print; we optimize for beauty, strength, and a professional finish you'll love to hold.
           </p>
           <div className="mt-10">
             <a
@@ -150,7 +150,7 @@ export function CoreValues() {
     },
     {
       title: "Maker Spirit",
-      description: "We approach industrial problems with a maker's curiosity and a pro's discipline. We love what we do.",
+      description: "We approach every project with a maker's curiosity and a professional's discipline. We love what we do.",
       icon: <Heart className="w-5 h-5 text-red-400" />,
       highlight: false
     }
