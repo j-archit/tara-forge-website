@@ -5,56 +5,55 @@ import { motion } from "framer-motion";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Logo } from "@/components/Logo";
-import { fadeIn, staggerChildren } from "@/lib/animations";
+import { fadeIn } from "@/lib/animations";
 import { TestimonialMarquee } from "@/components/TestimonialMarquee";
-import { MoveRight } from "lucide-react";
 
 const galleryItems = [
   {
-    title: "Project Artifact Alpha",
-    category: "Prototyping",
-    description: "Brief description of the mechanical or aesthetic validation process for this specific print.",
-    tags: ["Material", "Layer Height"],
+    title: "One Piece Figurine",
+    category: "Artistic Prints",
+    description: "High-detail resin-like finish on a custom anime collectible. Optimized for fine features and smooth surfaces.",
+    tags: ["PLA+", "0.12mm Layer"],
     gradient: "from-indigo-900 via-slate-950 to-slate-950",
     accent: "rgba(96,165,250,0.55)"
   },
   {
-    title: "Project Artifact Beta",
+    title: "Mechanical Gear Assembly",
     category: "Functional Parts",
-    description: "Summary of how this part was optimized for strength, durability, and real-world application.",
-    tags: ["Material", "Infill Setting"],
+    description: "Multi-part assembly with tight tolerances. Tested for fit and durability in a mechanical prototype.",
+    tags: ["PETG", "40% Infill"],
     gradient: "from-emerald-900 via-slate-950 to-slate-950",
     accent: "rgba(45,212,191,0.55)"
   },
   {
-    title: "Project Artifact Gamma",
-    category: "Batching",
-    description: "Details regarding small-batch production consistency, turnaround time, and quality control.",
-    tags: ["Material", "Batch Size"],
+    title: "Custom Drone Frame",
+    category: "Prototyping",
+    description: "Lightweight and rigid frame design for a custom quadcopter. Iterated through 3 design cycles.",
+    tags: ["Carbon PLA", "Rigid"],
     gradient: "from-fuchsia-900 via-slate-950 to-slate-950",
     accent: "rgba(244,114,182,0.6)"
   },
   {
-    title: "Project Artifact Delta",
-    category: "Prototyping",
-    description: "Overview of iterative design improvements and how 3D printing accelerated the development cycle.",
-    tags: ["Material", "Feature Highlight"],
+    title: "Architectural Scaled Model",
+    category: "Visualization",
+    description: "Detailed scale model of a modern villa. Used for client presentation and spatial analysis.",
+    tags: ["Matte PLA", "Scalable"],
     gradient: "from-blue-900 via-slate-950 to-slate-950",
     accent: "rgba(59,130,246,0.5)"
   },
   {
-    title: "Project Artifact Epsilon",
-    category: "Functional Parts",
-    description: "Technical breakdown of the part's performance characteristics under specific stress or environmental conditions.",
-    tags: ["Material", "Custom Spec"],
+    title: "Industrial Cable Organizer",
+    category: "Batching",
+    description: "Small-batch run of 50 units for a server room setup. Consistent quality across the entire batch.",
+    tags: ["PETG", "Batch Run"],
     gradient: "from-amber-900 via-slate-950 to-slate-950",
     accent: "rgba(251,191,36,0.5)"
   },
   {
-    title: "Project Artifact Zeta",
+    title: "Ergonomic Mouse Shell",
     category: "Design Validation",
-    description: "Insights into how this physical model helped refine ergonomics or visual language before mass production.",
-    tags: ["Material", "Iteration Phase"],
+    description: "Prototype for a custom vertical mouse. Used to validate grip comfort before final production.",
+    tags: ["PLA", "Ergonomic"],
     gradient: "from-rose-900 via-slate-950 to-slate-950",
     accent: "rgba(244,63,94,0.5)"
   }

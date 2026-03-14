@@ -2,7 +2,7 @@ import * as React from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { IntakeForm } from "@/components/IntakeForm";
-import { Sparkles, ShieldCheck, Clock, Zap } from "lucide-react";
+import { ShieldCheck, Clock, Zap } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -31,7 +31,7 @@ export default function QuotePage() {
               </h1>
               
               <p className="mt-6 max-w-xl text-pretty text-lg leading-relaxed text-slate-400 font-light">
-                Whether it's a personal project, a community gift, or a custom component, we're here to help. Share your designs and we'll handle the rest.
+                Whether it&apos;s a personal project, a community gift, or a custom component, we&apos;re here to help. Share your designs and we&apos;ll handle the rest.
               </p>
 
               <div className="mt-12 space-y-8">

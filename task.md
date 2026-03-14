@@ -16,7 +16,7 @@
     - [x] Gallery Showcase
     - [x] Footer
 - [x] **Phase 4: Content and Polish**
-    - [x] Add copy and "Forged in the stars" branding
+    - [x] Add copy and "Your Idea, in 3D" branding
     - [x] Implement scroll animations (Framer Motion)
     - [x] Responsive design check
 - [x] **Phase 5: Deployment Prep**

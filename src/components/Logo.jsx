@@ -1,4 +1,4 @@
-// Tara Forge — Brand Mark
+// TaraForge — Brand Mark
 // Transparent background, gold mark
 // Use at any size via the `size` prop
 

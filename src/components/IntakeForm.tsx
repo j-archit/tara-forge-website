@@ -57,8 +57,8 @@ export function IntakeForm() {
     e.preventDefault();
     setState("submitting");
     
-    // REPLACE with your Web App URL after Step 3
-    const GOOGLE_SCRIPT_URL = "DUMMY";
+    // Updated to point to the Pi Relay (Tailscale Funnel)
+    const PI_RELAY_URL = "https://your-pi-funnel-url/ingest";
 
     try {
       let fileData = null;
@@ -66,7 +66,7 @@ export function IntakeForm() {
       let fileType = null;
 
       if (file) {
-        // Convert file to Base64 for Google Apps Script
+        // Convert file to Base64 for the relay
         const reader = new FileReader();
         const base64Promise = new Promise((resolve) => {
           reader.onload = () => {
@@ -76,28 +76,32 @@ export function IntakeForm() {
           reader.readAsDataURL(file);
         });
 
-        fileData = await base64Promise;
+        fileData = (await base64Promise) as string;
         fileName = file.name;
         fileType = file.type || "application/octet-stream";
       }
 
       const payload = {
         ...formData,
-        token: "tara_forge_secure_2026", // Matches the secret in your Apps Script
+        token: "tara_forge_secure_2026", // Matches AUTH_TOKEN in Pi .env
         hp_id: formData.hp_id,
         fileData,
         fileName,
         fileType
       };
 
-      const response = await fetch(GOOGLE_SCRIPT_URL, {
+      const response = await fetch(PI_RELAY_URL, {
         method: "POST",
-        mode: "no-cors", // Required for Google Scripts
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(payload),
       });
 
-      // Since mode is 'no-cors', we can't read the response, 
-      // but if the fetch succeeds, we assume success
+      if (!response.ok) {
+        throw new Error("Relay rejected the transmission");
+      }
+
       setState("success");
     } catch (error) {
       console.error("Submission error:", error);
@@ -146,7 +150,7 @@ export function IntakeForm() {
             </span>
           </div>
           <h2 className="text-3xl font-semibold text-slate-50">Share Your <span className="celestial-gradient-text">Concept</span></h2>
-          <p className="mt-2 text-sm text-slate-400">Provide the details; we'll handle the crafting.</p>
+          <p className="mt-2 text-sm text-slate-400">Provide the details; we&apos;ll handle the crafting.</p>
         </header>
 
         <form onSubmit={handleSubmit} className="grid gap-6 sm:grid-cols-2">

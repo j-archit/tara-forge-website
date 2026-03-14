@@ -20,15 +20,13 @@ export default function HomePage() {
               3D Printing Studio
             </p>
 
-            <h1 className="mt-5 text-balance text-4xl font-semibold tracking-tight text-slate-50 sm:text-5xl lg:text-6xl">
-              Ideas{" "}
-              <span className="celestial-gradient-text">engineered into reality</span>
+            <h1 className="mt-5 text-balance text-4xl font-semibold tracking-tight text-slate-50 sm:text-5xl lg:text-6xl text-center sm:text-left">
+              Your best ideas.{" "}
+              <span className="celestial-gradient-text">Tangible and tough.</span>
             </h1>
 
             <p className="mt-6 max-w-xl text-pretty text-base leading-relaxed text-slate-300 lg:text-lg">
-              Tara Forge is inspired by “Tara” — meaning <span className="text-slate-100 font-medium">Star</span>.
-              We 3D print prototypes, custom parts, and keepsakes with a finish that feels
-              otherworldly.
+              <span className="text-slate-100 font-medium whitespace-nowrap">Tara</span> — inspired by the stars, crafted for your most ambitious ideas. From precision-engineered parts to unique custom creations, we bring your vision to life with a finish that feels otherworldly.
             </p>
 
             <div className="mt-6 flex flex-col gap-3 text-sm sm:flex-row sm:items-center">
@@ -85,7 +83,7 @@ export default function HomePage() {
         <div className="section-max-width">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <div>
-            <h2 className="text-3xl font-semibold text-slate-50 sm:text-4xl">Why <span className="celestial-gradient-text">Tara Forge?</span></h2>
+            <h2 className="text-3xl font-semibold text-slate-50 sm:text-4xl">Why <span className="celestial-gradient-text">TaraForge?</span></h2>
             <p className="mt-6 text-pretty text-base leading-relaxed text-slate-400 font-light">
               We specialize in custom components and functional prototypes. We focus on the fine details—optimizing print orientation and material settings to deliver parts that are precise, durable, and ready for use.
             </p>
@@ -119,21 +117,23 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-          <div className="relative aspect-[4/3] overflow-hidden group">
-            {/* The Model with CSS Mask for Background Removal */}
-            <div className="absolute inset-0 transition-transform duration-700 group-hover:scale-105">
-              <img 
-                src="/images/jet-engine.png" 
-                alt="3D Printed Jet Engine Model"
-                className="h-full w-full object-contain"
-                style={{
-                  maskImage: 'linear-gradient(to top, black 80%, transparent 100%)',
-                  WebkitMaskImage: 'linear-gradient(to top, black 80%, transparent 100%)',
-                }}
-              />
+          <div className="flex flex-col items-center group">
+            <div className="relative aspect-[4/3] w-[70%] overflow-hidden">
+              {/* The Model with CSS Mask for Background Removal */}
+              <div className="absolute inset-0 transition-transform duration-700 group-hover:scale-105">
+                <img 
+                  src="/images/jet-engine.png" 
+                  alt="3D Printed Jet Engine Model"
+                  className="h-full w-full object-contain"
+                  style={{
+                    maskImage: 'linear-gradient(to top, black 80%, transparent 100%)',
+                    WebkitMaskImage: 'linear-gradient(to top, black 80%, transparent 100%)',
+                  }}
+                />
+              </div>
             </div>
-            
-            <div className="absolute bottom-6 left-6 z-30">
+
+            <div className="mt-2 flex flex-col items-center gap-2 text-center">
               <div className="flex items-center gap-2 rounded-xl border border-slate-700/50 bg-slate-950/40 px-3 py-2 backdrop-blur-sm">
                 <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-brand-gold shadow-[0_0_8px_var(--brand-gold)]" />
                 <div className="flex flex-col">
@@ -141,10 +141,8 @@ export default function HomePage() {
                   <span className="text-[8px] font-bold uppercase tracking-widest text-brand-gold/70 leading-tight">Complex Assembly</span>
                 </div>
               </div>
-            </div>
 
-            {/* Legal Disclaimer */}
-            <div className="absolute bottom-6 right-6 z-30">
+              {/* Legal Disclaimer */}
               <p className="text-[10px] text-slate-500 font-light italic">
                 *Featured model printed for personal use
               </p>

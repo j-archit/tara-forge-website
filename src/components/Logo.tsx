@@ -2,7 +2,6 @@
 
 import * as React from "react";
 
-const BG = "#06070F";
 const GOLD = "#C9A84C";
 
 // Ring dims: bottom 1.0, mid 0.75, top 0.5 — print-friendly, minimal fade

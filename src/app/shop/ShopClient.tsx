@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Logo } from "@/components/Logo";
-import { fadeIn, staggerChildren } from "@/lib/animations";
+import { fadeIn } from "@/lib/animations";
 
 interface Product {
   id: string | number;
@@ -21,66 +21,67 @@ interface Product {
 
 const products: Product[] = [
   {
-    id: "artifact-alpha-01",
-    title: "Signature Product Alpha",
-    category: "Category",
-    description: "Detailed description of this signature design, highlighting its unique geometry and high-end technical finish.",
-    price: 999,
+    id: "tf-desk-organizer",
+    title: "Minimalist Desk Set",
+    category: "Living",
+    description: "A geometric 3-piece set for your workspace. Designed for modularity and a clean aesthetic finish.",
+    price: 1249,
     currency: "₹",
     imageGradient: "from-blue-900/40 via-slate-900 to-slate-950",
     accent: "rgba(56, 189, 248, 0.4)",
-    tag: "Highlight",
+    tag: "Popular",
   },
   {
-    id: "artifact-beta-02",
-    title: "Signature Product Beta",
-    category: "Category",
-    description: "Overview of the aesthetic and functional characteristics that make this piece a staple of our collection.",
-    price: 999,
+    id: "tf-planter-stellar",
+    title: "Celestial Planter",
+    category: "Living",
+    description: "Self-watering geometric planter with a celestial pattern. Durable PETG construction for indoor/outdoor use.",
+    price: 899,
     currency: "₹",
     imageGradient: "from-purple-900/40 via-slate-900 to-slate-950",
     accent: "rgba(168, 85, 247, 0.4)",
   },
   {
-    id: "artifact-gamma-03",
-    title: "Signature Product Gamma",
-    category: "Category",
-    description: "Technical details about the printing process and material quality used to engineer this specific artifact.",
-    price: 999,
+    id: "tf-lamp-nebula",
+    title: "Nebula Ambient Lamp",
+    category: "Decor",
+    description: "Lithophane-style light cover that projects cosmic shadows. Includes custom base and LED fitting.",
+    price: 2499,
     currency: "₹",
     imageGradient: "from-amber-900/40 via-slate-900 to-slate-950",
     accent: "rgba(251, 191, 36, 0.4)",
+    tag: "Premium",
   },
   {
-    id: "artifact-delta-04",
-    title: "Signature Product Delta",
-    category: "Category",
-    description: "A summary of the design inspiration and the role this part plays in a modern maker's toolkit.",
-    price: 999,
+    id: "tf-keycap-forge",
+    title: "Forge Edition Keycaps",
+    category: "Customs",
+    description: "Set of 4 artisan keycaps featuring the TaraForge logo. High-detail SLA prints for mechanical keyboards.",
+    price: 599,
     currency: "₹",
     imageGradient: "from-emerald-900/40 via-slate-900 to-slate-950",
     accent: "rgba(16, 185, 129, 0.4)",
   },
   {
-    id: "artifact-epsilon-05",
-    title: "Signature Product Epsilon",
-    category: "Category",
-    description: "Information about the durability, finish, and unique characteristics of this handcrafted component.",
-    price: 999,
+    id: "tf-headphone-stand",
+    title: "Aero Headphone Stand",
+    category: "Living",
+    description: "Ergonomic stand designed for weight balance and minimalistic profile. Printed in reinforced PLA.",
+    price: 1599,
     currency: "₹",
     imageGradient: "from-rose-900/40 via-slate-900 to-slate-950",
     accent: "rgba(244, 63, 94, 0.4)",
   },
   {
-    id: "artifact-zeta-06",
-    title: "Signature Product Zeta",
-    category: "Category",
-    description: "Description of the batch refinement process and the consistent quality applied to this multi-unit pack.",
-    price: 999,
+    id: "tf-swatch-pack",
+    title: "Material Swatch Pack",
+    category: "Makers",
+    description: "Complete set of 12 material swatches including PLA, PETG, and Specialty filaments for tactile review.",
+    price: 450,
     currency: "₹",
     imageGradient: "from-slate-800 via-slate-900 to-slate-950",
     accent: "rgba(148, 163, 184, 0.4)",
-    tag: "Batch Pack"
+    tag: "Sample Kit"
   }
 ];
 
@@ -89,8 +90,8 @@ export default function ShopClient() {
     console.log(`Starting checkout for: ${product.title} (ID: ${product.id})`);
     
     const subject = encodeURIComponent(`Order Inquiry: ${product.title}`);
-    const body = encodeURIComponent(`Hello Tara Forge,\n\nI am interested in purchasing the ${product.title} (SKU: ${product.id}).\n\nPlease let me know the shipping process.\n\nThank you!`);
-    window.location.href = `mailto:taraforgeindia@gmail.com?subject=${subject}&body=${body}`;
+    const body = encodeURIComponent(`Hello TaraForge,\n\nI am interested in purchasing the ${product.title} (SKU: ${product.id}).\n\nPlease let me know the shipping process.\n\nThank you!`);
+    window.location.assign(`mailto:taraforgeindia@gmail.com?subject=${subject}&body=${body}`);
   };
 
   return (

@@ -11,7 +11,7 @@ interface FAQItem {
 
 const faqs: FAQItem[] = [
   {
-    question: "Where is Tara Forge located?",
+    question: "Where is TaraForge located?",
     answer: "We are a boutique 3D printing studio based in Bangalore, serving creators, engineers, and makers across all of India with high-quality custom prints."
   },
   {

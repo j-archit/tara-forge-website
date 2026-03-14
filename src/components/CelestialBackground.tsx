@@ -12,24 +12,32 @@ export const CelestialBackground = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const stars = React.useMemo(() => 
-    [...Array(20)].map((_, i) => ({
+  const [stars, setStars] = React.useState<{id: number, top: string, left: string, duration: number, delay: number, scale: number}[]>([]);
+  const [shootingStars, setShootingStars] = React.useState<{id: number, top: string, left: string, duration: number, delay: number}[]>([]);
+
+  React.useEffect(() => {
+    // Generate stars and shooting stars only once on mount
+    setStars([...Array(20)].map((_, i) => ({
       id: i,
       top: `${Math.round(Math.random() * 1000) / 10}%`,
       left: `${Math.round(Math.random() * 1000) / 10}%`,
       duration: 2 + Math.random() * 3,
       delay: Math.random() * 5,
       scale: 0.5 + Math.random() * 0.7
-    })), []);
+    })));
 
-  const shootingStars = React.useMemo(() => 
-    [...Array(3)].map((_, i) => ({
+    setShootingStars([...Array(3)].map((_, i) => ({
       id: i,
       top: `${Math.round(Math.random() * 500) / 10}%`,
       left: `${50 + Math.round(Math.random() * 500) / 10}%`,
       duration: 10 + Math.random() * 20,
       delay: Math.random() * 15
-    })), []);
+    })));
+
+    // Delay non-critical background decor to prioritize LCP rendering
+    const timer = setTimeout(() => setMounted(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none bg-slate-950">

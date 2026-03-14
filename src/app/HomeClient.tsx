@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { motion } from "framer-motion";
-import { fadeIn, staggerChildren, heroFadeIn } from "@/lib/animations";
+import { fadeIn, heroFadeIn } from "@/lib/animations";
 import { ShieldCheck, Leaf, Eye, UserCheck, Zap, Heart } from "lucide-react";
 import { FAQSection } from "@/components/FAQSection";
 
@@ -29,19 +29,19 @@ export function ServiceCards() {
     },
     {
       label: "Custom parts",
-      title: "One-offs and small batches that just work",
+      title: "Build what you need. Parts that just work.",
       body: "Replacement parts, enclosures, brackets, jigs—designed (or refined) for strength, orientation, and real-world use.",
       tag: "Functional prints",
     },
     {
       label: "Component batching",
-      title: "Reliable production for batch needs",
+      title: "Go Beyond One-Offs. Reliable Batch Manufacturing.",
       body: "Need 100+ precision parts? We optimize for repeat consistency and mechanical integrity across small print runs.",
       tag: "Small-batch printing",
     },
     {
       label: "Figurines & Giftables",
-      title: "Artistic prints with a stellar finish",
+      title: "Craft the otherworldly. Detail in every layer.",
       body: "From custom tabletop miniatures to unique corporate gifts—we provide high-resolution prints that highlight every fine detail.",
       tag: "Custom Art",
     },
@@ -100,7 +100,7 @@ export function ShopHighlight() {
         <motion.div {...fadeIn(0.1)}>
           <h2 className="text-3xl font-semibold text-slate-50 sm:text-4xl">The <span className="celestial-gradient-text">Stellar Collection</span></h2>
           <p className="mx-auto mt-6 max-w-2xl text-pretty text-base text-slate-400 lg:text-lg text-center">
-            Every artifact in our collection is crafted with intention. We don't just print; we optimize for beauty, strength, and a professional finish you'll love to hold.
+            Every artifact in our collection is crafted with intention. We don&apos;t just print; we optimize for beauty, strength, and a professional finish you&apos;ll love to hold.
           </p>
           <div className="mt-10">
             <a

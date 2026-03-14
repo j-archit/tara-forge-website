@@ -54,7 +54,7 @@ export function TestimonialMarquee() {
     } else {
       setIndex(newIndex);
     }
-  }, [layout.offset, controls, testimonials.length]);
+  }, [layout.offset, controls]);
 
   const advance = useCallback(() => {
     if (isDragging) return;
@@ -67,7 +67,7 @@ export function TestimonialMarquee() {
     return () => clearInterval(timer);
   }, [isHovered, isDragging, advance]);
 
-  const handleDragEnd = (_: any, info: PanInfo) => {
+  const handleDragEnd = (_: unknown, info: PanInfo) => {
     setIsDragging(false);
     
     // Calculate how many cards the user dragged
@@ -117,7 +117,7 @@ export function TestimonialMarquee() {
               
               <div className="flex flex-col h-full justify-between relative z-10">
                 <div>
-                  <span className="text-brand-gold text-4xl font-serif opacity-40 block mb-4">"</span>
+                  <span className="text-brand-gold text-4xl font-serif opacity-40 block mb-4">&quot;</span>
                   <p className="text-slate-200 text-sm lg:text-base leading-relaxed font-light italic">
                     {t.quote}
                   </p>
