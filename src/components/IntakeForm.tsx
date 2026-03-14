@@ -18,6 +18,7 @@ export function IntakeForm() {
     projectType: "prototyping",
     material: "pla",
     description: "",
+    hp_id: "", // Honeypot field
   });
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,11 +57,53 @@ export function IntakeForm() {
     e.preventDefault();
     setState("submitting");
     
-    // Simulate API call
-    console.log("Submitting with file:", file?.name);
-    await new Promise((resolve) => setTimeout(resolve, 2500));
-    
-    setState("success");
+    // REPLACE with your Web App URL after Step 3
+    const GOOGLE_SCRIPT_URL = "DUMMY";
+
+    try {
+      let fileData = null;
+      let fileName = null;
+      let fileType = null;
+
+      if (file) {
+        // Convert file to Base64 for Google Apps Script
+        const reader = new FileReader();
+        const base64Promise = new Promise((resolve) => {
+          reader.onload = () => {
+            const result = reader.result as string;
+            resolve(result.split(',')[1]); // Extract base64 part
+          };
+          reader.readAsDataURL(file);
+        });
+
+        fileData = await base64Promise;
+        fileName = file.name;
+        fileType = file.type || "application/octet-stream";
+      }
+
+      const payload = {
+        ...formData,
+        token: "tara_forge_secure_2026", // Matches the secret in your Apps Script
+        hp_id: formData.hp_id,
+        fileData,
+        fileName,
+        fileType
+      };
+
+      const response = await fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors", // Required for Google Scripts
+        body: JSON.stringify(payload),
+      });
+
+      // Since mode is 'no-cors', we can't read the response, 
+      // but if the fetch succeeds, we assume success
+      setState("success");
+    } catch (error) {
+      console.error("Submission error:", error);
+      alert("There was an issue sending your design. Please try again or email us directly at taraforgeindia@gmail.com");
+      setState("idle");
+    }
   };
 
   if (state === "success") {
@@ -107,6 +150,18 @@ export function IntakeForm() {
         </header>
 
         <form onSubmit={handleSubmit} className="grid gap-6 sm:grid-cols-2">
+          {/* Honeypot field - Hidden from users */}
+          <div className="hidden" aria-hidden="true">
+            <input
+              type="text"
+              name="hp_id"
+              tabIndex={-1}
+              autoComplete="off"
+              value={formData.hp_id}
+              onChange={(e) => setFormData({ ...formData, hp_id: e.target.value })}
+            />
+          </div>
+
           <div className="space-y-1.5">
             <label htmlFor="name" className="text-xs font-semibold uppercase tracking-wider text-slate-500">Full Name</label>
             <input
