@@ -75,13 +75,13 @@ export function Navbar() {
               </span>
             </div>
           </Link>
-          <span className="hidden text-[10px] font-medium uppercase tracking-widest text-slate-500 md:inline ml-2 border-l border-slate-800 pl-4 py-1">
+          <span className="hidden text-[10px] font-medium uppercase tracking-widest text-slate-500 sm:inline ml-2 border-l border-slate-800 pl-4 py-1">
             Your Idea, in 3D
           </span>
         </div>
 
         {/* Desktop Nav */}
-        <nav className="hidden items-center gap-8 text-sm font-medium text-slate-300 sm:flex">
+        <nav className="hidden items-center gap-8 text-sm font-medium text-slate-300 md:flex">
           {navLinks.map((link) => (
             <Link 
               key={link.href}
@@ -101,11 +101,11 @@ export function Navbar() {
 
         {/* Mobile Menu Toggle */}
         <button 
-          className="flex items-center justify-center p-2 text-slate-100 sm:hidden"
+          className={`group flex h-11 w-11 items-center justify-center rounded-full border border-slate-700/50 bg-slate-900/60 text-slate-100 shadow-xl backdrop-blur-md transition-all duration-300 md:hidden hover:scale-105 active:scale-95 ${isMobileMenuOpen ? "bg-brand-gold border-brand-gold/40 text-slate-950" : ""}`}
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label="Toggle navigation"
         >
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          {isMobileMenuOpen ? <X size={20} strokeWidth={2.5} /> : <Menu size={20} strokeWidth={2.5} />}
         </button>
       </div>
 
@@ -116,9 +116,9 @@ export function Navbar() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="absolute left-0 right-0 top-full border-b border-slate-800 bg-slate-950/95 p-6 backdrop-blur-xl sm:hidden"
+            className="absolute left-0 right-0 top-full border-b border-slate-800 bg-slate-950/95 p-6 backdrop-blur-xl md:hidden"
           >
-            <ul className="flex flex-col gap-6">
+            <ul className="flex flex-col items-center gap-6 text-center">
               {navLinks.map((link) => (
                 <li key={link.href}>
                   <Link 
@@ -130,7 +130,7 @@ export function Navbar() {
                   </Link>
                 </li>
               ))}
-              <li className="pt-4 border-t border-slate-800">
+              <li className="w-full pt-4 border-t border-slate-800">
                 <Link
                   href="/quote"
                   onClick={() => setIsMobileMenuOpen(false)}

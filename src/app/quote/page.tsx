@@ -21,9 +21,12 @@ export default function QuotePage() {
             
             {/* Left Column: Context & Trust */}
             <div className="lg:sticky lg:top-32">
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-slate-700/70 bg-slate-900/60 px-3 py-1.5 text-xs font-semibold text-slate-200 shadow-[var(--brand-glow-gold)]">
-                <span className="h-1.5 w-1.5 rounded-full bg-brand-gold shadow-[var(--brand-glow-gold)]" />
-                Precision Printing for Everyone
+              <div className="flex items-center gap-3 mb-6 group justify-start">
+                <span className="h-px w-10 bg-brand-gold/50" />
+                <span className="text-sm font-bold uppercase tracking-[0.4em] text-brand-gold">
+                  Precision Printing for Everyone
+                </span>
+                <span className="h-px w-10 bg-brand-gold/50" />
               </div>
               
               <h1 className="text-balance text-4xl font-semibold tracking-tight text-slate-50 sm:text-5xl lg:text-6xl">

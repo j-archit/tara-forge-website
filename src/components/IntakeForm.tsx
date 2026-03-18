@@ -15,8 +15,8 @@ export function IntakeForm() {
   const [formData, setFormData] = React.useState({
     name: "",
     email: "",
-    projectType: "prototyping",
-    material: "pla",
+    projectType: "",
+    material: "",
     description: "",
     hp_id: "", // Honeypot field
   });
@@ -143,11 +143,12 @@ export function IntakeForm() {
     >
       <div className="relative rounded-[23px] bg-slate-950/80 p-8 md:p-10 backdrop-blur-xl">
         <header className="mb-8">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-brand-gold/30 bg-brand-gold/5 px-3 py-1">
-            <Sparkles className="h-3 w-3 text-brand-gold" />
-            <span className="text-[10px] font-bold uppercase tracking-widest text-brand-gold">
+          <div className="flex items-center gap-3 mb-8 group justify-center md:justify-start">
+            <span className="h-px w-10 bg-brand-gold/50" />
+            <span className="text-sm font-bold uppercase tracking-[0.4em] text-brand-gold text-center">
               Project Intake
             </span>
+            <span className="h-px w-10 bg-brand-gold/50" />
           </div>
           <h2 className="text-3xl font-semibold text-slate-50">Share Your <span className="celestial-gradient-text">Concept</span></h2>
           <p className="mt-2 text-sm text-slate-400">Provide the details; we&apos;ll handle the crafting.</p>
@@ -167,7 +168,9 @@ export function IntakeForm() {
           </div>
 
           <div className="space-y-1.5">
-            <label htmlFor="name" className="text-xs font-semibold uppercase tracking-wider text-slate-500">Full Name</label>
+            <label htmlFor="name" className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+              Full Name <span className="text-brand-gold">*</span>
+            </label>
             <input
               required
               id="name"
@@ -180,7 +183,9 @@ export function IntakeForm() {
           </div>
 
           <div className="space-y-1.5">
-            <label htmlFor="email" className="text-xs font-semibold uppercase tracking-wider text-slate-500">Email Address</label>
+            <label htmlFor="email" className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+              Email Address <span className="text-brand-gold">*</span>
+            </label>
             <input
               required
               id="email"
@@ -193,13 +198,17 @@ export function IntakeForm() {
           </div>
 
           <div className="space-y-1.5">
-            <label htmlFor="projectType" className="text-xs font-semibold uppercase tracking-wider text-slate-500">Service Type</label>
+            <label htmlFor="projectType" className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+              Service Type <span className="text-brand-gold">*</span>
+            </label>
             <select
+              required
               id="projectType"
               className="w-full appearance-none rounded-xl border border-slate-800 bg-slate-900/50 px-4 py-3 text-slate-100 focus:border-brand-gold/50 focus:outline-none focus:ring-1 focus:ring-brand-gold/50 transition-all font-light"
               value={formData.projectType}
               onChange={(e) => setFormData({ ...formData, projectType: e.target.value })}
             >
+              <option value="" disabled>Select Service Type</option>
               <option value="prototyping">Rapid Prototyping</option>
               <option value="parts">Custom Parts</option>
               <option value="batch">Small Batch Production</option>
@@ -208,13 +217,17 @@ export function IntakeForm() {
           </div>
 
           <div className="space-y-1.5">
-            <label htmlFor="material" className="text-xs font-semibold uppercase tracking-wider text-slate-500">Preferred Material</label>
+            <label htmlFor="material" className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+              Preferred Material <span className="text-brand-gold">*</span>
+            </label>
             <select
+              required
               id="material"
               className="w-full appearance-none rounded-xl border border-slate-800 bg-slate-900/50 px-4 py-3 text-slate-100 focus:border-brand-gold/50 focus:outline-none focus:ring-1 focus:ring-brand-gold/50 transition-all font-light"
               value={formData.material}
               onChange={(e) => setFormData({ ...formData, material: e.target.value })}
             >
+              <option value="" disabled>Select Preferred Material</option>
               <option value="pla">PLA (General Purpose)</option>
               <option value="petg">PETG (Durable / Functional)</option>
               <option value="other">Consultation Needed</option>
@@ -284,7 +297,9 @@ export function IntakeForm() {
           </div>
 
           <div className="col-span-full space-y-1.5">
-            <label htmlFor="description" className="text-xs font-semibold uppercase tracking-wider text-slate-500">Project Description</label>
+            <label htmlFor="description" className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+              Project Description <span className="text-brand-gold">*</span>
+            </label>
             <textarea
               required
               id="description"

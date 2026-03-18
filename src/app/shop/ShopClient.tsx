@@ -104,8 +104,11 @@ export default function ShopClient() {
           <motion.div {...fadeIn(0.05)}>
             <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-8">
               <Logo size={64} className="drop-shadow-[var(--brand-glow-gold)]" />
-              <h1 className="text-4xl font-semibold tracking-tight text-slate-50 sm:text-5xl lg:text-6xl text-center sm:text-left">
+              <h1 className="flex flex-wrap items-center justify-center sm:justify-start gap-4 text-4xl font-semibold tracking-tight text-slate-50 sm:text-5xl lg:text-6xl">
                 The <span className="celestial-gradient-text">Shop</span>
+                <span className="inline-flex items-center rounded-full border border-brand-gold/30 bg-brand-gold/10 px-4 py-1.5 text-sm sm:text-base font-semibold text-brand-gold shadow-[0_0_20px_rgba(201,168,76,0.15)]">
+                  Coming Soon
+                </span>
               </h1>
             </div>
             <p className="max-w-2xl text-pretty text-base text-slate-300 text-center sm:text-left">
