@@ -1,4 +1,4 @@
-// TaraForge — Brand Mark
+// TaraForge3D — Brand Mark
 // Transparent background, gold mark
 // Use at any size via the `size` prop
 
@@ -35,7 +35,7 @@ function buildSegs(cx, cy, baseRx, baseRy, orbitRot, orbitSW, offsetYpx, dimFact
   });
 }
 
-export function TaraForgeMark({ size = 96, color = GOLD }) {
+export function TaraForge3DMark({ size = 96, color = GOLD }) {
   const cx = size / 2, cy = size / 2;
   const sw = size * 0.022;
   const baseRx = size * 0.46, baseRy = size * 0.18;
@@ -80,16 +80,16 @@ export default function Preview() {
   return (
     <div style={{ display: "flex", gap: 32, padding: 40, alignItems: "center", flexWrap: "wrap" }}>
       <div style={{ background: "#06070F", padding: 20, borderRadius: 8 }}>
-        <TaraForgeMark size={96} />
+        <TaraForge3DMark size={96} />
       </div>
       <div style={{ background: "#F0EBE0", padding: 20, borderRadius: 8 }}>
-        <TaraForgeMark size={96} color="#1A0E00" />
+        <TaraForge3DMark size={96} color="#1A0E00" />
       </div>
       <div style={{ background: "#06070F", padding: 20, borderRadius: 8 }}>
-        <TaraForgeMark size={48} />
+        <TaraForge3DMark size={48} />
       </div>
       <div style={{ background: "#06070F", padding: 20, borderRadius: 8 }}>
-        <TaraForgeMark size={200} />
+        <TaraForge3DMark size={200} />
       </div>
     </div>
   );

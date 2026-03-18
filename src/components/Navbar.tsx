@@ -33,7 +33,7 @@ export function Navbar() {
     { href: "/services", label: "Services" },
     { href: "/gallery", label: "Gallery" },
     { href: "/shop", label: "Shop" },
-    { href: "/#about", label: "Why TaraForge" },
+    { href: "/#about", label: "Why TaraForge3D" },
   ], []);
 
   const [scriptIndex, setScriptIndex] = React.useState(0);
@@ -60,7 +60,7 @@ export function Navbar() {
           <Link
             href="/"
             className="flex items-center gap-3 transition-transform hover:scale-105"
-            aria-label="TaraForge"
+            aria-label="TaraForge3D"
             onClick={() => setIsMobileMenuOpen(false)}
           >
             <Logo size={40} className="drop-shadow-[var(--brand-glow-gold)] sm:size-[42px]" />
@@ -71,7 +71,7 @@ export function Navbar() {
                 </span>
               </span>
               <span className="text-[12px] sm:text-[14px] font-bold uppercase tracking-[0.25em] text-brand-gold leading-none mt-1">
-                Forge
+                Forge3D
               </span>
             </div>
           </Link>

@@ -56,7 +56,7 @@ const products: Product[] = [
     id: "tf-keycap-forge",
     title: "Forge Edition Keycaps",
     category: "Customs",
-    description: "Set of 4 artisan keycaps featuring the TaraForge logo. High-detail SLA prints for mechanical keyboards.",
+    description: "Set of 4 artisan keycaps featuring the TaraForge3D logo. High-detail SLA prints for mechanical keyboards.",
     price: 599,
     currency: "₹",
     imageGradient: "from-emerald-900/40 via-slate-900 to-slate-950",
@@ -90,7 +90,7 @@ export default function ShopClient() {
     console.log(`Starting checkout for: ${product.title} (ID: ${product.id})`);
     
     const subject = encodeURIComponent(`Order Inquiry: ${product.title}`);
-    const body = encodeURIComponent(`Hello TaraForge,\n\nI am interested in purchasing the ${product.title} (SKU: ${product.id}).\n\nPlease let me know the shipping process.\n\nThank you!`);
+    const body = encodeURIComponent(`Hello TaraForge3D,\n\nI am interested in purchasing the ${product.title} (SKU: ${product.id}).\n\nPlease let me know the shipping process.\n\nThank you!`);
     window.location.assign(`mailto:taraforgeindia@gmail.com?subject=${subject}&body=${body}`);
   };
 

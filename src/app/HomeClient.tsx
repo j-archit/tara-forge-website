@@ -68,10 +68,10 @@ export function ServiceCards() {
             <div className="absolute -right-12 -top-12 h-32 w-32 rounded-full bg-brand-gold/5 blur-[40px] transition-all group-hover:bg-brand-gold/10" />
             
             <header className="mb-8">
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-gold">
+              <span className="text-[14px] font-bold uppercase tracking-[0.3em] text-slate-100">
                 {item.label}
               </span>
-              <h3 className="mt-3 text-2xl font-semibold leading-snug text-brand-gold transition-colors">
+              <h3 className="mt-4 text-2xl font-semibold leading-snug text-brand-gold transition-colors">
                 {item.title}
               </h3>
             </header>

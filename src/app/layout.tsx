@@ -19,13 +19,13 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://taraforge.in"),
   title: {
-    default: "TaraForge • 3D Printing Studio",
-    template: "%s | TaraForge"
+    default: "TaraForge3D • 3D Printing Studio",
+    template: "%s | TaraForge3D"
   },
   description:
-    "TaraForge is a 3D printing studio providing refined prototypes, functional parts, and custom components with a premium quality finish.",
+    "TaraForge3D is a 3D printing studio providing refined prototypes, functional parts, and custom components with a premium quality finish.",
   keywords: [
-    "TaraForge",
+    "TaraForge3D",
     "3D printing India",
     "3D printing Bangalore",
     "custom 3D parts",
@@ -35,9 +35,9 @@ export const metadata: Metadata = {
     "PETG printing India",
     "bespoke 3D prints",
   ],
-  authors: [{ name: "TaraForge" }],
-  creator: "TaraForge",
-  publisher: "TaraForge",
+  authors: [{ name: "TaraForge3D" }],
+  creator: "TaraForge3D",
+  publisher: "TaraForge3D",
   formatDetection: {
     email: false,
     address: false,
@@ -66,11 +66,11 @@ export const metadata: Metadata = {
     apple: "/Logo.svg",
   },
   openGraph: {
-    title: "TaraForge • 3D Printing Studio",
+    title: "TaraForge3D • 3D Printing Studio",
     description:
-      "TaraForge is a 3D printing studio providing refined prototypes, functional parts, and custom components with a premium quality finish.",
+      "TaraForge3D is a 3D printing studio providing refined prototypes, functional parts, and custom components with a premium quality finish.",
     url: "https://taraforge.in/",
-    siteName: "TaraForge",
+    siteName: "TaraForge3D",
     locale: "en_IN",
     type: "website",
     images: [
@@ -78,15 +78,15 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "TaraForge • 3D Printing Studio Showcase",
+        alt: "TaraForge3D • 3D Printing Studio Showcase",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "TaraForge • 3D Printing Studio",
+    title: "TaraForge3D • 3D Printing Studio",
     description:
-      "TaraForge is a 3D printing studio providing refined prototypes, functional parts, and custom components with a premium quality finish.",
+      "TaraForge3D is a 3D printing studio providing refined prototypes, functional parts, and custom components with a premium quality finish.",
     images: ["/og-image.png"],
   },
 };
@@ -114,7 +114,7 @@ export default function RootLayout({
                 {
                   "@type": "Organization",
                   "@id": "https://taraforge.in/#organization",
-                  "name": "TaraForge",
+                  "name": "TaraForge3D",
                   "url": "https://taraforge.in",
                   "logo": "https://taraforge.in/Logo.svg",
                   "image": "https://taraforge.in/Logo.svg",
@@ -132,7 +132,7 @@ export default function RootLayout({
                 {
                   "@type": "LocalBusiness",
                   "@id": "https://taraforge.in/#localbusiness",
-                  "name": "TaraForge",
+                  "name": "TaraForge3D",
                   "description": "Specialized 3D printing services based in Bangalore, serving all of India.",
                   "url": "https://taraforge.in",
                   "telephone": "+91-80-XXXX-XXXX",

@@ -12,7 +12,7 @@ export function Footer() {
       { label: "Services", href: "/services" },
       { label: "Gallery", href: "/gallery" },
       { label: "Shop", href: "/shop" },
-      { label: "Why TaraForge", href: "/#about" },
+      { label: "Why TaraForge3D", href: "/#about" },
     ],
     connect: [
       { label: "Email", href: "mailto:taraforgeindia@gmail.com", icon: <Mail className="w-3.5 h-3.5" /> },
@@ -39,10 +39,10 @@ export function Footer() {
               <Logo size={64} className="drop-shadow-[var(--brand-glow-gold)]" />
               <div>
                 <h2 className="text-sm font-bold uppercase tracking-[0.25em] text-brand-gold">
-                  TaraForge
+                  TaraForge3D
                 </h2>
-                <p className="mt-1 text-xs font-medium text-slate-500 tracking-wider">
-                  Crafted with precision ✶
+                <p className="mt-1 text-xs font-semibold text-slate-500 tracking-wider">
+                  Your Idea, in 3D ✶
                 </p>
               </div>
             </div>
@@ -96,7 +96,7 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="mt-20 pt-8 border-t border-slate-800/40 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs text-slate-500 font-light">
-            © {currentYear} TaraForge. Crafted in India.
+            © {currentYear} TaraForge3D. Crafted in India.
           </p>
           <div className="flex gap-8 text-[10px] uppercase tracking-widest text-slate-600 font-bold">
             <span className="hover:text-slate-400 cursor-default transition-colors">Privacy</span>

@@ -13,12 +13,13 @@ export default function HomePage() {
       <section className="relative flex min-h-[calc(100dvh-4rem)] flex-col justify-center overflow-hidden py-20 lg:min-h-[calc(100dvh-5rem)]">
         <div className="section-max-width relative px-4 sm:px-6 lg:px-4">
           <HeroClient>
-            <p className="inline-flex items-center gap-2 rounded-full border border-slate-700/70 bg-slate-900/60 px-3 py-1.5 text-xs font-semibold text-slate-200 shadow-[var(--brand-glow-gold)]">
-              <span className="h-1.5 w-1.5 rounded-full bg-brand-gold shadow-[var(--brand-glow-gold)]" />
-              Precision in every layer
-              <span className="h-px w-6 bg-slate-600/80" />
-              3D Printing Studio
-            </p>
+            <div className="flex items-center gap-3 mb-6 group justify-center sm:justify-start">
+              <span className="h-px w-12 bg-brand-gold/50" />
+              <span className="text-sm sm:text-base font-bold uppercase tracking-[0.4em] text-brand-gold">
+                3D Printing Studio
+              </span>
+              <span className="h-px w-12 bg-brand-gold/50" />
+            </div>
 
             <h1 className="mt-5 text-balance text-4xl font-semibold tracking-tight text-slate-50 sm:text-5xl lg:text-6xl text-center sm:text-left">
               Your best ideas.{" "}
@@ -83,7 +84,7 @@ export default function HomePage() {
         <div className="section-max-width">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <div>
-            <h2 className="text-3xl font-semibold text-slate-50 sm:text-4xl">Why <span className="celestial-gradient-text">TaraForge?</span></h2>
+            <h2 className="text-3xl font-semibold text-slate-50 sm:text-4xl">Why <span className="celestial-gradient-text">TaraForge3D?</span></h2>
             <p className="mt-6 text-pretty text-base leading-relaxed text-slate-400 font-light">
               We specialize in custom components and functional prototypes. We focus on the fine details—optimizing print orientation and material settings to deliver parts that are precise, durable, and ready for use.
             </p>
