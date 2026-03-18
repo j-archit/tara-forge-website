@@ -127,37 +127,37 @@ export function CoreValues() {
   const values = [
     {
       title: "Precision & Interaction",
-      description: "Tight tolerances meet best-in-class customer support. We don't just ship parts; we ensure they solve your problems.",
+      description: "Tight tolerances meet best-in-class support. We don't just ship parts; we solve problems.",
       icon: <UserCheck className="w-5 h-5 text-brand-gold" />,
       highlight: false
     },
     {
       title: "Environment Forward",
-      description: "We take every step to combat waste that comes with 3D printing—from optimizing supports to material recycling.",
+      description: "We minimize waste through optimized supports and active material recycling.",
       icon: <Leaf className="w-5 h-5 text-emerald-400" />,
       highlight: true
     },
     {
       title: "Radical Transparency",
-      description: "Open communication about lead times, material capabilities, and technical constraints. No surprises, ever.",
+      description: "Open communication on lead times and technical constraints. No surprises, ever.",
       icon: <Eye className="w-5 h-5 text-blue-400" />,
       highlight: false
     },
     {
       title: "Unwavering Accountability",
-      description: "If a part isn't right, we fix it. We take full ownership of the quality that leaves our print studio.",
+      description: "If a part isn't right, we fix it. We take full ownership of our print quality.",
       icon: <ShieldCheck className="w-5 h-5 text-purple-400" />,
       highlight: false
     },
     {
       title: "Iterative Excellence",
-      description: "We treat every project as a chance to refine our craft, constantly benchmarking the latest additive tech.",
+      description: "Refining our craft with every project, constantly benchmarking the latest additive tech.",
       icon: <Zap className="w-5 h-5 text-amber-400" />,
       highlight: false
     },
     {
       title: "Maker Spirit",
-      description: "We approach every project with a maker's curiosity and a professional's discipline. We love what we do.",
+      description: "A maker's curiosity meets professional discipline. We love what we do.",
       icon: <Heart className="w-5 h-5 text-red-400" />,
       highlight: false
     }

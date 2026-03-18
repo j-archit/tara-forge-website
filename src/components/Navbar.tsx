@@ -34,6 +34,7 @@ export function Navbar() {
     { href: "/gallery", label: "Gallery" },
     { href: "/shop", label: "Shop" },
     { href: "/#about", label: "Why TaraForge3D" },
+    { href: "/team", label: "Team" },
   ], []);
 
   const [scriptIndex, setScriptIndex] = React.useState(0);
