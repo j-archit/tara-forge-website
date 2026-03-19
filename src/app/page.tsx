@@ -29,7 +29,7 @@ export default function HomePage() {
             <p className="mt-6 max-w-xl text-pretty text-base leading-relaxed text-slate-300 lg:text-lg">
               From precision-engineered parts to unique custom creations... any idea, finished to perfection, delivered into your hands.
               <span className="block mt-4 text-slate-100 italic">
-                <span className="text-brand-gold font-medium not-italic">TaraForge3D.</span> wish it on a star, watch it come to life.
+                <span className="text-brand-gold font-medium not-italic">TaraForge3D.</span> wish on a star, watch it come to life.
               </span>
             </p>
 
