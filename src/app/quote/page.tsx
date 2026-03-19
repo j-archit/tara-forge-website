@@ -2,6 +2,7 @@ import * as React from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { IntakeForm } from "@/components/IntakeForm";
+import { ManualIntake } from "@/components/ManualIntake";
 import { ShieldCheck, Clock, Zap, MessageSquare } from "lucide-react";
 import type { Metadata } from "next";
 
@@ -89,41 +90,7 @@ export default function QuotePage() {
               </div>
 
               {/* Status Message Overlay */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-full max-w-md p-8 rounded-[2.5rem] border border-white/10 bg-slate-950/80 backdrop-blur-xl shadow-2xl text-center">
-                  <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-gold/10 border border-brand-gold/20 mb-6">
-                    <Clock className="w-6 h-6 text-brand-gold animate-pulse" />
-                  </div>
-                  
-                  <h2 className="text-2xl font-semibold text-slate-50 mb-3">Intake Portal <span className="text-brand-gold">Coming Soon</span></h2>
-                  <p className="text-slate-400 text-sm leading-relaxed mb-8">
-                    We&apos;re putting final polish on our automated design review system. In the meantime, we are accepting project requests manually.
-                  </p>
-
-                  <div className="space-y-4">
-                    <p className="text-xs font-bold uppercase tracking-widest text-brand-gold/60">Ready to quote now?</p>
-                    <div className="flex flex-col sm:flex-row gap-3">
-                      <a 
-                        href="mailto:taraforgeindia@gmail.com?subject=New Project Quote Request&body=Hi TaraForge3D Team,%0D%0AI have a project I'd like to get a quote for.%0D%0A%0D%0A(Attach STL/OBJ files to this email)"
-                        className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-brand-gold px-4 py-3 text-sm font-semibold text-slate-950 shadow-[var(--brand-glow-gold)] transition hover:bg-brand-gold-bright hover:scale-[1.02]"
-                      >
-                        Email
-                        <Zap className="w-3.5 h-3.5 fill-current" />
-                      </a>
-                      <a 
-                        href="https://wa.me/917042337788?text=Hi TaraForge3D, I'd like to get a quote for a 3D printing project!"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-slate-900 px-4 py-3 text-sm font-semibold text-slate-100 transition hover:border-brand-gold/50 hover:bg-slate-800 hover:scale-[1.02]"
-                      >
-                        WhatsApp
-                        <MessageSquare className="w-3.5 h-3.5" />
-                      </a>
-                    </div>
-                    <p className="text-[10px] text-slate-500 italic">Usual response: ~2-4 hours via WhatsApp </p>
-                  </div>
-                </div>
-              </div>
+              <ManualIntake />
             </div>
             
           </div>
