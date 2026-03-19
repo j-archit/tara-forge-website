@@ -48,7 +48,7 @@ export function Footer() {
               </div>
             </div>
             <p className="mt-6 max-w-sm text-sm leading-relaxed text-slate-400 font-light">
-              A 3D printing studio for everyone—from complex prototypes to custom keepsakes. We help you bring your ideas to life with high-detail prints and a personal touch.
+              A 3D printing studio for everyone... from custom keepsakes to complex prototypes. Adding a personal touch to your high-detail prints, and giving shape to your ideas
             </p>
           </div>
 
