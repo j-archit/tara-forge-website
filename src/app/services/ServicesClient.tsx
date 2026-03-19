@@ -23,12 +23,13 @@ const detailedServices = [
     id: "prototyping",
     label: "Rapid Prototyping",
     title: "Iterate Fast. Hold it in your hands.",
-    description: "Turn your digital concepts into physical reality overnight. We specialize in quick-turnaround prints that let you test form, fit, and function without the manufacturing wait times.",
+    description: "Turn your digital concepts into physical reality overnight.",
     features: [
       "24-48 hour typical turnaround",
       "Multiple iteration cycles supported",
       "Fit-check and assembly validation",
-      "Precision layer heights (0.12mm - 0.28mm)"
+      "Precision layer heights (0.12mm - 0.28mm)",
+      "Process advisory & printability review"
     ],
     icon: Timer,
     gradient: "from-blue-600/20 to-indigo-600/20",
@@ -38,12 +39,13 @@ const detailedServices = [
     id: "parts",
     label: "Custom Functional Parts",
     title: "Build what you need. Parts that just work.",
-    description: "Whether it's a broken geat, a custom bracket, or an industrial enclosure, we print parts designed for strength and real-world durability using performance materials.",
+    description: "Performance-oriented prints designed for real-world mechanical durability.",
     features: [
-      "Performance materials: PETG, PLA+, TPU",
+      "Performance materials: PETG, PLA+",
       "Optimized print orientation for strength",
       "High-density infill for mechanical integrity",
-      "Chemical and heat resistant options"
+      "Chemical and heat resistant options",
+      "Reinforced wall & shell structures"
     ],
     icon: Settings,
     gradient: "from-emerald-600/20 to-teal-600/20",
@@ -53,12 +55,13 @@ const detailedServices = [
     id: "batching",
     label: "Component Batching",
     title: "Go Beyond One-Offs. Reliable Manufacturing.",
-    description: "Bridging the gap between a single prototype and expensive injection molding. We offer small-batch production runs (1-100+ units) with perfect consistency.",
+    description: "Bridge the gap between prototyping and mass-injection molding.",
     features: [
       "Tiered pricing for volume orders",
       "Strict quality control across the batch",
       "Custom branding integration",
-      "Repeatable manufacturing accuracy"
+      "Repeatable manufacturing accuracy",
+      "India-wide shipping & fulfillment"
     ],
     icon: Layers,
     gradient: "from-amber-600/20 to-orange-600/20",
@@ -68,12 +71,13 @@ const detailedServices = [
     id: "artistic",
     label: "Artistic & Giftables",
     title: "Detail in every layer. Craft the otherworldly.",
-    description: "From custom tabletop miniatures to unique corporate gifts and architectural models. We focus on visual excellence and premium surface finishes.",
+    description: "High-resolution prints with a focus on visual excellence and premium finishes.",
     features: [
       "Ultra-fine resolution options",
       "Manual post-processing and cleanup",
       "Specialty aesthetic filaments",
-      "Custom display bases and assemblies"
+      "Custom display bases and assemblies",
+      "Premium textures & silk finishes"
     ],
     icon: Brush,
     gradient: "from-purple-600/20 to-pink-600/20",
@@ -221,13 +225,13 @@ export default function ServicesClient() {
              <ShieldCheck className="w-12 h-12 text-brand-gold mx-auto mb-6" />
              <h3 className="text-2xl font-semibold mb-4">Material Guarantee</h3>
              <p className="text-slate-400 text-sm max-w-2xl mx-auto leading-relaxed mb-8">
-               We use only professionally sourced filaments—PLA for high-detail aesthetics and PETG/TPU for rugged industrial parts. Every print is manually inspected and hand-finished to ensure it meets our standards for precision and surface quality before shipping.
+               We use only professionally sourced filaments—PLA for high-detail aesthetics and PETG for rugged industrial parts. Every print is manually inspected and hand-finished to ensure it meets our standards for precision and surface quality before shipping.
              </p>
              <div className="flex flex-wrap justify-center gap-4 text-[10px] font-bold uppercase tracking-widest text-slate-500">
                <span className="px-4 py-2 rounded-full border border-white/5">PLA+ Precision</span>
                <span className="px-4 py-2 rounded-full border border-white/5">Industrial PETG</span>
-               <span className="px-4 py-2 rounded-full border border-white/5">Flexible TPU</span>
-               <span className="px-4 py-2 rounded-full border border-white/5">SLA-Level Detail</span>
+               <span className="px-4 py-2 rounded-full border border-white/5">High-Stiffness PETG</span>
+               <span className="px-4 py-2 rounded-full border border-white/5">Ultra-Fine Detail</span>
              </div>
           </div>
         </div>

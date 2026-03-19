@@ -7,6 +7,7 @@ import { Footer } from "@/components/Footer";
 import { Logo } from "@/components/Logo";
 import { fadeIn } from "@/lib/animations";
 import { Cpu, Microchip as Chip, Rocket, Mail, Globe } from "lucide-react";
+import Link from "next/link";
 
 export function TeamClient() {
   return (
@@ -74,7 +75,7 @@ export function TeamClient() {
                   </header>
 
                   <p className="mt-4 text-sm leading-relaxed text-slate-300 font-light">
-                    Electronics Engineer by Profession - in the semiconductor industry. Avid embedded systems enthusiast with a passion for precise manufacturing and technical excellence.
+                    Electronics Engineer by Profession — in the semiconductor industry. Avid embedded systems enthusiast with a passion for precise manufacturing and technical excellence.
                   </p>
 
                   <div className="mt-6 flex flex-wrap gap-4">
@@ -94,6 +95,8 @@ export function TeamClient() {
               <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-brand-gold/5 blur-[40px] pointer-events-none" />
             </motion.div>
 
+
+
             {/* Ethos/Mission Column */}
             <motion.div 
               {...fadeIn(0.2)}
@@ -101,7 +104,7 @@ export function TeamClient() {
             >
               <h3 className="text-xl font-semibold text-slate-50 mb-4">Our Vision</h3>
               <p className="text-slate-400 font-light leading-relaxed mb-8">
-                TaraForge3D was born from a desire to bridge the gap between hobbyist tinkering and industrial quality. We believe that professional-grade 3D printing should be accessible to anyone with an idea.
+                We believe that professional-grade 3D printing should be accessible to anyone with an idea.
               </p>
               
               <div className="grid gap-6 sm:grid-cols-2">
@@ -112,6 +115,14 @@ export function TeamClient() {
                 <div className="p-5 rounded-2xl bg-slate-900/50 border border-slate-800">
                   <h4 className="text-sm font-bold uppercase tracking-wider text-brand-gold mb-2">Open Access</h4>
                   <p className="text-xs text-slate-500 leading-relaxed">From students to engineers, we offer the same path to high-end additive manufacturing.</p>
+                </div>
+                <div className="p-5 rounded-2xl bg-slate-900/50 border border-slate-800">
+                  <h4 className="text-sm font-bold uppercase tracking-wider text-brand-gold mb-2">Local Synergy</h4>
+                  <p className="text-xs text-slate-500 leading-relaxed">Bridging global engineering standards with local convenience and personal care.</p>
+                </div>
+                <div className="p-5 rounded-2xl bg-slate-900/50 border border-slate-800">
+                  <h4 className="text-sm font-bold uppercase tracking-wider text-brand-gold mb-2">Future Ready</h4>
+                  <p className="text-xs text-slate-500 leading-relaxed">Continuously expanding our machine fleet and material portfolio for new challenges.</p>
                 </div>
               </div>
             </motion.div>

@@ -56,7 +56,7 @@ const products: Product[] = [
     id: "tf-keycap-forge",
     title: "Forge Edition Keycaps",
     category: "Customs",
-    description: "Set of 4 artisan keycaps featuring the TaraForge3D logo. High-detail SLA prints for mechanical keyboards.",
+    description: "Set of 4 artisan keycaps featuring the TaraForge3D logo. High-detail precision prints for mechanical keyboards.",
     price: 599,
     currency: "₹",
     imageGradient: "from-emerald-900/40 via-slate-900 to-slate-950",

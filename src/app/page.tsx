@@ -27,7 +27,7 @@ export default function HomePage() {
             </h1>
 
             <p className="mt-6 max-w-xl text-pretty text-base leading-relaxed text-slate-300 lg:text-lg">
-              <span className="text-slate-100 font-medium whitespace-nowrap">Tara</span> — inspired by the stars, crafted for your most ambitious ideas. From precision-engineered parts to unique custom creations, we bring your vision to life with a finish that feels otherworldly.
+              From precision-engineered parts to unique custom creations... any idea, finished to perfection, delivered into your hands. <span className="text-brand-gold font-medium">TaraForge3D</span> — wish it on a star, watch it come to life.
             </p>
 
             <div className="mt-6 flex flex-col gap-3 text-sm sm:flex-row sm:items-center">
@@ -48,32 +48,21 @@ export default function HomePage() {
               </Link>
             </div>
 
-            <dl className="mt-10 grid grid-cols-3 gap-6 text-left text-sm text-slate-300 sm:max-w-md">
-              <div>
-                <dt className="text-[12px] font-bold uppercase tracking-[0.22em] text-slate-400">
-                  Prints
-                </dt>
-                <dd className="mt-1 font-medium text-slate-100">
-                  Prototypes, parts, props
-                </dd>
-              </div>
-              <div>
-                <dt className="text-[12px] font-bold uppercase tracking-[0.22em] text-slate-400">
-                  Materials
-                </dt>
-                <dd className="mt-1 font-medium text-slate-100">
-                  PLA, PETG
-                </dd>
-              </div>
-              <div>
-                <dt className="text-[12px] font-bold uppercase tracking-[0.22em] text-slate-400">
-                  Promise
-                </dt>
-                <dd className="mt-1 font-medium text-slate-100">
-                  Precision in every layer ✶
-                </dd>
-              </div>
-            </dl>
+            <div className="mt-10 flex flex-wrap gap-4 justify-center sm:justify-start">
+              {[
+                { label: "Quick Turnaround", sub: "24-48h Typical Lead" },
+                { label: "Small Run Support", sub: "Creative-Focused" },
+                { label: "Local Artisan Studio", sub: "Hand-finished with care" }
+              ].map((badge, idx) => (
+                <div key={idx} className="flex flex-col items-center sm:items-start gap-1 rounded-2xl border border-slate-800/60 bg-slate-900/40 px-4 py-3 backdrop-blur-sm transition hover:border-brand-gold/30 hover:bg-slate-900/60 group/badge">
+                  <div className="flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-brand-gold/70 group-hover/badge:bg-brand-gold transition-colors" />
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 group-hover/badge:text-slate-200 transition-colors">{badge.label}</span>
+                  </div>
+                  <span className="text-xs font-medium text-slate-100 pl-3.5">{badge.sub}</span>
+                </div>
+              ))}
+            </div>
           </HeroClient>
         </div>
       </section>
@@ -82,76 +71,65 @@ export default function HomePage() {
       <CoreValues />
       <section id="about" className="relative border-b border-slate-800/40 bg-slate-950/60 px-6 py-12 lg:px-4 lg:py-20">
         <div className="section-max-width">
-        <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
-          <div>
-            <h2 className="text-3xl font-semibold text-slate-50 sm:text-4xl">Why <span className="celestial-gradient-text">TaraForge3D?</span></h2>
-            <p className="mt-6 text-pretty text-base leading-relaxed text-slate-400 font-light">
-              We specialize in custom components and functional prototypes. We focus on the fine details—optimizing print orientation and material settings to deliver parts that are precise, durable, and ready for use.
-            </p>
-            <div className="mt-10 space-y-4">
-              <div className="flex gap-4">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-slate-900 border border-slate-800">
-                  <span className="text-brand-gold">✶</span>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-brand-gold">Precision Focus</h3>
-                  <p className="mt-1 text-sm text-slate-500">Tight tolerances for mechanical parts.</p>
-                </div>
-              </div>
-              <div className="flex gap-4">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-slate-900 border border-slate-800">
-                  <span className="text-brand-gold">✶</span>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-brand-gold">Material Mastery</h3>
-                  <p className="mt-1 text-sm text-slate-500">Optimized for PETG durability and PLA aesthetics.</p>
-                </div>
-              </div>
-              <div className="flex gap-4">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-slate-900 border border-slate-800">
-                  <span className="text-brand-gold">✶</span>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-brand-gold">Accessible Pricing</h3>
-                  <p className="mt-1 text-sm text-slate-500">Best-in-class 3D printing with budget-friendly rates for every project.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-col items-center group">
-            <div className="relative aspect-[4/3] w-[70%] overflow-hidden">
-              {/* The Model with CSS Mask for Background Removal */}
-              <div className="absolute inset-0 transition-transform duration-700 group-hover:scale-105">
-                <img 
-                  src="/images/jet-engine.png" 
-                  alt="3D Printed Jet Engine Model"
-                  className="h-full w-full object-contain"
-                  style={{
-                    maskImage: 'linear-gradient(to top, black 80%, transparent 100%)',
-                    WebkitMaskImage: 'linear-gradient(to top, black 80%, transparent 100%)',
-                  }}
-                />
-              </div>
-            </div>
-
-            <div className="mt-2 flex flex-col items-center gap-2 text-center">
-              <div className="flex items-center gap-2 rounded-xl border border-slate-700/50 bg-slate-950/40 px-3 py-2 backdrop-blur-sm">
-                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-brand-gold shadow-[0_0_8px_var(--brand-gold)]" />
-                <div className="flex flex-col">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-slate-200 leading-tight">Jet Engine Model</span>
-                  <span className="text-[8px] font-bold uppercase tracking-widest text-brand-gold/70 leading-tight">Complex Assembly</span>
-                </div>
-              </div>
-
-              {/* Legal Disclaimer */}
-              <p className="text-[10px] text-slate-500 font-light italic">
-                *Featured model printed for personal use
+          <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+            {/* Left Content */}
+            <div>
+              <h2 className="text-3xl font-semibold text-slate-50 sm:text-4xl">Why <span className="celestial-gradient-text">TaraForge3D?</span></h2>
+              <p className="mt-6 text-pretty text-base leading-relaxed text-slate-400 font-light">
+                We provide high-precision 3D printing services, from industrial prototypes to custom artisan creations.
               </p>
+              
+              <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-1">
+                {[
+                  { title: "Precision Focus", desc: "Tight tolerances for mechanical parts." },
+                  { title: "Material Mastery", desc: "Optimized for PETG durability and PLA aesthetics." },
+                  { title: "Engineering Advisory", desc: "Professional design review for every submission." },
+                  { title: "Scalable Batching", desc: "Reliable consistency for small-run manufacturing." },
+                  { title: "Unbeatable Pricing", desc: "Professional-tier printing at rates that challenge the market." }
+                ].map((point, idx) => (
+                  <div key={idx} className="flex gap-4">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-slate-900 border border-slate-800">
+                      <span className="text-brand-gold">✶</span>
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-brand-gold">{point.title}</h3>
+                      <p className="mt-1 text-sm text-slate-500">{point.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Right Content - Visual */}
+            <div className="flex flex-col items-center group">
+              <div className="relative aspect-[4/3] w-[90%] overflow-hidden">
+                <div className="absolute inset-0 transition-transform duration-700 group-hover:scale-105">
+                  <img 
+                    src="/images/jet-engine.png" 
+                    alt="3D Printed Jet Engine Model"
+                    className="h-full w-full object-contain"
+                    style={{
+                      maskImage: 'linear-gradient(to top, black 80%, transparent 100%)',
+                      WebkitMaskImage: 'linear-gradient(to top, black 80%, transparent 100%)',
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div className="mt-2 flex flex-col items-center gap-2 text-center">
+                <div className="flex items-center gap-3 rounded-xl border border-slate-700/50 bg-slate-950/40 px-4 py-2 backdrop-blur-sm">
+                  <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-brand-gold shadow-[0_0_8px_var(--brand-gold)]" />
+                  <div className="flex flex-col">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-slate-200 leading-tight">Jet Engine Model</span>
+                    <span className="text-[8px] font-bold uppercase tracking-widest text-brand-gold/70 leading-tight">Complex Assembly</span>
+                  </div>
+                </div>
+                <p className="text-[10px] text-slate-500 font-light italic">*Featured model printed for personal use</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
       <FAQSection />
       <ShopHighlight />
