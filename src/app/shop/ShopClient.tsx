@@ -95,22 +95,19 @@ export default function ShopClient() {
   };
 
   return (
-    <main className="relative flex min-h-screen flex-col bg-gradient-to-b from-slate-950/80 via-slate-950 to-slate-950/95 text-slate-50">
+    <main className="relative flex min-h-screen flex-col text-slate-50">
       <Navbar />
 
       {/* Header */}
       <section className="relative overflow-hidden pt-16 pb-4 sm:pt-20 sm:pb-6 lg:pt-24 lg:pb-8">
         <div className="section-max-width px-6 lg:px-4">
           <motion.div {...fadeIn(0.05)}>
-            <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-8">
-              <Logo size={64} className="drop-shadow-[var(--brand-glow-gold)]" />
-              <h1 className="flex flex-wrap items-center justify-center sm:justify-start gap-4 text-4xl font-semibold tracking-tight text-slate-50 sm:text-5xl lg:text-6xl">
-                The <span className="celestial-gradient-text">Shop</span>
-                <span className="inline-flex items-center rounded-full border border-brand-gold/30 bg-brand-gold/10 px-4 py-1.5 text-sm sm:text-base font-semibold text-brand-gold shadow-[0_0_20px_rgba(201,168,76,0.15)]">
-                  Coming Soon
-                </span>
-              </h1>
-            </div>
+            <h1 className="flex flex-wrap items-center justify-center sm:justify-start gap-4 text-4xl font-semibold tracking-tight text-slate-50 sm:text-5xl lg:text-6xl mb-8">
+              The <span className="celestial-gradient-text">Shop</span>
+              <span className="inline-flex items-center rounded-full border border-brand-gold/30 bg-brand-gold/10 px-4 py-1.5 text-sm sm:text-base font-semibold text-brand-gold shadow-[0_0_20px_rgba(201,168,76,0.15)]">
+                Coming Soon
+              </span>
+            </h1>
             <p className="max-w-2xl text-pretty text-base text-slate-300 text-center sm:text-left">
               Own a piece of the stars. Every item in our shop is designed in-house and 3D printed with the same attention to detail we apply to professional prototypes.
             </p>

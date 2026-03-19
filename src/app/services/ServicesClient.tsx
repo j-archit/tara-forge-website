@@ -106,7 +106,7 @@ const processSteps = [
 
 export default function ServicesClient() {
   return (
-    <main className="relative flex min-h-screen flex-col bg-slate-950 text-slate-50">
+    <main className="relative flex min-h-screen flex-col text-slate-50">
       <Navbar />
 
       {/* Hero */}
@@ -153,7 +153,11 @@ export default function ServicesClient() {
                       {service.label}
                     </span>
                     <h2 className="mt-2 text-3xl font-semibold text-slate-50 uppercase tracking-tight">
-                      {service.title}
+                      {service.title.split('. ').map((part, i, arr) => (
+                        <span key={i} className="block">
+                          {part}{i < arr.length - 1 ? '.' : ''}
+                        </span>
+                      ))}
                     </h2>
                   </div>
                   

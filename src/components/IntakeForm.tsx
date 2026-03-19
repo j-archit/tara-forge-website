@@ -57,8 +57,9 @@ export function IntakeForm() {
     e.preventDefault();
     setState("submitting");
     
-    // Updated to point to the Pi Relay (Tailscale Funnel)
-    const PI_RELAY_URL = "https://your-pi-funnel-url/ingest";
+    // Updated to point to our secure server-side relay
+    // This prevents leaking the Pi's Funnel URL and Auth Token to the client
+    const RELAY_ENDPOINT = "/api/relay";
 
     try {
       let fileData = null;
@@ -83,14 +84,14 @@ export function IntakeForm() {
 
       const payload = {
         ...formData,
-        token: "tara_forge_secure_2026", // Matches AUTH_TOKEN in Pi .env
+        // Note: The 'token' is now securely injected by the server-side relay route
         hp_id: formData.hp_id,
         fileData,
         fileName,
         fileType
       };
 
-      const response = await fetch(PI_RELAY_URL, {
+      const response = await fetch(RELAY_ENDPOINT, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -151,7 +152,7 @@ export function IntakeForm() {
             <span className="h-px w-10 bg-brand-gold/50" />
           </div>
           <h2 className="text-3xl font-semibold text-slate-50">Share Your <span className="celestial-gradient-text">Concept</span></h2>
-          <p className="mt-2 text-sm text-slate-400">Provide the details; we&apos;ll handle the crafting.</p>
+          <p className="mt-2 text-sm text-slate-400">Provide the details, we&apos;ll handle the crafting.</p>
         </header>
 
         <form onSubmit={handleSubmit} className="grid gap-6 sm:grid-cols-2">

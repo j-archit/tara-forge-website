@@ -62,7 +62,7 @@ const galleryItems = [
 
 export default function GalleryClient() {
   return (
-    <main className="relative flex min-h-screen flex-col bg-gradient-to-b from-slate-950/80 via-slate-950 to-slate-950/95 text-slate-50">
+    <main className="relative flex min-h-screen flex-col text-slate-50">
       <Navbar />
       
       {/* Header */}
