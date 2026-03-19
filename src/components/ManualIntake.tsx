@@ -16,7 +16,12 @@ export function ManualIntake() {
   };
 
   return (
-    <div className="absolute inset-0 flex items-center justify-center p-4">
+    <motion.div 
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+      className="absolute inset-0 flex items-center justify-center p-4"
+    >
       <div className="w-full max-w-md p-8 rounded-[2.5rem] border border-white/10 bg-slate-950/80 backdrop-blur-xl shadow-2xl text-center">
         <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-gold/10 border border-brand-gold/20 mb-6">
           <Clock className="w-6 h-6 text-brand-gold animate-pulse" />
@@ -80,6 +85,6 @@ export function ManualIntake() {
           <p className="text-[10px] text-slate-500 italic">Usual response: ~2-4 hours via WhatsApp </p>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

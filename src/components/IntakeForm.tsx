@@ -139,7 +139,9 @@ export function IntakeForm() {
 
   return (
     <motion.div 
-      {...fadeIn(0.2)}
+      initial={{ opacity: 0.001, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       className="relative overflow-hidden rounded-3xl border border-slate-800/80 bg-slate-900/40 p-1px shadow-2xl"
     >
       <div className="relative rounded-[23px] bg-slate-950/80 p-8 md:p-10 backdrop-blur-xl">

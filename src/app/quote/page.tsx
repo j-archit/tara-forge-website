@@ -20,8 +20,19 @@ export default function QuotePage() {
         <div className="section-max-width relative px-6 lg:px-4">
           <div className="grid gap-16 lg:grid-cols-2 lg:items-start">
             
-            {/* Left Column: Context & Trust */}
-            <div className="lg:sticky lg:top-32">
+            {/* Intake Portal (First on mobile) */}
+            <div className="relative order-1 lg:order-2">
+              {/* Greyed out existing form */}
+              <div className="opacity-50 pointer-events-none filter blur-[1px] grayscale">
+                <IntakeForm />
+              </div>
+
+              {/* Status Message Overlay */}
+              <ManualIntake />
+            </div>
+
+            {/* Context & Trust (Second on mobile) */}
+            <div className="lg:sticky lg:top-32 order-2 lg:order-1">
               <div className="flex items-center gap-3 mb-6 group justify-start">
                 <span className="h-px w-10 bg-brand-gold/50" />
                 <span className="text-sm font-bold uppercase tracking-[0.4em] text-brand-gold">
@@ -80,17 +91,6 @@ export default function QuotePage() {
                   <p className="text-sm text-slate-300">Join Over <span className="text-brand-gold font-bold">200+</span> Makers & Engineers</p>
                 </div>
               </div>
-            </div>
-
-            {/* Right Column: The Placeholder Form */}
-            <div className="relative">
-              {/* Greyed out existing form */}
-              <div className="opacity-50 pointer-events-none filter blur-[1px] grayscale">
-                <IntakeForm />
-              </div>
-
-              {/* Status Message Overlay */}
-              <ManualIntake />
             </div>
             
           </div>
