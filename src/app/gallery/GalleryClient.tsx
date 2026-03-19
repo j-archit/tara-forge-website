@@ -4,7 +4,6 @@ import * as React from "react";
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { Logo } from "@/components/Logo";
 import { fadeIn } from "@/lib/animations";
 import { TestimonialMarquee } from "@/components/TestimonialMarquee";
 
@@ -69,12 +68,9 @@ export default function GalleryClient() {
       <section className="relative overflow-hidden pt-16 pb-4 sm:pt-20 sm:pb-6 lg:pt-24 lg:pb-8">
         <div className="section-max-width px-6 lg:px-4">
           <motion.div {...fadeIn(0.05)}>
-            <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-8">
-               <Logo size={64} className="drop-shadow-[var(--brand-glow-gold)]" />
-               <h1 className="text-4xl font-semibold tracking-tight text-slate-50 sm:text-5xl lg:text-6xl text-center sm:text-left">
-                The <span className="celestial-gradient-text">Gallery</span>
-              </h1>
-            </div>
+            <h1 className="text-4xl font-semibold tracking-tight text-slate-50 sm:text-5xl lg:text-6xl text-center sm:text-left mt-8">
+              The <span className="celestial-gradient-text">Gallery</span>
+            </h1>
             <p className="max-w-2xl text-pretty text-base text-slate-300 text-center sm:text-left">
               Browse our portfolio of custom components and prototypes. From singular one-offs to small-batch production, every print reflects our commitment to quality.
             </p>
