@@ -6,7 +6,7 @@ import { Clock, Zap, MessageSquare, Copy, Check } from "lucide-react";
 
 export function ManualIntake() {
   const [copied, setCopied] = React.useState(false);
-  const email = "taraforgeindia@gmail.com";
+  const email = "taraforge3d@gmail.com";
 
   const copyEmail = (e: React.MouseEvent) => {
     e.preventDefault();

@@ -24,7 +24,7 @@ const faqs: FAQItem[] = [
   },
   {
     question: "How do I get a quote for my 3D printing project?",
-    answer: "Simply send your 3D design file (.stl, .obj, or .step) to taraforgeindia@gmail.com. We review every model for printability and provide a quote based on material, volume, and complexity."
+    answer: "Simply send your 3D design file (.stl, .obj, or .step) to taraforge3d@gmail.com. We review every model for printability and provide a quote based on material, volume, and complexity."
   },
   {
     question: "Can you help optimize my design for 3D printing?",

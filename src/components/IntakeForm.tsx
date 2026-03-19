@@ -106,7 +106,7 @@ export function IntakeForm() {
       setState("success");
     } catch (error) {
       console.error("Submission error:", error);
-      alert("There was an issue sending your design. Please try again or email us directly at taraforgeindia@gmail.com");
+      alert("There was an issue sending your design. Please try again or email us directly at taraforge3d@gmail.com");
       setState("idle");
     }
   };

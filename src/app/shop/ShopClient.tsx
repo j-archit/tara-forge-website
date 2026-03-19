@@ -91,7 +91,7 @@ export default function ShopClient() {
     
     const subject = encodeURIComponent(`Order Inquiry: ${product.title}`);
     const body = encodeURIComponent(`Hello TaraForge3D,\n\nI am interested in purchasing the ${product.title} (SKU: ${product.id}).\n\nPlease let me know the shipping process.\n\nThank you!`);
-    window.location.assign(`mailto:taraforgeindia@gmail.com?subject=${subject}&body=${body}`);
+    window.location.assign(`mailto:taraforge3d@gmail.com?subject=${subject}&body=${body}`);
   };
 
   return (
@@ -209,7 +209,7 @@ export default function ShopClient() {
               Looking for 100+ units for a specific project or retail need? We offer competitive tiered pricing and can integrate your own branding into our designs.
             </p>
             <a
-              href="mailto:taraforgeindia@gmail.com"
+              href="mailto:taraforge3d@gmail.com"
               className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-gold px-10 py-4 text-sm font-bold text-slate-950 shadow-[var(--brand-glow-gold)] transition hover:bg-brand-gold-bright hover:scale-105 active:scale-95"
             >
               Request Batch Quote
