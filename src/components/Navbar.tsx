@@ -65,14 +65,19 @@ export function Navbar() {
             onClick={() => setIsMobileMenuOpen(false)}
           >
             <Logo size={40} className="drop-shadow-[var(--brand-glow-gold)] sm:size-[42px]" />
-            <div className="flex flex-col">
-              <span className="text-[12px] sm:text-[14px] font-bold uppercase tracking-[0.25em] text-slate-100 leading-none">
-                <span lang={current.lang} className="inline-block min-w-[5ch] transition-all duration-500">
-                  {current.text}
+            <div className="flex items-center gap-0.5 translate-y-[-1px]">
+              <div className="flex flex-col justify-center">
+                <span className="text-[11px] sm:text-[13px] font-bold uppercase tracking-[0.25em] text-slate-100 leading-[1.1]">
+                  <span lang={current.lang} className="inline-block min-w-[5ch] transition-all duration-500">
+                    {current.text}
+                  </span>
                 </span>
-              </span>
-              <span className="text-[12px] sm:text-[14px] font-bold uppercase tracking-[0.25em] text-brand-gold leading-none mt-1">
-                Forge3D
+                <span className="text-[11px] sm:text-[13px] font-bold uppercase tracking-[0.25em] text-brand-gold leading-[1.1]">
+                  Forge
+                </span>
+              </div>
+              <span className="text-[28px] sm:text-[32px] font-semibold tracking-normal text-brand-gold leading-[0.8] select-none self-center">
+                3D
               </span>
             </div>
           </Link>

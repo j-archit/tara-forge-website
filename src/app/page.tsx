@@ -69,7 +69,7 @@ export default function HomePage() {
 
       <ServiceCards />
       <CoreValues />
-      <section id="about" className="relative border-b border-slate-800/40 bg-slate-950/60 px-6 py-12 lg:px-4 lg:py-20">
+      <section id="about" className="relative border-b border-slate-800/40 bg-slate-950/30 px-6 py-12 lg:px-4 lg:py-20">
         <div className="section-max-width">
           <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
             {/* Left Content */}

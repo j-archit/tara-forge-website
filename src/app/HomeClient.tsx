@@ -102,7 +102,7 @@ export function ServiceCards() {
 
 export function ShopHighlight() {
   return (
-    <section className="border-y border-slate-800/60 bg-slate-950/40 py-16 sm:py-24">
+    <section className="border-y border-slate-800/60 bg-slate-950/30 py-16 sm:py-24">
       <div className="section-max-width px-6 lg:px-4 text-center">
         <motion.div {...fadeIn(0.1)}>
           <h2 className="text-3xl font-semibold text-slate-50 sm:text-4xl">The <span className="celestial-gradient-text">Stellar Collection</span></h2>
@@ -164,7 +164,7 @@ export function CoreValues() {
   ];
 
   return (
-    <section className="relative border-b border-slate-800/40 px-6 py-12 lg:px-4 lg:py-20">
+    <section className="relative border-b border-slate-800/40 bg-slate-950/60 px-6 py-12 lg:px-4 lg:py-20">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-brand-gold/[0.01] to-transparent pointer-events-none" />
       <div className="section-max-width relative">
       <div className="max-w-2xl mb-16 ml-auto text-right">
