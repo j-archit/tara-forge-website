@@ -100,10 +100,10 @@ export function FAQSection() {
 
         <div className="order-1 lg:order-2 text-right">
           <h2 className="text-3xl font-semibold text-slate-50 sm:text-4xl leading-tight">
-            Frequently Asked <span className="celestial-gradient-text">Questions (FAQs)</span>
+            Frequently Asked <span className="celestial-gradient-text">Questions</span>
           </h2>
           <p className="mt-6 text-slate-400 font-light max-w-lg leading-relaxed ml-auto">
-            Everything you need to know about our boutique 3D printing process, materials, and batch capabilities. Engineered for transparency.
+            Everything you need to know about our boutique 3D printing process, materials and batch capabilities. Engineered for transparency.
           </p>
         </div>
       </div>

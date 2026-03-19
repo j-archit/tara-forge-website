@@ -29,7 +29,7 @@ export default function HomePage() {
             <p className="mt-6 max-w-xl text-pretty text-base leading-relaxed text-slate-300 lg:text-lg">
               From precision-engineered parts to unique custom creations... any idea, finished to perfection, delivered into your hands.
               <span className="block mt-4 text-slate-100 italic">
-                <span className="text-brand-gold font-medium not-italic">TaraForge3D.</span> wish on a star, watch it come to life.
+                <span className="text-brand-gold font-medium not-italic">TaraForge3D.</span> Wish on a star, watch it come to life.
               </span>
             </p>
 
@@ -53,7 +53,7 @@ export default function HomePage() {
 
             <div className="mt-10 flex flex-wrap gap-4 justify-center sm:justify-start">
               {[
-                { label: "Quick Turnaround", sub: "24-48h Typical Lead" },
+                { label: "Quick Turnaround", sub: "24-48h typical lead" },
                 { label: "Small Run Support", sub: "Creative-Focused" },
                 { label: "Local Artisan Studio", sub: "Hand-finished with care" }
               ].map((badge, idx) => (
@@ -79,7 +79,7 @@ export default function HomePage() {
             <div>
               <h2 className="text-3xl font-semibold text-slate-50 sm:text-4xl">Why <span className="celestial-gradient-text">TaraForge3D?</span></h2>
               <p className="mt-6 text-pretty text-base leading-relaxed text-slate-400 font-light">
-                We provide high-precision 3D printing services, from industrial prototypes to custom artisan creations.
+                High-precision 3D printing services, from industrial prototypes to custom artisan creations — just for you.
               </p>
               
               <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-1">
