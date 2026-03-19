@@ -121,7 +121,7 @@ export default function ServicesClient() {
               Specialized <span className="celestial-gradient-text">Capabilities</span>
             </h1>
             <p className="text-lg text-slate-400 leading-relaxed font-light">
-              Bridging the gap between digital design and physical reality through high-precision 3D printing manufacturing, for any need
+              Bridging the gap between digital design and physical reality through high-precision 3D printing, for any need
             </p>
           </motion.div>
         </div>
