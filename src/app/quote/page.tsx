@@ -104,14 +104,14 @@ export default function QuotePage() {
                     <p className="text-xs font-bold uppercase tracking-widest text-brand-gold/60">Ready to quote now?</p>
                     <div className="flex flex-col sm:flex-row gap-3">
                       <a 
-                        href="mailto:taraforgeindia@gmail.com?subject=New Project Quote Request&body=Hi TaraForge Team,%0D%0AI have a project I'd like to get a quote for.%0D%0A%0D%0A(Attach STL/OBJ files to this email)"
+                        href="mailto:taraforgeindia@gmail.com?subject=New Project Quote Request&body=Hi TaraForge3D Team,%0D%0AI have a project I'd like to get a quote for.%0D%0A%0D%0A(Attach STL/OBJ files to this email)"
                         className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-brand-gold px-4 py-3 text-sm font-semibold text-slate-950 shadow-[var(--brand-glow-gold)] transition hover:bg-brand-gold-bright hover:scale-[1.02]"
                       >
                         Email
                         <Zap className="w-3.5 h-3.5 fill-current" />
                       </a>
                       <a 
-                        href="https://wa.me/917042337788?text=Hi TaraForge, I'd like to get a quote for a 3D printing project!"
+                        href="https://wa.me/917042337788?text=Hi TaraForge3D, I'd like to get a quote for a 3D printing project!"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-slate-900 px-4 py-3 text-sm font-semibold text-slate-100 transition hover:border-brand-gold/50 hover:bg-slate-800 hover:scale-[1.02]"
