@@ -1,4 +1,4 @@
-export const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+export const GA_MEASUREMENT_ID = "G-C0HLNVX14Q"; // Hardcoded to enable GitHub static export without needing Action Secrets
 
 // Declare the window.gtag type
 declare global {
