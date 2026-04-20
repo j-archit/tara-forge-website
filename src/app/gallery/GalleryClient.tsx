@@ -6,6 +6,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { fadeIn } from "@/lib/animations";
 import { TestimonialMarquee } from "@/components/TestimonialMarquee";
+import { trackCTA, trackEvent } from "@/lib/analytics";
 
 const galleryItems = [
   {
@@ -88,6 +89,7 @@ export default function GalleryClient() {
               <motion.div 
                 key={idx}
                 {...fadeIn(idx * 0.1)}
+                onViewportEnter={() => trackEvent('gallery_item_view', 'engagement', item.title, undefined, { category: item.category })}
                 className={`relative aspect-[4/3] overflow-hidden rounded-2xl border border-slate-800/80 bg-gradient-to-br ${item.gradient} p-6 shadow-[0_20px_90px_rgba(15,23,42,0.95)] group`}
               >
                 <div 
@@ -143,6 +145,7 @@ export default function GalleryClient() {
             <h2 className="text-3xl font-semibold text-slate-50 mb-6">Ready to start your next project?</h2>
             <a
               href="mailto:taraforge3d@gmail.com"
+              onClick={() => trackCTA('get_quote_gallery', 'mailto:taraforge3d@gmail.com')}
               className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-gold px-8 py-3 text-base font-semibold text-slate-950 shadow-[var(--brand-glow-gold)] transition hover:bg-brand-gold-bright hover:scale-105"
             >
               Get a Quote Now

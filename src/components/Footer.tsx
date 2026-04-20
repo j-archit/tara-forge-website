@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Logo } from "./Logo";
 import { Mail, Instagram, Twitter, MoveUpRight } from "lucide-react";
+import { trackNavigation, trackSocialClick } from "@/lib/analytics";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -62,6 +63,7 @@ export function Footer() {
                 <li key={link.label}>
                   <Link 
                     href={link.href}
+                    onClick={() => trackNavigation(link.label, 'footer')}
                     className="group flex items-center text-sm text-slate-400 hover:text-brand-gold transition-colors"
                   >
                     <span>{link.label}</span>
@@ -81,6 +83,7 @@ export function Footer() {
                 <li key={link.label}>
                   <a 
                     href={link.href}
+                    onClick={() => trackSocialClick(link.label.toLowerCase())}
                     className="flex items-center gap-3 text-sm text-slate-400 hover:text-slate-100 transition-colors"
                   >
                     <span className="p-1.5 rounded-lg bg-slate-900 border border-slate-800">

@@ -6,6 +6,7 @@ import { fadeIn, heroFadeIn } from "@/lib/animations";
 import { ShieldCheck, Leaf, Eye, UserCheck, Zap, Heart, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { FAQSection } from "@/components/FAQSection";
+import { trackCTA } from "@/lib/analytics";
 
 export { FAQSection };
 
@@ -83,6 +84,7 @@ export function ServiceCards() {
             <div className="mt-auto flex items-center justify-between pt-6 border-t border-slate-800/50">
               <Link 
                 href="/services"
+                onClick={() => trackCTA('learn_more_service', item.label)}
                 className="text-[11px] font-bold uppercase tracking-widest text-brand-gold hover:text-brand-gold-bright transition-colors flex items-center gap-1.5 group/link"
               >
                 Learn More
@@ -112,6 +114,7 @@ export function ShopHighlight() {
           <div className="mt-10">
             <a
               href="/shop"
+              onClick={() => trackCTA('browse_shop_home', '/shop')}
               className="inline-flex items-center gap-2 rounded-full bg-slate-800 px-8 py-3.5 text-sm font-semibold text-slate-100 shadow-xl transition-all hover:bg-brand-gold hover:text-slate-950 hover:scale-105"
             >
               Browse the Shop

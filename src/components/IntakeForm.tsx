@@ -4,6 +4,7 @@ import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeIn } from "@/lib/animations";
 import { Send, CheckCircle2, Loader2, Sparkles, Upload, FileText, X } from "lucide-react";
+import { trackFormStep, trackFileUpload } from "@/lib/analytics";
 
 type FormState = "idle" | "submitting" | "success";
 
@@ -23,7 +24,9 @@ export function IntakeForm() {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setFile(e.target.files[0]);
+      const selectedFile = e.target.files[0];
+      setFile(selectedFile);
+      trackFileUpload(selectedFile.name, selectedFile.size / (1024 * 1024));
     }
   };
 
@@ -45,6 +48,7 @@ export function IntakeForm() {
       const fileName = droppedFile.name.toLowerCase();
       if (validExtensions.some(ext => fileName.endsWith(ext))) {
         setFile(droppedFile);
+        trackFileUpload(droppedFile.name, droppedFile.size / (1024 * 1024));
       } else {
         alert("Please upload a valid 3D file (.stl, .step, .3mf)");
       }
@@ -56,6 +60,7 @@ export function IntakeForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setState("submitting");
+    trackFormStep('form_submit');
     
     // Updated to point to our secure server-side relay
     // This prevents leaking the Pi's Funnel URL and Auth Token to the client
@@ -104,10 +109,12 @@ export function IntakeForm() {
       }
 
       setState("success");
+      trackFormStep('form_success');
     } catch (error) {
       console.error("Submission error:", error);
       alert("There was an issue sending your design. Please try again or email us directly at taraforge3d@gmail.com");
       setState("idle");
+      trackFormStep('form_error', { error: error instanceof Error ? error.message : String(error) });
     }
   };
 
@@ -181,6 +188,8 @@ export function IntakeForm() {
               placeholder="Cyrus Vesper"
               className="w-full rounded-xl border border-slate-800 bg-slate-900/50 px-4 py-3 text-slate-100 placeholder:text-slate-600 focus:border-brand-gold/50 focus:outline-none focus:ring-1 focus:ring-brand-gold/50 transition-all font-light"
               value={formData.name}
+              onFocus={() => trackFormStep('form_start')}
+              onBlur={(e) => { if (e.target.value) trackFormStep('field_filled', { field: 'name' }); }}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             />
           </div>
@@ -196,6 +205,7 @@ export function IntakeForm() {
               placeholder="cyrus@nebula.com"
               className="w-full rounded-xl border border-slate-800 bg-slate-900/50 px-4 py-3 text-slate-100 placeholder:text-slate-600 focus:border-brand-gold/50 focus:outline-none focus:ring-1 focus:ring-brand-gold/50 transition-all font-light"
               value={formData.email}
+              onBlur={(e) => { if (e.target.value) trackFormStep('field_filled', { field: 'email' }); }}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             />
           </div>
@@ -209,6 +219,7 @@ export function IntakeForm() {
               id="projectType"
               className="w-full appearance-none rounded-xl border border-slate-800 bg-slate-900/50 px-4 py-3 text-slate-100 focus:border-brand-gold/50 focus:outline-none focus:ring-1 focus:ring-brand-gold/50 transition-all font-light"
               value={formData.projectType}
+              onBlur={(e) => { if (e.target.value) trackFormStep('field_filled', { field: 'projectType' }); }}
               onChange={(e) => setFormData({ ...formData, projectType: e.target.value })}
             >
               <option value="" disabled>Select Service Type</option>
@@ -228,6 +239,7 @@ export function IntakeForm() {
               id="material"
               className="w-full appearance-none rounded-xl border border-slate-800 bg-slate-900/50 px-4 py-3 text-slate-100 focus:border-brand-gold/50 focus:outline-none focus:ring-1 focus:ring-brand-gold/50 transition-all font-light"
               value={formData.material}
+              onBlur={(e) => { if (e.target.value) trackFormStep('field_filled', { field: 'material' }); }}
               onChange={(e) => setFormData({ ...formData, material: e.target.value })}
             >
               <option value="" disabled>Select Preferred Material</option>
@@ -310,6 +322,7 @@ export function IntakeForm() {
               placeholder="Tell us about the dimensions, usage, and any specific tolerances required..."
               className="w-full resize-none rounded-xl border border-slate-800 bg-slate-900/50 px-4 py-3 text-slate-100 placeholder:text-slate-600 focus:border-brand-gold/50 focus:outline-none focus:ring-1 focus:ring-brand-gold/50 transition-all font-light"
               value={formData.description}
+              onBlur={(e) => { if (e.target.value) trackFormStep('field_filled', { field: 'description' }); }}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             />
           </div>

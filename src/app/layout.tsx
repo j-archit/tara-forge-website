@@ -92,6 +92,7 @@ export const metadata: Metadata = {
 };
 
 import { CelestialBackground } from "@/components/CelestialBackground";
+import { Analytics } from "@/components/Analytics";
 
 export default function RootLayout({
   children,
@@ -163,6 +164,7 @@ export default function RootLayout({
       >
         <CelestialBackground />
         {children}
+        <Analytics />
       </body>
     </html>
   );

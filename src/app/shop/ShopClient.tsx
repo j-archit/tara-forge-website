@@ -6,6 +6,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Logo } from "@/components/Logo";
 import { fadeIn } from "@/lib/animations";
+import { trackProductInterest, trackCTA } from "@/lib/analytics";
 
 interface Product {
   id: string | number;
@@ -88,6 +89,7 @@ const products: Product[] = [
 export default function ShopClient() {
   const handleCheckout = (product: Product) => {
     console.log(`Starting checkout for: ${product.title} (ID: ${product.id})`);
+    trackProductInterest(product.id.toString(), product.title, product.price, 'buy_click');
     
     const subject = encodeURIComponent(`Order Inquiry: ${product.title}`);
     const body = encodeURIComponent(`Hello TaraForge3D,\n\nI am interested in purchasing the ${product.title} (SKU: ${product.id}).\n\nPlease let me know the shipping process.\n\nThank you!`);
@@ -210,6 +212,7 @@ export default function ShopClient() {
             </p>
             <a
               href="mailto:taraforge3d@gmail.com"
+              onClick={() => trackCTA('request_batch_quote', 'mailto:taraforge3d@gmail.com')}
               className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-gold px-10 py-4 text-sm font-bold text-slate-950 shadow-[var(--brand-glow-gold)] transition hover:bg-brand-gold-bright hover:scale-105 active:scale-95"
             >
               Request Batch Quote

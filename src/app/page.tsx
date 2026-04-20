@@ -36,6 +36,7 @@ export default function HomePage() {
             <div className="mt-6 flex flex-col gap-3 text-sm sm:flex-row sm:items-center">
               <Link
                 href="/quote"
+                data-track="hero_primary_cta"
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-gold px-5 py-2.5 text-sm font-semibold text-slate-950 shadow-[var(--brand-glow-gold)] transition hover:bg-brand-gold-bright hover:scale-105"
               >
                 Get a quote
@@ -43,6 +44,7 @@ export default function HomePage() {
               </Link>
               <Link
                 href="/gallery"
+                data-track="hero_secondary_cta"
                 className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-600/70 bg-slate-900/40 px-4 py-2 text-xs font-medium text-slate-100 transition hover:border-brand-gold hover:text-brand-gold hover:scale-105"
                 aria-label="Explore our custom 3D print gallery and portfolio"
               >

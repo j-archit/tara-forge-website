@@ -3,6 +3,7 @@
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
+import { trackFAQInteraction } from "@/lib/analytics";
 
 interface FAQItem {
   question: string;
@@ -71,7 +72,10 @@ export function FAQSection() {
                 }`}
               >
                 <button
-                  onClick={() => setOpenIndex(isOpen ? null : idx)}
+                  onClick={() => {
+                    setOpenIndex(isOpen ? null : idx);
+                    trackFAQInteraction(faq.question, isOpen ? 'close' : 'open');
+                  }}
                   className="flex w-full items-center justify-between p-6 text-left group"
                 >
                   <span className={`text-base font-medium transition-colors duration-300 ${isOpen ? "text-brand-gold" : "text-slate-100 group-hover:text-slate-50"}`}>

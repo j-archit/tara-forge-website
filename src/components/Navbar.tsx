@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { Logo } from "./Logo";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { trackNavigation, trackCTA, trackMobileMenu } from "@/lib/analytics";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -92,6 +93,7 @@ export function Navbar() {
             <Link 
               key={link.href}
               href={link.href} 
+              onClick={() => trackNavigation(link.label, pathname)}
               className={`hover:text-celestial-accent transition-colors ${pathname === link.href ? 'text-celestial-accent' : ''}`}
             >
               {link.label}
@@ -99,6 +101,7 @@ export function Navbar() {
           ))}
           <Link
             href="/quote"
+            onClick={() => trackCTA('get_a_quote_nav', '/quote')}
             className="rounded-full bg-brand-gold px-6 py-2 text-xs font-bold text-slate-950 shadow-[var(--brand-glow-gold)] transition-all hover:scale-105 hover:bg-brand-gold-bright active:scale-95"
           >
             Get a quote
@@ -108,7 +111,10 @@ export function Navbar() {
         {/* Mobile Menu Toggle */}
         <button 
           className={`group flex h-11 w-11 items-center justify-center rounded-full border border-slate-700/50 bg-slate-900/60 text-slate-100 shadow-xl backdrop-blur-md transition-all duration-300 md:hidden hover:scale-105 active:scale-95 ${isMobileMenuOpen ? "bg-brand-gold border-brand-gold/40 text-slate-950" : ""}`}
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          onClick={() => {
+            trackMobileMenu(isMobileMenuOpen ? 'close' : 'open');
+            setIsMobileMenuOpen(!isMobileMenuOpen);
+          }}
           aria-label="Toggle navigation"
         >
           {isMobileMenuOpen ? <X size={20} strokeWidth={2.5} /> : <Menu size={20} strokeWidth={2.5} />}
@@ -130,7 +136,10 @@ export function Navbar() {
                   <Link 
                     href={link.href} 
                     className={`text-lg font-medium transition-colors ${pathname === link.href ? 'text-brand-gold' : 'text-slate-300'}`}
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={() => {
+                      trackNavigation(link.label, pathname);
+                      setIsMobileMenuOpen(false);
+                    }}
                   >
                     {link.label}
                   </Link>
@@ -139,7 +148,10 @@ export function Navbar() {
               <li className="w-full pt-4 border-t border-slate-800">
                 <Link
                   href="/quote"
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={() => {
+                    trackCTA('get_a_quote_nav_mobile', '/quote');
+                    setIsMobileMenuOpen(false);
+                  }}
                   className="flex w-full items-center justify-center rounded-xl bg-brand-gold py-4 text-sm font-bold text-slate-950 shadow-[var(--brand-glow-gold)]"
                 >
                   Get a quote
