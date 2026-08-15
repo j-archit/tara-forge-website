@@ -3,7 +3,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { IntakeForm } from "@/components/IntakeForm";
 import { ManualIntake } from "@/components/ManualIntake";
-import { ShieldCheck, Clock, Zap, MessageSquare } from "lucide-react";
+import { ShieldCheck, Clock, Zap } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

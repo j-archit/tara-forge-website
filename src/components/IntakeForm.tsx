@@ -2,8 +2,7 @@
 
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { fadeIn } from "@/lib/animations";
-import { Send, CheckCircle2, Loader2, Sparkles, Upload, FileText, X } from "lucide-react";
+import { Send, CheckCircle2, Loader2, Upload, FileText, X } from "lucide-react";
 import { trackFormStep, trackFileUpload } from "@/lib/analytics";
 
 type FormState = "idle" | "submitting" | "success";

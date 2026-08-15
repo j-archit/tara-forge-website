@@ -7,7 +7,6 @@ import { Footer } from "@/components/Footer";
 import { Logo } from "@/components/Logo";
 import { fadeIn } from "@/lib/animations";
 import { 
-  Zap, 
   Settings, 
   Layers, 
   Brush, 

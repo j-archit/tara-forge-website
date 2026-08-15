@@ -1,14 +1,16 @@
 export const GA_MEASUREMENT_ID = "G-C0HLNVX14Q"; // Hardcoded to enable GitHub static export without needing Action Secrets
 
+type GtagArgument = string | number | boolean | undefined | Record<string, unknown>;
+
 // Declare the window.gtag type
 declare global {
   interface Window {
-    gtag: (...args: any[]) => void;
+    gtag: (...args: GtagArgument[]) => void;
   }
 }
 
 // Ensure gtag exists before calling it (prevents errors on server-side or if script blocked)
-export const safeGtag = (...args: any[]) => {
+export const safeGtag = (...args: GtagArgument[]) => {
   if (typeof window !== "undefined" && typeof window.gtag === "function") {
     window.gtag(...args);
   } else if (process.env.NODE_ENV === "development") {
@@ -25,7 +27,7 @@ export const pageview = (url: string) => {
 };
 
 // 2. Generic custom event wrapper
-export const trackEvent = (action: string, category?: string, label?: string, value?: number, extraParams?: Record<string, any>) => {
+export const trackEvent = (action: string, category?: string, label?: string, value?: number, extraParams?: Record<string, unknown>) => {
   safeGtag("event", action, {
     event_category: category,
     event_label: label,

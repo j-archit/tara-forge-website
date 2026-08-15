@@ -61,7 +61,7 @@ export const CelestialBackground = () => {
       duration: 2 + Math.random() * 3,
       delay: Math.random() * 5,
       scale: p.scale,
-      isGolden: (p as any).isGolden || false
+      isGolden: Boolean("isGolden" in p && p.isGolden)
     })));
 
     // Delay non-critical background decor to prioritize LCP rendering
