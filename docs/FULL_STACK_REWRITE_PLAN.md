@@ -1,10 +1,10 @@
 # TaraForge3D Full-Stack Rewrite Plan
 
-Status: proposed for review
+Status: approved for implementation (amended to require a Python/pytest backend)
 
 Target repository: `tara-forge-website`
 
-Planning branch: `plan/full-stack-rewrite`
+Implementation branch: `feat/full-stack-rewrite`
 
 ## 1. Objective
 
@@ -15,12 +15,12 @@ Turn the existing static marketing site and separate intake-management applicati
 - one deployment and operational runbook;
 - public pages and quote workflow under `taraforge.in`;
 - a protected administration area under `taraforge.in/admin`;
-- a full TypeScript backend implemented in the Next.js application;
-- a durable background worker for slicing and external synchronization;
+- a rewritten Python/FastAPI backend housed in the same repository and exposed only through the website's same-origin API boundary;
+- a durable Python background worker for slicing and external synchronization;
 - preservation of the current public visual design and user-facing content;
 - preservation and migration of existing intake data and uploaded models.
 
-The rewrite replaces the Python/FastAPI and separate Vite administration applications after feature parity and migration are verified. The old intake application remains untouched and runnable until cutover is complete.
+The rewrite replaces the existing FastAPI implementation and separate Vite administration application after feature parity and migration are verified. The backend remains Python so its contract, worker, and integration behavior can be covered directly with pytest. The old intake application remains untouched and runnable until cutover is complete.
 
 ## 2. Product shape
 
@@ -42,7 +42,7 @@ taraforge.in
 └── /api/*                Same-origin application API
 ```
 
-The browser sees one application. Internally, production runs a web process and a background-worker process from the same repository and application image. This separation keeps long-running CuraEngine and Google operations out of HTTP request handling without creating a second product or deployment.
+The browser sees one application and one origin. Internally, production runs the Next.js web process, a private FastAPI process, and a Python background-worker process from one repository and one Compose deployment. This separation keeps long-running CuraEngine and Google operations out of HTTP request handling without creating a second product or separately operated deployment.
 
 ## 3. Proposed technical baseline
 
@@ -51,15 +51,17 @@ These are the proposed defaults to approve before implementation begins.
 | Concern | Proposed choice | Reason |
 | --- | --- | --- |
 | Application | Next.js App Router and TypeScript | Already used by the public site; supports pages and server endpoints in one codebase. |
-| Runtime | Node.js runtime, not edge runtime | Required for filesystem access, database drivers, child processes, and CuraEngine. |
-| Database | SQLite in WAL mode behind a repository layer | Lowest operational burden for a single-host, low-volume application and easiest migration from the current database. |
-| Schema/migrations | Drizzle ORM and versioned migrations | Typed data access without hiding SQL or making later PostgreSQL migration difficult. |
+| Runtimes | Node.js for Next.js; Python 3.12 for FastAPI and the worker | Preserves the existing UI stack while making backend behavior directly testable with pytest. |
+| Database | SQLite in WAL mode behind a service/repository layer | Lowest operational burden for a single-host, low-volume application and easiest migration from the current database. |
+| Schema/migrations | SQLAlchemy 2 and Alembic | Mature Python data layer with explicit, versioned migrations and a straightforward path to PostgreSQL. |
 | Upload format | Streaming `multipart/form-data` | Avoids the roughly 33% size expansion and memory duplication caused by the current Base64 JSON upload. |
 | File storage | Local persistent volume behind a storage interface | Matches the current vault and single-host deployment; permits later S3-compatible storage without changing UI/API contracts. |
-| Background work | Database-backed jobs plus a dedicated TypeScript worker | Durable retries and restart recovery without adding Redis or a hosted queue. |
+| Background work | Database-backed jobs plus a dedicated Python worker | Durable retries and restart recovery without adding Redis or a hosted queue. |
 | Authentication | Single-admin credential login with hashed password and server-side session records | Simple initial operations model with proper revocation, expiry, and protected server routes. |
 | Reverse proxy/TLS | Caddy or equivalent in the deployment stack | Automatic HTTPS, request-size limits, and one public origin. |
-| Packaging | Multi-stage Docker image plus Docker Compose | One reproducible deployment for web, worker, persistent data, and proxy. |
+| Packaging | Separate web/backend images orchestrated by one Docker Compose project | One reproducible deployment for web, private API, worker, persistent data, and proxy. |
+| Backend tests | pytest, pytest-asyncio, HTTPX, and isolated temporary databases | Covers API, services, jobs, integrations, and migration behavior in the backend's native runtime. |
+| Frontend tests | Vitest, React Testing Library, and browser-flow QA | Covers components and client behavior while retaining the existing UI. |
 
 SQLite is an intentional initial constraint: one host and modest traffic. The repository and job APIs must avoid SQLite-specific behavior outside the data layer so PostgreSQL can replace it if multi-instance deployment becomes necessary.
 
@@ -269,16 +271,16 @@ Acceptance criteria:
 
 Estimate: 1–2 working days.
 
-### Phase 1 — Dynamic full-stack application skeleton
+### Phase 1 — Dynamic single-site application skeleton
 
-Goal: turn the static Next.js project into a deployable Node application without changing the public UI.
+Goal: turn the static Next.js project into a deployable application with a private FastAPI service, without changing the public UI.
 
 Work:
 
 - remove static-export mode;
 - add production standalone-output configuration;
 - add typed environment validation;
-- introduce application directories for server-only code, database access, storage, jobs, and integrations;
+- introduce a `backend/` package for the private API, database access, storage, jobs, and integrations;
 - add health/readiness endpoints;
 - create multi-stage Docker packaging and a local production-like Compose stack;
 - ensure public routes retain metadata, canonical URLs, analytics, and asset behavior.
@@ -362,13 +364,13 @@ Acceptance criteria:
 
 Estimate: 2–3 working days.
 
-### Phase 5 — TypeScript slicing and durable worker
+### Phase 5 — Python slicing and durable worker
 
 Goal: replace the Python slicing/background-task path.
 
 Work:
 
-- implement the worker command and lease loop;
+- implement the Python worker command and lease loop;
 - invoke CuraEngine through a constrained child process without shell interpolation;
 - port profile selection, overrides, output parsing, time estimation, and filament estimation;
 - version profile snapshots used by each run;
@@ -389,7 +391,7 @@ Estimate: 3–5 working days.
 
 ### Phase 6 — Google Drive and Sheets integration
 
-Goal: replace the Python Google integration with idempotent TypeScript integrations.
+Goal: replace the legacy Google integration with idempotent, tested Python integrations.
 
 Work:
 
@@ -510,16 +512,25 @@ Estimate: 1–2 working days plus the observation window.
 
 ## 9. Test strategy
 
-### Unit tests
+### Backend tests with pytest
 
-- validation and normalization;
+- API contracts, validation, and normalization;
 - filename and storage-key safety;
 - email-template rendering;
 - CuraEngine output parsing;
 - status transitions and retry classification;
 - authentication/session helpers;
 - Google payload construction;
-- migration mapping.
+- migration mapping;
+- authentication, authorization, and CSRF behavior;
+- isolated database fixtures and transaction behavior.
+
+### Frontend tests
+
+- Vitest for utilities, validation, API clients, and state transitions;
+- React Testing Library for the quote form and administration components;
+- accessibility-oriented queries for interactive controls;
+- mocked network tests for success, validation, unauthorized, and retry states.
 
 ### Repository and integration tests
 
@@ -565,8 +576,18 @@ Estimate: 1–2 working days plus the observation window.
 
 ```text
 tara-forge-website/
+├── backend/
+│   ├── app/
+│   │   ├── api/
+│   │   ├── auth/
+│   │   ├── db/
+│   │   ├── jobs/
+│   │   ├── storage/
+│   │   ├── slicing/
+│   │   └── integrations/
+│   ├── migrations/
+│   └── tests/
 ├── docs/
-├── migrations/
 ├── scripts/
 │   ├── backup/
 │   └── migrate-legacy/
@@ -578,15 +599,9 @@ tara-forge-website/
 │   ├── components/
 │   │   ├── public/
 │   │   └── admin/
-│   ├── server/
-│   │   ├── auth/
-│   │   ├── db/
-│   │   ├── jobs/
-│   │   ├── storage/
-│   │   ├── slicing/
-│   │   └── integrations/
-│   └── worker/
-├── Dockerfile
+│   └── test/
+├── Dockerfile.web
+├── Dockerfile.backend
 └── compose.yaml
 ```
 
@@ -602,7 +617,7 @@ The main uncertainty is CuraEngine equivalence across real models and profiles. 
 
 Implementation should not begin until the owner approves:
 
-1. the proposed technical baseline, especially SQLite, Drizzle, and single-host deployment;
+1. the proposed technical baseline, especially SQLite, SQLAlchemy/Alembic, and single-host deployment;
 2. whether administration is single-user initially;
 3. maximum upload size and supported file formats;
 4. whether bot protection beyond honeypot and rate limiting is required at launch;
