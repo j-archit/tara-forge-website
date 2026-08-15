@@ -5,7 +5,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1
 
 RUN apt-get update \
-    && apt-get install --no-install-recommends -y cura-engine \
+    && apt-get install --no-install-recommends -y cura-engine postgresql-client \
     && rm -rf /var/lib/apt/lists/* \
     && useradd --create-home --uid 10001 app
 
@@ -14,8 +14,8 @@ COPY backend/requirements.txt ./requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY --chown=app:app backend/ ./
-RUN mkdir -p /data /vault /backups \
-    && chown app:app /data /vault /backups
+RUN mkdir -p /vault /backups \
+    && chown app:app /vault /backups
 
 USER app
 EXPOSE 8000

@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     )
 
     environment: str = "development"
-    database_url: str = "sqlite:///./data/taraforge.db"
+    database_url: str = "postgresql+psycopg://taraforge:local-dev-only@localhost:5432/taraforge"
     vault_path: Path = Path("./vault")
     max_upload_bytes: int = 25 * 1024 * 1024
     minimum_free_bytes: int = Field(default=100 * 1024 * 1024, ge=0)

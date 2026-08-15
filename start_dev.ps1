@@ -19,6 +19,15 @@ if ($Install) {
     if ($LASTEXITCODE -ne 0) { throw "Frontend dependency installation failed." }
 }
 
+Push-Location $ProjectRoot
+try {
+    docker compose up -d --wait database
+    if ($LASTEXITCODE -ne 0) { throw "PostgreSQL startup failed." }
+}
+finally {
+    Pop-Location
+}
+
 Push-Location $BackendRoot
 try {
     & $Python -m alembic upgrade head

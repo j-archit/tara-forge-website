@@ -23,6 +23,8 @@ if [[ "$INSTALL" == true ]]; then
   (cd "$PROJECT_ROOT" && npm install)
 fi
 
+(cd "$PROJECT_ROOT" && docker compose up -d --wait database)
+
 (cd "$BACKEND_ROOT" && "$PYTHON" -m alembic upgrade head)
 (cd "$BACKEND_ROOT" && "$PYTHON" -m app.cli seed-defaults)
 

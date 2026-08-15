@@ -13,6 +13,7 @@ def test_development_scripts_migrate_seed_and_clean_up_processes() -> None:
     shell = read_script("start_dev.sh")
 
     for script in (powershell, shell):
+        assert "docker compose up -d --wait database" in script
         assert "alembic upgrade head" in script
         assert "app.cli seed-defaults" in script
         assert "uvicorn" in script

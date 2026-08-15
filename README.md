@@ -1,16 +1,16 @@
 # TaraForge3D
 
-TaraForge3D is a single-origin full-stack website for public project intake and private production administration. The existing Next.js UI is backed by a private FastAPI service, SQLite, durable model storage, a leased background worker, CuraEngine slicing, and optional Google Drive/Sheets synchronization.
+TaraForge3D is a single-origin full-stack website for public project intake and private production administration. The Next.js UI is backed by one private FastAPI backend, PostgreSQL, durable model storage, a leased background worker, CuraEngine slicing, and optional Google Drive/Sheets synchronization.
 
 ## Local development
 
-Start both services after creating `backend/.venv`:
+Start PostgreSQL and both application services after creating `backend/.venv`:
 
 ```powershell
 .\start_dev.ps1
 ```
 
-Use `-Install` on Windows or `--install` with `./start_dev.sh` on Linux/macOS to install dependencies first. The scripts apply migrations, seed defaults, start both development servers, and stop both when interrupted.
+Use `-Install` on Windows or `--install` with `./start_dev.sh` on Linux/macOS to install dependencies first. The scripts start the Compose PostgreSQL service, apply migrations, seed defaults, start both development servers, and stop the application processes when interrupted.
 
 Frontend:
 

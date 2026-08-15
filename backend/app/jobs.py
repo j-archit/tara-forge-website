@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from sqlalchemy import or_, select, update
+from sqlalchemy import or_, select
 from sqlalchemy.orm import Session
 
 from .models import Job, JobStatus, utcnow
@@ -8,8 +8,8 @@ from .models import Job, JobStatus, utcnow
 
 def claim_next_job(db: Session, worker_id: str, lease_seconds: int) -> Job | None:
     now = utcnow()
-    candidate_id = db.scalar(
-        select(Job.id)
+    candidate = db.scalar(
+        select(Job)
         .where(
             Job.available_at <= now,
             or_(
@@ -19,32 +19,19 @@ def claim_next_job(db: Session, worker_id: str, lease_seconds: int) -> Job | Non
         )
         .order_by(Job.available_at.asc(), Job.id.asc())
         .limit(1)
+        .with_for_update(skip_locked=True)
     )
-    if candidate_id is None:
+    if candidate is None:
         return None
 
-    claimed = db.execute(
-        update(Job)
-        .where(
-            Job.id == candidate_id,
-            or_(
-                Job.status == JobStatus.PENDING.value,
-                (Job.status == JobStatus.RUNNING.value) & (Job.lease_expires_at < now),
-            ),
-        )
-        .values(
-            status=JobStatus.RUNNING.value,
-            lease_owner=worker_id,
-            lease_expires_at=now + timedelta(seconds=lease_seconds),
-            started_at=now,
-            attempt_count=Job.attempt_count + 1,
-        )
-    )
-    if claimed.rowcount != 1:
-        db.rollback()
-        return None
+    candidate.status = JobStatus.RUNNING.value
+    candidate.lease_owner = worker_id
+    candidate.lease_expires_at = now + timedelta(seconds=lease_seconds)
+    candidate.started_at = now
+    candidate.attempt_count += 1
     db.commit()
-    return db.get(Job, candidate_id)
+    db.refresh(candidate)
+    return candidate
 
 
 def complete_job(db: Session, job: Job) -> None:

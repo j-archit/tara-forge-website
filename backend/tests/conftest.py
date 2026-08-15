@@ -1,9 +1,11 @@
 from pathlib import Path
+import os
 
 import pytest
 from fastapi.testclient import TestClient
 
 from app.config import Settings
+from app.database import Base
 from app.main import create_app
 from app.models import Admin
 from app.security import hash_password
@@ -11,9 +13,10 @@ from app.security import hash_password
 
 @pytest.fixture
 def settings(tmp_path: Path) -> Settings:
+    database_url = os.environ.get("TEST_DATABASE_URL", f"sqlite:///{tmp_path / 'test.db'}")
     return Settings(
         environment="test",
-        database_url=f"sqlite:///{tmp_path / 'test.db'}",
+        database_url=database_url,
         vault_path=tmp_path / "vault",
         max_upload_bytes=64,
         secure_cookies=False,
@@ -23,7 +26,10 @@ def settings(tmp_path: Path) -> Settings:
 
 @pytest.fixture
 def app(settings: Settings):
-    return create_app(settings, create_schema=True)
+    application = create_app(settings, create_schema=True)
+    yield application
+    Base.metadata.drop_all(application.state.engine)
+    application.state.engine.dispose()
 
 
 @pytest.fixture

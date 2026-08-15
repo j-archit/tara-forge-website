@@ -7,7 +7,7 @@ Use a small Linux VPS with Docker Engine, the Docker Compose plugin, persistent 
 ## First deployment
 
 1. Clone the repository and check out the reviewed release commit.
-2. Copy `.env.example` to `.env`. Set `SITE_ADDRESS`, `ALLOWED_ORIGINS`, and `SECURE_COOKIES=true`. Keep `.env` out of Git.
+2. Copy `.env.example` to `.env`. Set a long random `POSTGRES_PASSWORD`, `SITE_ADDRESS`, `ALLOWED_ORIGINS`, and `SECURE_COOKIES=true`. Keep `.env` out of Git.
 3. Run `docker compose config` and inspect the resolved configuration.
 4. Run `docker compose build` followed by `docker compose up -d`.
 5. Create the first administrator without putting the password in shell history:
@@ -40,7 +40,7 @@ Do not bake the credential into an image or commit it to Git.
 
 ## Backups and restoration
 
-Create a transactionally consistent SQLite snapshot plus model-vault archive:
+Create a PostgreSQL custom-format dump plus model-vault archive:
 
 ```sh
 ./scripts/backup.sh --keep 14
@@ -48,7 +48,7 @@ Create a transactionally consistent SQLite snapshot plus model-vault archive:
 
 The PowerShell equivalent is `.\scripts\backup.ps1 -Keep 14`.
 
-The archive is written to the `application-backups` Docker volume and the tool retains the 14 newest archives by default. Copy archives off-host regularly and test restoration periodically. Schedule the command nightly with the host's systemd timer or cron, and apply a separate off-host retention and encryption policy.
+The archive is written to the `application-backups` Docker volume and the tool retains the 14 newest archives by default. Database credentials are passed to `pg_dump` through its environment rather than command arguments. Copy archives off-host regularly and test restoration periodically. Schedule the command nightly with the host's systemd timer or cron, and apply a separate off-host retention and encryption policy.
 
 Restoration replaces the live database and vault, so stop application writers first. The restore command requires `--force` and creates a pre-restore safety backup when a live database exists:
 
@@ -64,6 +64,7 @@ The PowerShell equivalent is `.\scripts\restore.ps1 taraforge-backup-YYYYMMDDTHH
 - `docker compose logs --since=30m backend worker` — inspect API and job failures.
 - `df -h` and `docker system df` — monitor host and Docker disk use; backend readiness fails when the vault filesystem falls below `MINIMUM_FREE_BYTES`.
 - `docker compose exec backend python -m alembic current` — confirm the migration revision.
+- `docker compose exec database pg_isready -U "$POSTGRES_USER" -d "$POSTGRES_DB"` — confirm PostgreSQL readiness.
 - `docker compose --profile tools run --rm backup` — verify backup creation after significant changes.
 - Keep Docker, the host OS, and dependency lock files patched; CI runs backend tests and coverage plus frontend tests, lint, types, and production build.
 
@@ -73,4 +74,4 @@ If disk use grows, inspect the model vault and backup volume before pruning. Nev
 
 Rotate an administrator password by rerunning `python -m app.cli create-admin` for the same email. Rotate Google credentials in the provider console, replace the host secret, and restart `backend` and `worker`. Treat credentials found in Git history as compromised even after deleting the visible file.
 
-For host loss, provision a clean Docker host, restore the same release of this repository and `.env`, copy a verified backup into the backup volume, run the guarded restore command, and start the stack. Validate administrator login, submission counts, vault checksums, a worker job, and Google synchronization before changing DNS. Keep the retired host or old stack stopped but recoverable until that validation and the chosen rollback window are complete.
+For host loss, provision a clean Docker host, restore the same release of this repository and `.env`, let Compose create an empty PostgreSQL database, copy a verified backup into the backup volume, run the guarded restore command, and start the stack. Validate administrator login, submission counts, vault checksums, a worker job, and Google synchronization before changing DNS. Keep the retired host or old stack stopped but recoverable until that validation and the chosen rollback window are complete.
