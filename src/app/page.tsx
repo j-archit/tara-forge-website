@@ -3,6 +3,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { HeroClient, ServiceCards, ShopHighlight, CoreValues, FAQSection } from "./HomeClient";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function HomePage() {
   return (
@@ -109,9 +110,11 @@ export default function HomePage() {
             <div className="flex flex-col items-center group">
               <div className="relative aspect-[4/3] w-[90%] overflow-hidden">
                 <div className="absolute inset-0 transition-transform duration-700 group-hover:scale-105">
-                  <img 
+                  <Image
                     src="/images/jet-engine.png" 
                     alt="3D Printed Jet Engine Model"
+                    fill
+                    sizes="(min-width: 1024px) 45vw, 90vw"
                     className="h-full w-full object-contain"
                     style={{
                       maskImage: 'linear-gradient(to top, black 80%, transparent 100%)',
