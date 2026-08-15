@@ -4,6 +4,14 @@ TaraForge3D is a single-origin full-stack website for public project intake and 
 
 ## Local development
 
+Start both services after creating `backend/.venv`:
+
+```powershell
+.\start_dev.ps1
+```
+
+Use `-Install` on Windows or `--install` with `./start_dev.sh` on Linux/macOS to install dependencies first. The scripts apply migrations, seed defaults, start both development servers, and stop both when interrupted.
+
 Frontend:
 
 ```powershell
@@ -24,6 +32,8 @@ python -m venv .venv
 Set `BACKEND_URL=http://127.0.0.1:8000` in `.env.local` for the Next.js server. The public browser only talks to Next.js routes under `/api`; the FastAPI service remains private.
 
 ## Verification
+
+Run the complete frontend and backend suite with `.\scripts\check.ps1` or `./scripts/check.sh`. Pass `-SkipBuild`/`--skip-build` for a faster local iteration.
 
 ```powershell
 npm test
