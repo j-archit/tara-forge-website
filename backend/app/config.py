@@ -16,6 +16,7 @@ class Settings(BaseSettings):
     database_url: str = "postgresql+psycopg://taraforge:local-dev-only@localhost:5432/taraforge"
     vault_path: Path = Path("./vault")
     max_upload_bytes: int = 25 * 1024 * 1024
+    content_image_max_bytes: int = 10 * 1024 * 1024
     minimum_free_bytes: int = Field(default=100 * 1024 * 1024, ge=0)
     login_rate_limit: int = Field(default=10, ge=1)
     login_rate_window_seconds: int = Field(default=15 * 60, ge=1)

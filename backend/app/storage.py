@@ -8,6 +8,7 @@ from fastapi import UploadFile
 
 
 ALLOWED_EXTENSIONS = {".stl", ".step", ".stp", ".3mf", ".obj"}
+ALLOWED_IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp"}
 SAFE_FILENAME = re.compile(r"[^A-Za-z0-9._-]+")
 
 
@@ -72,3 +73,49 @@ async def store_upload(upload: UploadFile, vault: Path, max_bytes: int) -> Store
         byte_size=total,
         checksum=digest.hexdigest(),
     )
+
+
+def _valid_image_header(extension: str, header: bytes) -> bool:
+    if extension == ".png":
+        return header.startswith(b"\x89PNG\r\n\x1a\n")
+    if extension in {".jpg", ".jpeg"}:
+        return header.startswith(b"\xff\xd8\xff")
+    if extension == ".webp":
+        return header.startswith(b"RIFF") and header[8:12] == b"WEBP"
+    return False
+
+
+async def store_content_image(upload: UploadFile, vault: Path, max_bytes: int) -> StoredUpload:
+    original = sanitized_filename(upload.filename or "image")
+    extension = Path(original).suffix.casefold()
+    if extension not in ALLOWED_IMAGE_EXTENSIONS:
+        raise InvalidUpload("Unsupported image file type")
+
+    destination_root = vault / "content"
+    destination_root.mkdir(parents=True, exist_ok=True)
+    key = f"{uuid.uuid4()}{extension}"
+    destination = destination_root / key
+    temporary = destination_root / f".{key}.uploading"
+    digest = hashlib.sha256()
+    total = 0
+    header = b""
+    try:
+        with temporary.open("wb") as output:
+            while chunk := await upload.read(1024 * 1024):
+                if not header:
+                    header = chunk[:16]
+                total += len(chunk)
+                if total > max_bytes:
+                    raise UploadTooLarge(f"Image exceeds the {max_bytes} byte limit")
+                digest.update(chunk)
+                output.write(chunk)
+        if total == 0 or not _valid_image_header(extension, header):
+            raise InvalidUpload("Uploaded file is not a valid supported image")
+        temporary.replace(destination)
+    except Exception:
+        temporary.unlink(missing_ok=True)
+        destination.unlink(missing_ok=True)
+        raise
+    finally:
+        await upload.close()
+    return StoredUpload(original, key, upload.content_type or "application/octet-stream", total, digest.hexdigest())

@@ -4,6 +4,7 @@ from contextlib import asynccontextmanager
 from urllib.parse import quote
 
 from fastapi import Cookie, Depends, FastAPI, File, Form, Header, HTTPException, Request, Response, UploadFile, status
+from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import func, select, text, update
 from sqlalchemy.orm import Session, selectinload
@@ -38,7 +39,7 @@ from .schemas import (
 )
 from .rate_limit import RateLimiter
 from .security import hash_secret, issue_session, normalize_email, resolve_session, revoke_session, verify_password
-from .storage import InvalidUpload, UploadTooLarge, store_upload
+from .storage import InvalidUpload, UploadTooLarge, store_content_image, store_upload
 
 
 def gallery_item_view(item: GalleryItem) -> dict:
@@ -619,6 +620,31 @@ def create_app(settings: Settings | None = None, *, create_schema: bool = False)
             .order_by(StoreItem.sort_order, StoreItem.id)
         ).all()
         return [store_item_view(item) for item in items]
+
+    @app.get("/api/content/media/{key}")
+    def content_media(key: str):
+        if not all(character.isalnum() or character in {"-", "_", "."} for character in key):
+            raise HTTPException(status_code=404, detail="Media not found")
+        media = app_settings.vault_path / "content" / key
+        if not media.is_file() or media.parent != app_settings.vault_path / "content":
+            raise HTTPException(status_code=404, detail="Media not found")
+        return FileResponse(media, headers={"Cache-Control": "public, max-age=31536000, immutable"})
+
+    @app.post("/api/admin/content/media", status_code=201)
+    async def upload_content_media(
+        file: UploadFile = File(),
+        db: Session = Depends(get_db),
+        admin_session=Depends(csrf_session),
+    ):
+        try:
+            stored = await store_content_image(file, app_settings.vault_path, app_settings.content_image_max_bytes)
+        except UploadTooLarge as exc:
+            raise HTTPException(status_code=413, detail=str(exc)) from exc
+        except InvalidUpload as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+        db.add(AuditEvent(admin_id=admin_session.admin_id, event_type="content.media_uploaded", entity_type="content_media", entity_id=stored.key))
+        db.commit()
+        return {"url": f"/api/content/media/{stored.key}", "fileName": stored.original_filename, "byteSize": stored.byte_size}
 
     @app.get("/api/admin/content/gallery")
     def admin_gallery(db: Session = Depends(get_db), _admin_session=Depends(current_session)):
