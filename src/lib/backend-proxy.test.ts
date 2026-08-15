@@ -13,7 +13,7 @@ describe("proxyToBackend", () => {
     );
     const request = new Request("http://site.test/api/intake?source=web", {
       method: "POST",
-      headers: { "content-type": "application/json", "idempotency-key": "key-1", authorization: "secret" },
+      headers: { "content-type": "application/json", "idempotency-key": "key-1", "x-forwarded-for": "203.0.113.10", authorization: "secret" },
       body: JSON.stringify({ name: "Ada" }),
     });
 
@@ -24,6 +24,7 @@ describe("proxyToBackend", () => {
     expect(String(target)).toBe("http://127.0.0.1:8000/api/intake?source=web");
     const headers = init?.headers as Headers;
     expect(headers.get("idempotency-key")).toBe("key-1");
+    expect(headers.get("x-forwarded-for")).toBe("203.0.113.10");
     expect(headers.has("authorization")).toBe(false);
     expect(new TextDecoder().decode(init?.body as ArrayBuffer)).toContain("Ada");
   });

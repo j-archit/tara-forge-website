@@ -64,3 +64,11 @@ def test_rejects_unsupported_and_oversized_uploads(client, intake_payload):
 def test_honeypot_rejects_bot_submission(client, intake_payload):
     response = client.post("/api/intake", data={**intake_payload, "hp_id": "filled"})
     assert response.status_code == 400
+
+
+def test_intake_rate_limit(client, app, intake_payload):
+    app.state.settings.intake_rate_limit = 1
+    assert client.post("/api/intake", data=intake_payload).status_code == 202
+    limited = client.post("/api/intake", data={**intake_payload, "description": "second"})
+    assert limited.status_code == 429
+    assert limited.headers["retry-after"] == "300"

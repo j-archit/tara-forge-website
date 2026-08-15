@@ -13,10 +13,10 @@ $env:DATABASE_URL = "sqlite:///./data/taraforge.db"
 .\.venv\Scripts\python.exe -m uvicorn app.main:app --reload
 ```
 
-Create or reset the initial administrator after applying migrations:
+Create or reset the initial administrator after applying migrations. The prompt keeps the password out of shell history and requires at least 12 characters:
 
 ```powershell
-.\.venv\Scripts\python.exe -m app.cli create-admin admin@taraforge.in "use-a-password-manager"
+.\.venv\Scripts\python.exe -m app.cli create-admin admin@taraforge.in
 ```
 
 ## Verification

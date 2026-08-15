@@ -18,6 +18,15 @@ def test_login_rejects_invalid_credentials(client, admin):
     assert response.json()["detail"] == "Invalid credentials"
 
 
+def test_login_rate_limit(client, admin, app):
+    app.state.settings.login_rate_limit = 1
+    payload = {"email": admin.email, "password": "wrong-password"}
+    assert client.post("/api/auth/login", json=payload).status_code == 401
+    limited = client.post("/api/auth/login", json=payload)
+    assert limited.status_code == 429
+    assert limited.headers["retry-after"] == "60"
+
+
 def test_authenticated_admin_can_list_intake(authenticated_client, intake_payload):
     created = authenticated_client.post("/api/intake", data=intake_payload)
     assert created.status_code == 202

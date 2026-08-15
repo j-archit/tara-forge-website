@@ -1,8 +1,9 @@
 import json
+import shutil
 from contextlib import asynccontextmanager
 from urllib.parse import quote
 
-from fastapi import Cookie, Depends, FastAPI, File, Form, Header, HTTPException, Response, UploadFile, status
+from fastapi import Cookie, Depends, FastAPI, File, Form, Header, HTTPException, Request, Response, UploadFile, status
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import func, select, text, update
 from sqlalchemy.orm import Session, selectinload
@@ -31,6 +32,7 @@ from .schemas import (
     TemplateUpdate,
     submission_view,
 )
+from .rate_limit import RateLimiter
 from .security import hash_secret, issue_session, normalize_email, resolve_session, revoke_session, verify_password
 from .storage import InvalidUpload, UploadTooLarge, store_upload
 
@@ -40,6 +42,8 @@ def create_app(settings: Settings | None = None, *, create_schema: bool = False)
     engine = create_database_engine(app_settings.database_url)
     session_factory = create_session_factory(engine)
     get_db = session_dependency(session_factory)
+    login_limiter = RateLimiter()
+    intake_limiter = RateLimiter()
 
     if create_schema:
         Base.metadata.create_all(engine)
@@ -89,10 +93,20 @@ def create_app(settings: Settings | None = None, *, create_schema: bool = False)
     @app.get("/ready")
     def ready(db: Session = Depends(get_db)):
         db.execute(text("SELECT 1"))
+        if shutil.disk_usage(app_settings.vault_path).free < app_settings.minimum_free_bytes:
+            raise HTTPException(status_code=503, detail="Insufficient storage space")
         return {"status": "ready"}
 
     @app.post("/api/auth/login", response_model=SessionView)
-    def login(payload: LoginRequest, response: Response, db: Session = Depends(get_db)):
+    def login(payload: LoginRequest, request: Request, response: Response, db: Session = Depends(get_db)):
+        client_key = request.headers.get("x-forwarded-for", "").split(",", 1)[0].strip()
+        client_key = client_key or (request.client.host if request.client else "unknown")
+        if not login_limiter.allow(
+            client_key,
+            app_settings.login_rate_limit,
+            app_settings.login_rate_window_seconds,
+        ):
+            raise HTTPException(status_code=429, detail="Too many login attempts", headers={"Retry-After": "60"})
         admin = db.scalar(select(Admin).where(Admin.email == normalize_email(payload.email)))
         if not admin or not admin.active or not verify_password(admin.password_hash, payload.password):
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
@@ -136,6 +150,7 @@ def create_app(settings: Settings | None = None, *, create_schema: bool = False)
 
     @app.post("/api/intake", response_model=IntakeResult, status_code=202)
     async def intake(
+        request: Request,
         name: str = Form(min_length=1, max_length=200),
         email: str = Form(min_length=3, max_length=320),
         projectType: str = Form(min_length=1, max_length=80),
@@ -146,6 +161,14 @@ def create_app(settings: Settings | None = None, *, create_schema: bool = False)
         idempotency_key: str | None = Header(default=None, alias="Idempotency-Key"),
         db: Session = Depends(get_db),
     ):
+        client_key = request.headers.get("x-forwarded-for", "").split(",", 1)[0].strip()
+        client_key = client_key or (request.client.host if request.client else "unknown")
+        if not intake_limiter.allow(
+            client_key,
+            app_settings.intake_rate_limit,
+            app_settings.intake_rate_window_seconds,
+        ):
+            raise HTTPException(status_code=429, detail="Too many submissions", headers={"Retry-After": "300"})
         if hp_id:
             raise HTTPException(status_code=400, detail="Invalid submission")
         normalized_email = normalize_email(email)

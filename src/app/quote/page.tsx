@@ -2,7 +2,6 @@ import * as React from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { IntakeForm } from "@/components/IntakeForm";
-import { ManualIntake } from "@/components/ManualIntake";
 import { ShieldCheck, Clock, Zap } from "lucide-react";
 import type { Metadata } from "next";
 
@@ -22,13 +21,7 @@ export default function QuotePage() {
             
             {/* Intake Portal (First on mobile) */}
             <div className="relative order-1 lg:order-2">
-              {/* Greyed out existing form */}
-              <div className="opacity-50 pointer-events-none filter blur-[1px] grayscale">
-                <IntakeForm />
-              </div>
-
-              {/* Status Message Overlay */}
-              <ManualIntake />
+              <IntakeForm />
             </div>
 
             {/* Context & Trust (Second on mobile) */}

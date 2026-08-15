@@ -1,4 +1,5 @@
 import argparse
+import getpass
 
 from sqlalchemy import select
 
@@ -28,11 +29,14 @@ def main() -> None:
     subcommands = parser.add_subparsers(dest="command", required=True)
     create = subcommands.add_parser("create-admin")
     create.add_argument("email")
-    create.add_argument("password")
+    create.add_argument("password", nargs="?", help="omit to enter it without exposing it in shell history")
     subcommands.add_parser("seed-defaults")
     args = parser.parse_args()
     if args.command == "create-admin":
-        create_admin(args.email, args.password)
+        password = args.password or getpass.getpass("Administrator password: ")
+        if len(password) < 12:
+            parser.error("administrator password must contain at least 12 characters")
+        create_admin(args.email, password)
     elif args.command == "seed-defaults":
         settings = get_settings()
         factory = create_session_factory(create_database_engine(settings.database_url))

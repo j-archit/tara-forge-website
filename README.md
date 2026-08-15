@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TaraForge3D
 
-## Getting Started
+TaraForge3D is a single-origin full-stack website for public project intake and private production administration. The existing Next.js UI is backed by a private FastAPI service, SQLite, durable model storage, a leased background worker, CuraEngine slicing, and optional Google Drive/Sheets synchronization.
 
-First, run the development server:
+## Local development
 
-```bash
+Frontend:
+
+```powershell
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Backend (from `backend`):
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt
+.\.venv\Scripts\python.exe -m alembic upgrade head
+.\.venv\Scripts\python.exe -m app.cli seed-defaults
+.\.venv\Scripts\python.exe -m uvicorn app.main:app --reload
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Set `BACKEND_URL=http://127.0.0.1:8000` in `.env.local` for the Next.js server. The public browser only talks to Next.js routes under `/api`; the FastAPI service remains private.
 
-## Learn More
+## Verification
 
-To learn more about Next.js, take a look at the following resources:
+```powershell
+npm test
+npm run lint
+npm run typecheck
+npm run build
+cd backend
+.\.venv\Scripts\python.exe -m pytest --cov=app --cov-report=term-missing
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deployment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The production stack is defined in `compose.yaml`: Caddy exposes the single public site, Next.js serves UI and same-origin API routes, FastAPI owns data and authentication, and a worker handles durable jobs. Copy `.env.example` to `.env`, update the domain and integrations, then follow `docs/DEPLOYMENT.md`.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The previous GitHub Pages workflow has been removed because a static host cannot run authentication, uploads, SQLite, or background processing.

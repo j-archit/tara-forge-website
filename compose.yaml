@@ -1,0 +1,122 @@
+name: taraforge
+
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+x-application-service: &application-service
+  build:
+    context: .
+    dockerfile: Dockerfile.backend
+  env_file:
+    - path: .env
+      required: false
+  volumes:
+    - application-data:/data
+    - model-vault:/vault
+  networks:
+    - private
+  read_only: true
+  tmpfs:
+    - /tmp:size=256m,mode=1777
+  logging: *default-logging
+
+services:
+  gateway:
+    image: caddy:2.10-alpine
+    restart: unless-stopped
+    depends_on:
+      web:
+        condition: service_healthy
+    environment:
+      SITE_ADDRESS: ${SITE_ADDRESS:-http://localhost}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    networks:
+      - public
+    logging: *default-logging
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    restart: unless-stopped
+    environment:
+      BACKEND_URL: http://backend:8000
+      NEXT_TELEMETRY_DISABLED: "1"
+    depends_on:
+      backend:
+        condition: service_healthy
+    expose:
+      - "3000"
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://127.0.0.1:3000/api/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    networks:
+      - public
+      - private
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+    logging: *default-logging
+
+  migrate:
+    <<: *application-service
+    command: ["sh", "-c", "python -m alembic upgrade head && python -m app.cli seed-defaults"]
+    restart: "no"
+
+  backend:
+    <<: *application-service
+    restart: unless-stopped
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    expose:
+      - "8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/ready', timeout=3)"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  worker:
+    <<: *application-service
+    command: ["python", "-m", "app.worker"]
+    restart: unless-stopped
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+
+  backup:
+    <<: *application-service
+    profiles: ["tools"]
+    command: ["python", "-m", "app.backup", "create", "/backups"]
+    volumes:
+      - application-data:/data
+      - model-vault:/vault
+      - application-backups:/backups
+    restart: "no"
+
+volumes:
+  application-data:
+  model-vault:
+  application-backups:
+  caddy-data:
+  caddy-config:
+
+networks:
+  public:
+  private:
+    internal: true

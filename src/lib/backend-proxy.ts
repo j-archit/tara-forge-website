@@ -5,6 +5,8 @@ const FORWARDED_REQUEST_HEADERS = [
   "cookie",
   "idempotency-key",
   "x-csrf-token",
+  "x-forwarded-for",
+  "x-forwarded-proto",
 ] as const;
 
 const FORWARDED_RESPONSE_HEADERS = ["content-type", "cache-control"] as const;
