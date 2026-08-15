@@ -48,4 +48,6 @@ cd backend
 
 The production stack is defined in `compose.yaml`: Caddy exposes the single public site, Next.js serves UI and same-origin API routes, FastAPI owns data and authentication, and a worker handles durable jobs. Copy `.env.example` to `.env`, update the domain and integrations, then follow `docs/DEPLOYMENT.md`.
 
+On the server, `./scripts/deploy.sh` (or `.\scripts\deploy.ps1`) validates Compose, backs up a running installation, fast-forwards Git, rebuilds, and waits for service health. Matching `backup` and guarded `restore` scripts are available in both shells.
+
 The previous GitHub Pages workflow has been removed because a static host cannot run authentication, uploads, SQLite, or background processing.

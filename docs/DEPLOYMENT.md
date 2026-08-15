@@ -18,7 +18,7 @@ Use a small Linux VPS with Docker Engine, the Docker Compose plugin, persistent 
 
 6. Verify `docker compose ps`, `https://your-domain.example/api/health`, a public intake submission, administrator login, and the resulting worker job.
 
-Caddy obtains and renews TLS certificates automatically when the public DNS records resolve correctly. Deploy application updates with `git pull`, `docker compose build`, and `docker compose up -d`; the one-shot `migrate` service applies database migrations before the API and worker start.
+Caddy obtains and renews TLS certificates automatically when the public DNS records resolve correctly. Deploy application updates with `./scripts/deploy.sh` (or `.\scripts\deploy.ps1` on Windows). The utility validates configuration, backs up a running installation, requires a clean Git worktree, fast-forwards Git, rebuilds, and waits for health. Use `--skip-pull`/`-SkipPull` when deploying an already-reviewed checkout. The one-shot `migrate` service applies database migrations before the API and worker start.
 
 ## Google Drive and Sheets
 
@@ -43,18 +43,20 @@ Do not bake the credential into an image or commit it to Git.
 Create a transactionally consistent SQLite snapshot plus model-vault archive:
 
 ```sh
-docker compose --profile tools run --rm backup
+./scripts/backup.sh --keep 14
 ```
+
+The PowerShell equivalent is `.\scripts\backup.ps1 -Keep 14`.
 
 The archive is written to the `application-backups` Docker volume and the tool retains the 14 newest archives by default. Copy archives off-host regularly and test restoration periodically. Schedule the command nightly with the host's systemd timer or cron, and apply a separate off-host retention and encryption policy.
 
 Restoration replaces the live database and vault, so stop application writers first. The restore command requires `--force` and creates a pre-restore safety backup when a live database exists:
 
 ```sh
-docker compose stop backend worker web gateway
-docker compose --profile tools run --rm backup python -m app.backup restore /backups/taraforge-backup-YYYYMMDDTHHMMSSZ.zip --force
-docker compose up -d
+./scripts/restore.sh taraforge-backup-YYYYMMDDTHHMMSSZ.zip --force
 ```
+
+The PowerShell equivalent is `.\scripts\restore.ps1 taraforge-backup-YYYYMMDDTHHMMSSZ.zip -Force`. Both wrappers accept only an archive filename in the managed backup volume, stop the gateway and every database writer, and leave services stopped if restoration fails.
 
 ## Operational checks
 

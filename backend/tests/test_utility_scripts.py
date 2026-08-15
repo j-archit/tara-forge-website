@@ -40,3 +40,43 @@ def test_check_scripts_run_the_complete_verification_suite() -> None:
 
     assert "SkipBuild" in powershell
     assert "--skip-build" in shell
+
+
+def test_backup_scripts_validate_compose_and_apply_retention() -> None:
+    powershell = read_script("scripts/backup.ps1")
+    shell = read_script("scripts/backup.sh")
+
+    for script in (powershell, shell):
+        assert "docker compose config --quiet" in script
+        assert "python -m app.backup create /backups --keep" in script
+        assert "365" in script
+
+
+def test_restore_scripts_require_force_and_stop_every_writer() -> None:
+    powershell = read_script("scripts/restore.ps1")
+    shell = read_script("scripts/restore.sh")
+
+    for script in (powershell, shell):
+        assert "taraforge-backup-" in script
+        assert "docker compose stop gateway web backend worker" in script
+        assert "python -m app.backup restore" in script
+        assert "--force" in script
+        assert "Services remain stopped" in script
+        assert "docker compose up -d --remove-orphans --wait --wait-timeout 120" in script
+
+    assert "[IO.Path]::GetFileName" in powershell
+    assert '[[ "$FORCE" == true ]]' in shell
+
+
+def test_deploy_scripts_backup_before_pull_build_and_health_wait() -> None:
+    powershell = read_script("scripts/deploy.ps1")
+    shell = read_script("scripts/deploy.sh")
+
+    for script in (powershell, shell):
+        backup = script.index("backup.")
+        pull = script.index("git pull --ff-only")
+        build = script.index("docker compose build")
+        start = script.index("docker compose up -d --remove-orphans --wait --wait-timeout 120")
+        assert backup < pull < build < start
+        assert "docker compose config --quiet" in script
+        assert "git status --porcelain --untracked-files=normal" in script
