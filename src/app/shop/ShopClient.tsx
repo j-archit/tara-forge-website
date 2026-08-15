@@ -7,89 +7,90 @@ import { Footer } from "@/components/Footer";
 import { Logo } from "@/components/Logo";
 import { fadeIn } from "@/lib/animations";
 import { trackProductInterest, trackCTA } from "@/lib/analytics";
+import type { StoreItem } from "@/lib/admin-api";
 
-interface Product {
-  id: string | number;
-  title: string;
-  category: string;
-  description: string;
-  price: number; 
-  currency: string;
-  imageGradient: string;
-  accent: string;
-  tag?: string;
-}
-
-const products: Product[] = [
+const fallbackProducts: StoreItem[] = [
   {
     id: "tf-desk-organizer",
     title: "Minimalist Desk Set",
     category: "Living",
     description: "A geometric 3-piece set for your workspace. Designed for modularity and a clean aesthetic finish.",
-    price: 1249,
+    pricePaise: 124900,
     currency: "₹",
-    imageGradient: "from-blue-900/40 via-slate-900 to-slate-950",
+    gradient: "from-blue-900/40 via-slate-900 to-slate-950",
     accent: "rgba(56, 189, 248, 0.4)",
-    tag: "Popular",
+    badge: "Popular", imageUrl: null, published: true, available: false, sortOrder: 0,
   },
   {
     id: "tf-planter-stellar",
     title: "Celestial Planter",
     category: "Living",
     description: "Self-watering geometric planter with a celestial pattern. Durable PETG construction for indoor/outdoor use.",
-    price: 899,
+    pricePaise: 89900,
     currency: "₹",
-    imageGradient: "from-purple-900/40 via-slate-900 to-slate-950",
-    accent: "rgba(168, 85, 247, 0.4)",
+    gradient: "from-purple-900/40 via-slate-900 to-slate-950",
+    accent: "rgba(168, 85, 247, 0.4)", badge: null, imageUrl: null, published: true, available: false, sortOrder: 1,
   },
   {
     id: "tf-lamp-nebula",
     title: "Nebula Ambient Lamp",
     category: "Decor",
     description: "Lithophane-style light cover that projects cosmic shadows. Includes custom base and LED fitting.",
-    price: 2499,
+    pricePaise: 249900,
     currency: "₹",
-    imageGradient: "from-amber-900/40 via-slate-900 to-slate-950",
+    gradient: "from-amber-900/40 via-slate-900 to-slate-950",
     accent: "rgba(251, 191, 36, 0.4)",
-    tag: "Premium",
+    badge: "Premium", imageUrl: null, published: true, available: false, sortOrder: 2,
   },
   {
     id: "tf-keycap-forge",
     title: "Forge Edition Keycaps",
     category: "Customs",
     description: "Set of 4 artisan keycaps featuring the TaraForge3D logo. High-detail precision prints for mechanical keyboards.",
-    price: 599,
+    pricePaise: 59900,
     currency: "₹",
-    imageGradient: "from-emerald-900/40 via-slate-900 to-slate-950",
-    accent: "rgba(16, 185, 129, 0.4)",
+    gradient: "from-emerald-900/40 via-slate-900 to-slate-950",
+    accent: "rgba(16, 185, 129, 0.4)", badge: null, imageUrl: null, published: true, available: false, sortOrder: 3,
   },
   {
     id: "tf-headphone-stand",
     title: "Aero Headphone Stand",
     category: "Living",
     description: "Ergonomic stand designed for weight balance and minimalistic profile. Printed in reinforced PLA.",
-    price: 1599,
+    pricePaise: 159900,
     currency: "₹",
-    imageGradient: "from-rose-900/40 via-slate-900 to-slate-950",
-    accent: "rgba(244, 63, 94, 0.4)",
+    gradient: "from-rose-900/40 via-slate-900 to-slate-950",
+    accent: "rgba(244, 63, 94, 0.4)", badge: null, imageUrl: null, published: true, available: false, sortOrder: 4,
   },
   {
     id: "tf-swatch-pack",
     title: "Material Swatch Pack",
     category: "Makers",
     description: "Complete set of 12 material swatches including PLA, PETG, and Specialty filaments for tactile review.",
-    price: 450,
+    pricePaise: 45000,
     currency: "₹",
-    imageGradient: "from-slate-800 via-slate-900 to-slate-950",
+    gradient: "from-slate-800 via-slate-900 to-slate-950",
     accent: "rgba(148, 163, 184, 0.4)",
-    tag: "Sample Kit"
+    badge: "Sample Kit", imageUrl: null, published: true, available: false, sortOrder: 5,
   }
 ];
 
 export default function ShopClient() {
-  const handleCheckout = (product: Product) => {
+  const [products, setProducts] = React.useState(fallbackProducts);
+
+  React.useEffect(() => {
+    const controller = new AbortController();
+    fetch("/api/content/store", { signal: controller.signal, cache: "no-store" })
+      .then((response) => response.ok ? response.json() as Promise<StoreItem[]> : Promise.reject())
+      .then(setProducts)
+      .catch(() => undefined);
+    return () => controller.abort();
+  }, []);
+
+  const handleCheckout = (product: StoreItem) => {
+    const price = product.pricePaise / 100;
     console.log(`Starting checkout for: ${product.title} (ID: ${product.id})`);
-    trackProductInterest(product.id.toString(), product.title, product.price, 'buy_click');
+    trackProductInterest(product.id, product.title, price, product.available ? 'buy_click' : 'inquiry_click');
     
     const subject = encodeURIComponent(`Order Inquiry: ${product.title}`);
     const body = encodeURIComponent(`Hello TaraForge3D,\n\nI am interested in purchasing the ${product.title} (SKU: ${product.id}).\n\nPlease let me know the shipping process.\n\nThank you!`);
@@ -107,7 +108,7 @@ export default function ShopClient() {
             <h1 className="flex flex-wrap items-center justify-center sm:justify-start gap-4 text-4xl font-semibold tracking-tight text-slate-50 sm:text-5xl lg:text-6xl mb-8">
               The <span className="celestial-gradient-text">Shop</span>
               <span className="inline-flex items-center rounded-full border border-brand-gold/30 bg-brand-gold/10 px-4 py-1.5 text-sm sm:text-base font-semibold text-brand-gold shadow-[0_0_20px_rgba(201,168,76,0.15)]">
-                Coming Soon
+                {products.some((product) => product.available) ? "Now Open" : "Coming Soon"}
               </span>
             </h1>
             <p className="max-w-2xl text-pretty text-base text-slate-300 text-center sm:text-left">
@@ -129,14 +130,14 @@ export default function ShopClient() {
                 {...fadeIn(idx * 0.1)}
                 className="group relative flex flex-col overflow-hidden rounded-2xl border border-slate-800/80 bg-slate-900/30 transition-all hover:border-brand-gold/50 shadow-[0_15px_50px_-15px_rgba(0,0,0,0.5)]"
               >
-                <div className={`relative aspect-square overflow-hidden bg-gradient-to-br ${product.imageGradient}`}>
+                <div className={`relative aspect-square overflow-hidden bg-gradient-to-br bg-cover bg-center ${product.gradient}`} style={product.imageUrl ? { backgroundImage: `url(${product.imageUrl})` } : undefined}>
                   <div 
                     className="absolute inset-0 opacity-40 transition-opacity group-hover:opacity-70"
                     style={{ background: `radial-gradient(circle at center, ${product.accent}, transparent 70%)` }}
                   />
-                  {product.tag && (
+                  {product.badge && (
                     <span className="absolute left-4 top-4 rounded-full bg-brand-gold/90 px-3 py-1 text-[10px] font-bold text-slate-950 shadow-[var(--brand-glow-gold)]">
-                      {product.tag}
+                      {product.badge}
                     </span>
                   )}
                   <div className="absolute inset-0 flex items-center justify-center opacity-10 group-hover:scale-110 transition-transform duration-700">
@@ -150,7 +151,7 @@ export default function ShopClient() {
                       {product.category}
                     </span>
                     <span className="text-sm font-bold text-brand-gold">
-                      {product.currency}{product.price.toLocaleString()}
+                      {product.currency}{(product.pricePaise / 100).toLocaleString()}
                     </span>
                   </div>
                   <h3 className="text-lg font-semibold text-slate-100 group-hover:text-brand-gold transition-colors">
@@ -165,7 +166,7 @@ export default function ShopClient() {
                       onClick={() => handleCheckout(product)}
                       className="w-full rounded-xl bg-slate-800 py-3 text-xs font-bold text-slate-100 transition-all hover:bg-brand-gold hover:text-slate-950 active:scale-95 shadow-lg group-hover:shadow-brand-gold/10"
                     >
-                      Buy Now
+                      {product.available ? "Buy Now" : "Enquire"}
                     </button>
                   </div>
                 </div>

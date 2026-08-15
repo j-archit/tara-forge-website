@@ -53,7 +53,7 @@ export const trackFormStep = (step: FormStep, params?: { field?: string; error?:
 };
 
 // 6. Shop Product Interest
-export const trackProductInterest = (productId: string, productName: string, price: number, action: 'view' | 'buy_click') => {
+export const trackProductInterest = (productId: string, productName: string, price: number, action: 'view' | 'buy_click' | 'inquiry_click') => {
   trackEvent("product_interest", "ecommerce", productName, price, { product_id: productId, action });
 };
 

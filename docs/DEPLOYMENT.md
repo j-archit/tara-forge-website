@@ -68,7 +68,7 @@ The PowerShell equivalent is `.\scripts\restore.ps1 taraforge-backup-YYYYMMDDTHH
 - `docker compose --profile tools run --rm backup` — verify backup creation after significant changes.
 - Keep Docker, the host OS, and dependency lock files patched; CI runs backend tests and coverage plus frontend tests, lint, types, and production build.
 
-If disk use grows, inspect the model vault and backup volume before pruning. Never delete the SQLite database, vault, or Docker volumes without a verified off-host backup.
+If disk use grows, inspect PostgreSQL, the model vault, and the backup volume before pruning. Never delete the PostgreSQL data, vault, or Docker volumes without a verified off-host backup.
 
 ## Credentials and disaster recovery
 

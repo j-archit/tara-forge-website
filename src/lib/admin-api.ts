@@ -43,6 +43,37 @@ export type Job = {
 
 export type TemplateMap = Record<string, { subject: string; body: string; version: number }>;
 
+export type GalleryItem = {
+  id: number;
+  title: string;
+  category: string;
+  description: string;
+  tags: string[];
+  imageUrl: string | null;
+  gradient: string;
+  accent: string;
+  published: boolean;
+  sortOrder: number;
+};
+
+export type GalleryItemInput = Omit<GalleryItem, "id">;
+
+export type StoreItem = {
+  id: string;
+  title: string;
+  category: string;
+  description: string;
+  pricePaise: number;
+  currency: string;
+  imageUrl: string | null;
+  gradient: string;
+  accent: string;
+  badge: string | null;
+  published: boolean;
+  available: boolean;
+  sortOrder: number;
+};
+
 export class ApiError extends Error {
   constructor(public status: number, message: string) {
     super(message);
@@ -97,6 +128,19 @@ export const adminApi = {
       body: JSON.stringify({ subject, body }),
     }),
   jobs: () => apiRequest<Job[]>("/api/admin/jobs"),
+  uploadMedia: (file: File) => {
+    const body = new FormData();
+    body.append("file", file);
+    return apiRequest<{ url: string; fileName: string; byteSize: number }>("/api/admin/content/media", { method: "POST", body });
+  },
+  gallery: () => apiRequest<GalleryItem[]>("/api/admin/content/gallery"),
+  createGallery: (item: GalleryItemInput) => apiRequest<GalleryItem>("/api/admin/content/gallery", { method: "POST", body: JSON.stringify(item) }),
+  saveGallery: (item: GalleryItem) => apiRequest<GalleryItem>(`/api/admin/content/gallery/${item.id}`, { method: "PUT", body: JSON.stringify(item) }),
+  deleteGallery: (id: number) => apiRequest<void>(`/api/admin/content/gallery/${id}`, { method: "DELETE" }),
+  store: () => apiRequest<StoreItem[]>("/api/admin/content/store"),
+  createStore: (item: StoreItem) => apiRequest<StoreItem>("/api/admin/content/store", { method: "POST", body: JSON.stringify(item) }),
+  saveStore: (item: StoreItem) => apiRequest<StoreItem>(`/api/admin/content/store/${item.id}`, { method: "PUT", body: JSON.stringify(item) }),
+  deleteStore: (id: string) => apiRequest<void>(`/api/admin/content/store/${id}`, { method: "DELETE" }),
   retryJob: (id: number) => apiRequest(`/api/admin/jobs/${id}/retry`, { method: "POST" }),
   slice: (id: string) => apiRequest(`/api/admin/submissions/${id}/slice`, { method: "POST" }),
   email: (id: string) => apiRequest<{ mailto: string }>(`/api/admin/email/${id}`),

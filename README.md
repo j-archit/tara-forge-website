@@ -50,4 +50,8 @@ The production stack is defined in `compose.yaml`: Caddy exposes the single publ
 
 On the server, `./scripts/deploy.sh` (or `.\scripts\deploy.ps1`) validates Compose, backs up a running installation, fast-forwards Git, rebuilds, and waits for service health. Matching `backup` and guarded `restore` scripts are available in both shells.
 
-The previous GitHub Pages workflow has been removed because a static host cannot run authentication, uploads, SQLite, or background processing.
+## Administration
+
+The rebuilt `/admin` workspace uses FastAPI as its single backend for authentication, operational data, and managed public content. Administrators can manage inquiries, gallery/prior-print cards, store listings, uploaded content images, slicer profiles, estimate templates, and background jobs. See `docs/ADMIN.md` for the complete edit surface.
+
+The previous GitHub Pages workflow has been removed because a static host cannot run authentication, uploads, PostgreSQL-backed APIs, or background processing.

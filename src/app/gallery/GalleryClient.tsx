@@ -7,60 +7,78 @@ import { Footer } from "@/components/Footer";
 import { fadeIn } from "@/lib/animations";
 import { TestimonialMarquee } from "@/components/TestimonialMarquee";
 import { trackCTA, trackEvent } from "@/lib/analytics";
+import type { GalleryItem } from "@/lib/admin-api";
 
-const galleryItems = [
+const fallbackGalleryItems: GalleryItem[] = [
   {
+    id: 1,
     title: "One Piece Figurine",
     category: "Artistic Prints",
     description: "High-detail resin-like finish on a custom anime collectible. Optimized for fine features and smooth surfaces.",
     tags: ["PLA+", "0.12mm Layer"],
     gradient: "from-indigo-900 via-slate-950 to-slate-950",
-    accent: "rgba(96,165,250,0.55)"
+    accent: "rgba(96,165,250,0.55)", imageUrl: null, published: true, sortOrder: 0,
   },
   {
+    id: 2,
     title: "Mechanical Gear Assembly",
     category: "Functional Parts",
     description: "Multi-part assembly with tight tolerances. Tested for fit and durability in a mechanical prototype.",
     tags: ["PETG", "40% Infill"],
     gradient: "from-emerald-900 via-slate-950 to-slate-950",
-    accent: "rgba(45,212,191,0.55)"
+    accent: "rgba(45,212,191,0.55)", imageUrl: null, published: true, sortOrder: 1,
   },
   {
+    id: 3,
     title: "Custom Drone Frame",
     category: "Prototyping",
     description: "Lightweight and rigid frame design for a custom quadcopter. Iterated through 3 design cycles.",
     tags: ["Carbon PLA", "Rigid"],
     gradient: "from-fuchsia-900 via-slate-950 to-slate-950",
-    accent: "rgba(244,114,182,0.6)"
+    accent: "rgba(244,114,182,0.6)", imageUrl: null, published: true, sortOrder: 2,
   },
   {
+    id: 4,
     title: "Architectural Scaled Model",
     category: "Visualization",
     description: "Detailed scale model of a modern villa. Used for client presentation and spatial analysis.",
     tags: ["Matte PLA", "Scalable"],
     gradient: "from-blue-900 via-slate-950 to-slate-950",
-    accent: "rgba(59,130,246,0.5)"
+    accent: "rgba(59,130,246,0.5)", imageUrl: null, published: true, sortOrder: 3,
   },
   {
+    id: 5,
     title: "Industrial Cable Organizer",
     category: "Batching",
     description: "Small-batch run of 50 units for a server room setup. Consistent quality across the entire batch.",
     tags: ["PETG", "Batch Run"],
     gradient: "from-amber-900 via-slate-950 to-slate-950",
-    accent: "rgba(251,191,36,0.5)"
+    accent: "rgba(251,191,36,0.5)", imageUrl: null, published: true, sortOrder: 4,
   },
   {
+    id: 6,
     title: "Ergonomic Mouse Shell",
     category: "Design Validation",
     description: "Prototype for a custom vertical mouse. Used to validate grip comfort before final production.",
     tags: ["PLA", "Ergonomic"],
     gradient: "from-rose-900 via-slate-950 to-slate-950",
-    accent: "rgba(244,63,94,0.5)"
+    accent: "rgba(244,63,94,0.5)", imageUrl: null, published: true, sortOrder: 5,
   }
 ];
 
 
 export default function GalleryClient() {
+  const [galleryItems, setGalleryItems] = React.useState(fallbackGalleryItems);
+
+  React.useEffect(() => {
+    const controller = new AbortController();
+    fetch("/api/content/gallery", { signal: controller.signal, cache: "no-store" })
+      .then((response) => response.ok ? response.json() as Promise<GalleryItem[]> : Promise.reject())
+      .then(setGalleryItems)
+      .catch(() => undefined);
+    return () => controller.abort();
+  }, []);
+
   return (
     <main className="relative flex min-h-screen flex-col text-slate-50">
       <Navbar />
@@ -87,10 +105,11 @@ export default function GalleryClient() {
           >
             {galleryItems.map((item, idx) => (
               <motion.div 
-                key={idx}
+                key={item.id}
                 {...fadeIn(idx * 0.1)}
                 onViewportEnter={() => trackEvent('gallery_item_view', 'engagement', item.title, undefined, { category: item.category })}
-                className={`relative aspect-[4/3] overflow-hidden rounded-2xl border border-slate-800/80 bg-gradient-to-br ${item.gradient} p-6 shadow-[0_20px_90px_rgba(15,23,42,0.95)] group`}
+                className={`relative aspect-[4/3] overflow-hidden rounded-2xl border border-slate-800/80 bg-gradient-to-br ${item.gradient} bg-cover bg-center p-6 shadow-[0_20px_90px_rgba(15,23,42,0.95)] group`}
+                style={item.imageUrl ? { backgroundImage: `linear-gradient(rgba(2,6,23,.25),rgba(2,6,23,.88)),url(${item.imageUrl})` } : undefined}
               >
                 <div 
                   className="absolute inset-0 opacity-80 transition-opacity group-hover:opacity-100" 

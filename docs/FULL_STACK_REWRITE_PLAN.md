@@ -52,7 +52,7 @@ These are the proposed defaults to approve before implementation begins.
 | --- | --- | --- |
 | Application | Next.js App Router and TypeScript | Already used by the public site; supports pages and server endpoints in one codebase. |
 | Runtimes | Node.js for Next.js; Python 3.12 for FastAPI and the worker | Preserves the existing UI stack while making backend behavior directly testable with pytest. |
-| Database | SQLite in WAL mode behind a service/repository layer | Lowest operational burden for a single-host, low-volume application and easiest migration from the current database. |
+| Database | PostgreSQL 17 through SQLAlchemy/Alembic | Supports concurrent workers, managed-content growth, stronger operational tooling, and future horizontal scaling. |
 | Schema/migrations | SQLAlchemy 2 and Alembic | Mature Python data layer with explicit, versioned migrations and a straightforward path to PostgreSQL. |
 | Upload format | Streaming `multipart/form-data` | Avoids the roughly 33% size expansion and memory duplication caused by the current Base64 JSON upload. |
 | File storage | Local persistent volume behind a storage interface | Matches the current vault and single-host deployment; permits later S3-compatible storage without changing UI/API contracts. |
@@ -63,7 +63,7 @@ These are the proposed defaults to approve before implementation begins.
 | Backend tests | pytest, pytest-asyncio, HTTPX, and isolated temporary databases | Covers API, services, jobs, integrations, and migration behavior in the backend's native runtime. |
 | Frontend tests | Vitest, React Testing Library, and browser-flow QA | Covers components and client behavior while retaining the existing UI. |
 
-SQLite is an intentional initial constraint: one host and modest traffic. The repository and job APIs must avoid SQLite-specific behavior outside the data layer so PostgreSQL can replace it if multi-instance deployment becomes necessary.
+PostgreSQL is the production database. Workers claim jobs with row locks and `SKIP LOCKED`; local pytest may use SQLite only as a fast disposable fallback, while CI validates the full suite against PostgreSQL 17.
 
 ## 4. Non-goals for this rewrite
 
@@ -301,7 +301,7 @@ Goal: create the new durable data foundation.
 Work:
 
 - implement the approved schema and initial migration;
-- configure SQLite WAL mode, foreign keys, busy timeout, and transactional helpers;
+- configure PostgreSQL connection health, migrations, constraints, and transactional helpers;
 - implement typed repositories for clients, submissions, profiles, runs, jobs, templates, sessions, and audit events;
 - seed default PLA and TPU profiles and the estimate email template;
 - add database backup and restore commands;
@@ -617,13 +617,13 @@ The main uncertainty is CuraEngine equivalence across real models and profiles. 
 
 Implementation should not begin until the owner approves:
 
-1. the proposed technical baseline, especially SQLite, SQLAlchemy/Alembic, and single-host deployment;
+1. the proposed technical baseline, especially PostgreSQL, SQLAlchemy/Alembic, and single-host deployment;
 2. whether administration is single-user initially;
 3. maximum upload size and supported file formats;
 4. whether bot protection beyond honeypot and rate limiting is required at launch;
 5. whether Google Drive and Sheets remain authoritative integrations or become secondary exports;
 6. the required rollback observation window;
 7. the expected hosting budget and target provider;
-8. whether the `/shop` area remains informational during this rewrite.
+8. whether the `/shop` area remains informational during this rewrite. Resolved: listings and availability are managed from the rebuilt admin workspace.
 
 Once approved, implementation starts at Phase 0 and proceeds through reviewable phase branches/commits. No legacy service is retired until the final cutover gate.

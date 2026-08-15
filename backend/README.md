@@ -26,4 +26,4 @@ Create or reset the initial administrator after applying migrations. The prompt 
 .\.venv\Scripts\python.exe -m compileall -q app tests migrations
 ```
 
-Tests use isolated temporary SQLite databases and vault directories. They do not read or modify production data.
+CI runs pytest against PostgreSQL 17. Local tests use isolated temporary SQLite databases as a fast fallback unless `TEST_DATABASE_URL` points at a disposable PostgreSQL database. Test vaults are always temporary and never read or modify production data.
