@@ -4,6 +4,7 @@ from sqlalchemy import select
 
 from .config import get_settings
 from .database import create_database_engine, create_session_factory
+from .defaults import seed_defaults
 from .models import Admin
 from .security import hash_password, normalize_email
 
@@ -28,9 +29,15 @@ def main() -> None:
     create = subcommands.add_parser("create-admin")
     create.add_argument("email")
     create.add_argument("password")
+    subcommands.add_parser("seed-defaults")
     args = parser.parse_args()
     if args.command == "create-admin":
         create_admin(args.email, args.password)
+    elif args.command == "seed-defaults":
+        settings = get_settings()
+        factory = create_session_factory(create_database_engine(settings.database_url))
+        with factory() as db:
+            seed_defaults(db)
 
 
 if __name__ == "__main__":

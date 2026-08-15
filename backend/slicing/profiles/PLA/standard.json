@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "metadata": {
+    "name": "Standard PLA",
+    "description": "0.2 mm layers, 15% infill, 0.4 mm nozzle"
+  },
+  "settings": {
+    "layer_height": { "default_value": 0.2 },
+    "line_width": { "default_value": 0.4 },
+    "wall_line_count": { "default_value": 3 },
+    "top_bottom_thickness": { "default_value": 0.8 },
+    "infill_sparse_density": { "default_value": 15 },
+    "speed_print": { "default_value": 50 },
+    "material_diameter": { "default_value": 1.75 },
+    "material_final_print_temperature": { "default_value": 210 },
+    "material_bed_temperature": { "default_value": 60 },
+    "cool_fan_enabled": { "default_value": true },
+    "skirt_line_count": { "default_value": 2 },
+    "adhesion_type": { "default_value": "skirt" }
+  }
+}

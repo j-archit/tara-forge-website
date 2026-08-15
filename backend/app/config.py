@@ -23,6 +23,13 @@ class Settings(BaseSettings):
     allowed_origins: list[str] = Field(
         default_factory=lambda: ["http://localhost:3000", "http://127.0.0.1:3000"]
     )
+    cura_engine_binary: str = "CuraEngine"
+    slicer_definition_path: Path = Path("./slicing/definitions/forge_printer.json")
+    worker_poll_seconds: float = 2.0
+    worker_lease_seconds: int = 300
+    google_service_account_key_path: Path | None = None
+    google_drive_folder_id: str | None = None
+    google_sheet_id: str | None = None
 
 
 @lru_cache

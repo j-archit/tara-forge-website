@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "metadata": {
+    "name": "Standard PETG",
+    "description": "0.2 mm layers, 20% infill, 0.4 mm nozzle"
+  },
+  "settings": {
+    "layer_height": { "default_value": 0.2 },
+    "line_width": { "default_value": 0.4 },
+    "wall_line_count": { "default_value": 3 },
+    "top_bottom_thickness": { "default_value": 0.8 },
+    "infill_sparse_density": { "default_value": 20 },
+    "speed_print": { "default_value": 45 },
+    "material_diameter": { "default_value": 1.75 },
+    "material_final_print_temperature": { "default_value": 240 },
+    "material_bed_temperature": { "default_value": 80 },
+    "cool_fan_enabled": { "default_value": true },
+    "skirt_line_count": { "default_value": 2 },
+    "adhesion_type": { "default_value": "skirt" }
+  }
+}

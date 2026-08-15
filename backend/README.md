@@ -9,6 +9,7 @@ python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt
 $env:DATABASE_URL = "sqlite:///./data/taraforge.db"
 .\.venv\Scripts\python.exe -m alembic upgrade head
+.\.venv\Scripts\python.exe -m app.cli seed-defaults
 .\.venv\Scripts\python.exe -m uvicorn app.main:app --reload
 ```
 
