@@ -1,15 +1,36 @@
 import json
 from contextlib import asynccontextmanager
+from urllib.parse import quote
 
 from fastapi import Cookie, Depends, FastAPI, File, Form, Header, HTTPException, Response, UploadFile, status
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy import select, text
+from sqlalchemy import func, select, text, update
 from sqlalchemy.orm import Session, selectinload
 
 from .config import Settings, get_settings
 from .database import Base, create_database_engine, create_session_factory, session_dependency
-from .models import Admin, AuditEvent, Client, Job, Submission
-from .schemas import AdminView, IntakeResult, LoginRequest, SessionView, SubmissionView, submission_view
+from .models import (
+    Admin,
+    AuditEvent,
+    Client,
+    EmailTemplate,
+    Job,
+    JobStatus,
+    SlicerProfile,
+    SlicerRun,
+    Submission,
+    utcnow,
+)
+from .schemas import (
+    AdminView,
+    IntakeResult,
+    LoginRequest,
+    ProfileUpdate,
+    SessionView,
+    SubmissionView,
+    TemplateUpdate,
+    submission_view,
+)
 from .security import hash_secret, issue_session, normalize_email, resolve_session, revoke_session, verify_password
 from .storage import InvalidUpload, UploadTooLarge, store_upload
 
@@ -215,6 +236,337 @@ def create_app(settings: Settings | None = None, *, create_schema: bool = False)
             }
             for client in clients
         ]
+
+    @app.get("/api/admin/submissions/{submission_id}", response_model=SubmissionView)
+    def get_submission(
+        submission_id: str,
+        db: Session = Depends(get_db),
+        _admin_session=Depends(current_session),
+    ):
+        submission = db.scalar(
+            select(Submission)
+            .where(Submission.id == submission_id)
+            .options(selectinload(Submission.client))
+        )
+        if not submission:
+            raise HTTPException(status_code=404, detail="Submission not found")
+        return submission_view(submission)
+
+    @app.get("/api/admin/clients/{client_id}")
+    def get_client(
+        client_id: int,
+        db: Session = Depends(get_db),
+        _admin_session=Depends(current_session),
+    ):
+        client = db.scalar(
+            select(Client)
+            .where(Client.id == client_id)
+            .options(selectinload(Client.submissions))
+        )
+        if not client:
+            raise HTTPException(status_code=404, detail="Client not found")
+        return {
+            "id": client.id,
+            "email": client.email,
+            "name": client.name,
+            "createdAt": client.created_at,
+            "submissions": [
+                {
+                    "id": item.id,
+                    "projectType": item.project_type,
+                    "material": item.material,
+                    "fileName": item.original_filename,
+                    "status": item.status,
+                    "createdAt": item.created_at,
+                }
+                for item in sorted(client.submissions, key=lambda value: value.created_at, reverse=True)
+            ],
+        }
+
+    @app.get("/api/admin/submissions/{submission_id}/runs")
+    def list_slicer_runs(
+        submission_id: str,
+        db: Session = Depends(get_db),
+        _admin_session=Depends(current_session),
+    ):
+        return [
+            {
+                "id": run.id,
+                "submissionId": run.submission_id,
+                "printTimeSeconds": run.print_time_seconds,
+                "filamentGrams": run.filament_grams,
+                "status": run.status,
+                "error": run.error,
+                "createdAt": run.created_at,
+            }
+            for run in db.scalars(
+                select(SlicerRun)
+                .where(SlicerRun.submission_id == submission_id)
+                .order_by(SlicerRun.created_at.desc())
+            ).all()
+        ]
+
+    @app.post("/api/admin/submissions/{submission_id}/slice", status_code=202)
+    def queue_manual_slice(
+        submission_id: str,
+        db: Session = Depends(get_db),
+        admin_session=Depends(csrf_session),
+    ):
+        submission = db.get(Submission, submission_id)
+        if not submission:
+            raise HTTPException(status_code=404, detail="Submission not found")
+        submission.slicer_status = "pending"
+        job = Job(type="process_submission", submission_id=submission.id)
+        db.add(job)
+        db.add(
+            AuditEvent(
+                admin_id=admin_session.admin_id,
+                event_type="submission.slice_queued",
+                entity_type="submission",
+                entity_id=submission.id,
+            )
+        )
+        db.commit()
+        return {"jobId": job.id, "status": job.status}
+
+    @app.get("/api/admin/slicer/profiles")
+    def list_profiles(
+        db: Session = Depends(get_db),
+        _admin_session=Depends(current_session),
+    ):
+        profiles = db.scalars(
+            select(SlicerProfile)
+            .where(SlicerProfile.active.is_(True))
+            .order_by(SlicerProfile.material, SlicerProfile.name)
+        ).all()
+        return [
+            {
+                "material": profile.material,
+                "name": profile.name,
+                "version": profile.version,
+                "config": json.loads(profile.config_json),
+            }
+            for profile in profiles
+        ]
+
+    @app.get("/api/admin/slicer/profiles/{material}/{name}")
+    def get_profile(
+        material: str,
+        name: str,
+        db: Session = Depends(get_db),
+        _admin_session=Depends(current_session),
+    ):
+        profile = db.scalar(
+            select(SlicerProfile)
+            .where(
+                SlicerProfile.material == material.upper(),
+                SlicerProfile.name == name,
+                SlicerProfile.active.is_(True),
+            )
+            .order_by(SlicerProfile.version.desc())
+        )
+        if not profile:
+            raise HTTPException(status_code=404, detail="Profile not found")
+        return {
+            "material": profile.material,
+            "name": profile.name,
+            "version": profile.version,
+            "config": json.loads(profile.config_json),
+        }
+
+    @app.put("/api/admin/slicer/profiles/{material}/{name}", status_code=201)
+    def update_profile(
+        material: str,
+        name: str,
+        payload: ProfileUpdate,
+        db: Session = Depends(get_db),
+        admin_session=Depends(csrf_session),
+    ):
+        normalized_material = material.upper()
+        latest_version = db.scalar(
+            select(func.max(SlicerProfile.version)).where(
+                SlicerProfile.material == normalized_material,
+                SlicerProfile.name == name,
+            )
+        ) or 0
+        db.execute(
+            update(SlicerProfile)
+            .where(
+                SlicerProfile.material == normalized_material,
+                SlicerProfile.name == name,
+            )
+            .values(active=False)
+        )
+        profile = SlicerProfile(
+            material=normalized_material,
+            name=name,
+            version=latest_version + 1,
+            config_json=json.dumps(payload.config, separators=(",", ":")),
+        )
+        db.add(profile)
+        db.add(
+            AuditEvent(
+                admin_id=admin_session.admin_id,
+                event_type="slicer_profile.updated",
+                entity_type="slicer_profile",
+                entity_id=f"{normalized_material}/{name}",
+            )
+        )
+        db.commit()
+        return {"material": profile.material, "name": profile.name, "version": profile.version}
+
+    @app.delete("/api/admin/slicer/profiles/{material}/{name}", status_code=204)
+    def delete_profile(
+        material: str,
+        name: str,
+        db: Session = Depends(get_db),
+        admin_session=Depends(csrf_session),
+    ):
+        result = db.execute(
+            update(SlicerProfile)
+            .where(
+                SlicerProfile.material == material.upper(),
+                SlicerProfile.name == name,
+                SlicerProfile.active.is_(True),
+            )
+            .values(active=False)
+        )
+        if result.rowcount == 0:
+            raise HTTPException(status_code=404, detail="Profile not found")
+        db.add(
+            AuditEvent(
+                admin_id=admin_session.admin_id,
+                event_type="slicer_profile.deleted",
+                entity_type="slicer_profile",
+                entity_id=f"{material.upper()}/{name}",
+            )
+        )
+        db.commit()
+
+    @app.get("/api/admin/templates")
+    def get_templates(
+        db: Session = Depends(get_db),
+        _admin_session=Depends(current_session),
+    ):
+        return {
+            template.key: {
+                "subject": template.subject_template,
+                "body": template.body_template,
+                "version": template.version,
+            }
+            for template in db.scalars(select(EmailTemplate).order_by(EmailTemplate.key)).all()
+        }
+
+    @app.put("/api/admin/templates/{template_key}")
+    def update_template(
+        template_key: str,
+        payload: TemplateUpdate,
+        db: Session = Depends(get_db),
+        admin_session=Depends(csrf_session),
+    ):
+        template = db.get(EmailTemplate, template_key)
+        if template:
+            template.subject_template = payload.subject
+            template.body_template = payload.body
+            template.version += 1
+        else:
+            template = EmailTemplate(
+                key=template_key,
+                subject_template=payload.subject,
+                body_template=payload.body,
+            )
+            db.add(template)
+        template.updated_by_admin_id = admin_session.admin_id
+        db.add(
+            AuditEvent(
+                admin_id=admin_session.admin_id,
+                event_type="email_template.updated",
+                entity_type="email_template",
+                entity_id=template_key,
+            )
+        )
+        db.commit()
+        return {"key": template.key, "version": template.version}
+
+    @app.get("/api/admin/email/{submission_id}")
+    def generate_email(
+        submission_id: str,
+        template_key: str = "estimate",
+        db: Session = Depends(get_db),
+        _admin_session=Depends(current_session),
+    ):
+        submission = db.scalar(
+            select(Submission)
+            .where(Submission.id == submission_id)
+            .options(selectinload(Submission.client))
+        )
+        template = db.get(EmailTemplate, template_key)
+        if not submission or not template:
+            raise HTTPException(status_code=404, detail="Submission or template not found")
+        values = {
+            "name": submission.client.name,
+            "fileName": submission.original_filename or "your project",
+            "printTimeMins": round((submission.print_time_seconds or 0) / 60),
+            "filamentGrams": submission.filament_grams or 0,
+            "projectType": submission.project_type,
+            "material": submission.material,
+        }
+        try:
+            subject = template.subject_template.format(**values)
+            body = template.body_template.format(**values)
+        except (KeyError, ValueError, IndexError) as exc:
+            raise HTTPException(status_code=422, detail=f"Invalid template placeholder: {exc}") from exc
+        return {
+            "subject": subject,
+            "body": body,
+            "mailto": f"mailto:{submission.client.email}?subject={quote(subject)}&body={quote(body)}",
+        }
+
+    @app.get("/api/admin/jobs")
+    def list_jobs(
+        db: Session = Depends(get_db),
+        _admin_session=Depends(current_session),
+    ):
+        return [
+            {
+                "id": job.id,
+                "type": job.type,
+                "submissionId": job.submission_id,
+                "status": job.status,
+                "attemptCount": job.attempt_count,
+                "maxAttempts": job.max_attempts,
+                "lastError": job.last_error,
+                "availableAt": job.available_at,
+                "createdAt": job.created_at,
+            }
+            for job in db.scalars(select(Job).order_by(Job.created_at.desc()).limit(200)).all()
+        ]
+
+    @app.post("/api/admin/jobs/{job_id}/retry", status_code=202)
+    def retry_job(
+        job_id: int,
+        db: Session = Depends(get_db),
+        admin_session=Depends(csrf_session),
+    ):
+        job = db.get(Job, job_id)
+        if not job:
+            raise HTTPException(status_code=404, detail="Job not found")
+        job.status = JobStatus.PENDING.value
+        job.attempt_count = 0
+        job.available_at = utcnow()
+        job.completed_at = None
+        job.lease_owner = None
+        job.lease_expires_at = None
+        db.add(
+            AuditEvent(
+                admin_id=admin_session.admin_id,
+                event_type="job.retried",
+                entity_type="job",
+                entity_id=str(job.id),
+            )
+        )
+        db.commit()
+        return {"id": job.id, "status": job.status}
 
     return app
 

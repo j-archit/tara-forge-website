@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pydantic import BaseModel, ConfigDict, EmailStr
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 
 class LoginRequest(BaseModel):
@@ -68,3 +68,12 @@ def submission_view(submission) -> SubmissionView:
         printTimeSeconds=submission.print_time_seconds,
         filamentGrams=submission.filament_grams,
     )
+
+
+class ProfileUpdate(BaseModel):
+    config: dict
+
+
+class TemplateUpdate(BaseModel):
+    subject: str = Field(min_length=1, max_length=255)
+    body: str = Field(min_length=1, max_length=20000)

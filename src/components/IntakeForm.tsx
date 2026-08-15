@@ -6,11 +6,19 @@ import { Send, CheckCircle2, Loader2, Upload, FileText, X } from "lucide-react";
 import { trackFormStep, trackFileUpload } from "@/lib/analytics";
 
 type FormState = "idle" | "submitting" | "success";
+const MAX_UPLOAD_BYTES = 25 * 1024 * 1024;
+const VALID_EXTENSIONS = [".stl", ".step", ".stp", ".3mf"];
+
+function isValidModelFile(file: File) {
+  const name = file.name.toLowerCase();
+  return VALID_EXTENSIONS.some((extension) => name.endsWith(extension));
+}
 
 export function IntakeForm() {
   const [state, setState] = React.useState<FormState>("idle");
   const [file, setFile] = React.useState<File | null>(null);
   const [isDragging, setIsDragging] = React.useState(false);
+  const idempotencyKey = React.useRef<string | null>(null);
   
   const [formData, setFormData] = React.useState({
     name: "",
@@ -24,6 +32,16 @@ export function IntakeForm() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0];
+      if (!isValidModelFile(selectedFile)) {
+        alert("Please upload a valid 3D file (.stl, .step, .stp, or .3mf)");
+        e.target.value = "";
+        return;
+      }
+      if (selectedFile.size > MAX_UPLOAD_BYTES) {
+        alert("Please upload a model no larger than 25 MB.");
+        e.target.value = "";
+        return;
+      }
       setFile(selectedFile);
       trackFileUpload(selectedFile.name, selectedFile.size / (1024 * 1024));
     }
@@ -43,13 +61,11 @@ export function IntakeForm() {
     setIsDragging(false);
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       const droppedFile = e.dataTransfer.files[0];
-      const validExtensions = ['.stl', '.step', '.stp', '.3mf'];
-      const fileName = droppedFile.name.toLowerCase();
-      if (validExtensions.some(ext => fileName.endsWith(ext))) {
+      if (isValidModelFile(droppedFile) && droppedFile.size <= MAX_UPLOAD_BYTES) {
         setFile(droppedFile);
         trackFileUpload(droppedFile.name, droppedFile.size / (1024 * 1024));
       } else {
-        alert("Please upload a valid 3D file (.stl, .step, .3mf)");
+        alert("Please upload a supported 3D model no larger than 25 MB.");
       }
     }
   };
@@ -61,46 +77,16 @@ export function IntakeForm() {
     setState("submitting");
     trackFormStep('form_submit');
     
-    // Updated to point to our secure server-side relay
-    // This prevents leaking the Pi's Funnel URL and Auth Token to the client
-    const RELAY_ENDPOINT = "/api/relay";
-
     try {
-      let fileData = null;
-      let fileName = null;
-      let fileType = null;
+      const payload = new FormData();
+      Object.entries(formData).forEach(([key, value]) => payload.append(key, value));
+      if (file) payload.append("file", file);
+      idempotencyKey.current ??= crypto.randomUUID();
 
-      if (file) {
-        // Convert file to Base64 for the relay
-        const reader = new FileReader();
-        const base64Promise = new Promise((resolve) => {
-          reader.onload = () => {
-            const result = reader.result as string;
-            resolve(result.split(',')[1]); // Extract base64 part
-          };
-          reader.readAsDataURL(file);
-        });
-
-        fileData = (await base64Promise) as string;
-        fileName = file.name;
-        fileType = file.type || "application/octet-stream";
-      }
-
-      const payload = {
-        ...formData,
-        // Note: The 'token' is now securely injected by the server-side relay route
-        hp_id: formData.hp_id,
-        fileData,
-        fileName,
-        fileType
-      };
-
-      const response = await fetch(RELAY_ENDPOINT, {
+      const response = await fetch("/api/intake", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
+        headers: { "Idempotency-Key": idempotencyKey.current },
+        body: payload,
       });
 
       if (!response.ok) {
@@ -108,6 +94,7 @@ export function IntakeForm() {
       }
 
       setState("success");
+      idempotencyKey.current = null;
       trackFormStep('form_success');
     } catch (error) {
       console.error("Submission error:", error);
