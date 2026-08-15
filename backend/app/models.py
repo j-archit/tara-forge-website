@@ -161,6 +161,43 @@ class EmailTemplate(Base):
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, onupdate=utcnow)
 
 
+class GalleryItem(Base):
+    __tablename__ = "gallery_items"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    title: Mapped[str] = mapped_column(String(160))
+    category: Mapped[str] = mapped_column(String(100), index=True)
+    description: Mapped[str] = mapped_column(Text)
+    tags_json: Mapped[str] = mapped_column(Text, default="[]")
+    image_url: Mapped[str | None] = mapped_column(String(1000), nullable=True)
+    gradient: Mapped[str] = mapped_column(String(255))
+    accent: Mapped[str] = mapped_column(String(80))
+    published: Mapped[bool] = mapped_column(Boolean, default=True, index=True)
+    sort_order: Mapped[int] = mapped_column(Integer, default=0, index=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, onupdate=utcnow)
+
+
+class StoreItem(Base):
+    __tablename__ = "store_items"
+
+    id: Mapped[str] = mapped_column(String(100), primary_key=True)
+    title: Mapped[str] = mapped_column(String(160))
+    category: Mapped[str] = mapped_column(String(100), index=True)
+    description: Mapped[str] = mapped_column(Text)
+    price_paise: Mapped[int] = mapped_column(Integer)
+    currency: Mapped[str] = mapped_column(String(8), default="₹")
+    image_url: Mapped[str | None] = mapped_column(String(1000), nullable=True)
+    gradient: Mapped[str] = mapped_column(String(255))
+    accent: Mapped[str] = mapped_column(String(80))
+    badge: Mapped[str | None] = mapped_column(String(80), nullable=True)
+    published: Mapped[bool] = mapped_column(Boolean, default=True, index=True)
+    available: Mapped[bool] = mapped_column(Boolean, default=False)
+    sort_order: Mapped[int] = mapped_column(Integer, default=0, index=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, onupdate=utcnow)
+
+
 class AuditEvent(Base):
     __tablename__ = "audit_events"
 

@@ -15,26 +15,63 @@ from .models import (
     AuditEvent,
     Client,
     EmailTemplate,
+    GalleryItem,
     Job,
     JobStatus,
     SlicerProfile,
     SlicerRun,
     Submission,
+    StoreItem,
     utcnow,
 )
 from .schemas import (
     AdminView,
     IntakeResult,
+    GalleryItemPayload,
     LoginRequest,
     ProfileUpdate,
     SessionView,
     SubmissionView,
+    StoreItemPayload,
     TemplateUpdate,
     submission_view,
 )
 from .rate_limit import RateLimiter
 from .security import hash_secret, issue_session, normalize_email, resolve_session, revoke_session, verify_password
 from .storage import InvalidUpload, UploadTooLarge, store_upload
+
+
+def gallery_item_view(item: GalleryItem) -> dict:
+    return {
+        "id": item.id,
+        "title": item.title,
+        "category": item.category,
+        "description": item.description,
+        "tags": json.loads(item.tags_json),
+        "imageUrl": item.image_url,
+        "gradient": item.gradient,
+        "accent": item.accent,
+        "published": item.published,
+        "sortOrder": item.sort_order,
+    }
+
+
+def store_item_view(item: StoreItem) -> dict:
+    return {
+        "id": item.id,
+        "title": item.title,
+        "category": item.category,
+        "description": item.description,
+        "pricePaise": item.price_paise,
+        "currency": item.currency,
+        "imageUrl": item.image_url,
+        "gradient": item.gradient,
+        "accent": item.accent,
+        "badge": item.badge,
+        "published": item.published,
+        "available": item.available,
+        "sortOrder": item.sort_order,
+    }
 
 
 def create_app(settings: Settings | None = None, *, create_schema: bool = False) -> FastAPI:
@@ -564,6 +601,166 @@ def create_app(settings: Settings | None = None, *, create_schema: bool = False)
             }
             for job in db.scalars(select(Job).order_by(Job.created_at.desc()).limit(200)).all()
         ]
+
+    @app.get("/api/content/gallery")
+    def public_gallery(db: Session = Depends(get_db)):
+        items = db.scalars(
+            select(GalleryItem)
+            .where(GalleryItem.published.is_(True))
+            .order_by(GalleryItem.sort_order, GalleryItem.id)
+        ).all()
+        return [gallery_item_view(item) for item in items]
+
+    @app.get("/api/content/store")
+    def public_store(db: Session = Depends(get_db)):
+        items = db.scalars(
+            select(StoreItem)
+            .where(StoreItem.published.is_(True))
+            .order_by(StoreItem.sort_order, StoreItem.id)
+        ).all()
+        return [store_item_view(item) for item in items]
+
+    @app.get("/api/admin/content/gallery")
+    def admin_gallery(db: Session = Depends(get_db), _admin_session=Depends(current_session)):
+        return [
+            gallery_item_view(item)
+            for item in db.scalars(select(GalleryItem).order_by(GalleryItem.sort_order, GalleryItem.id)).all()
+        ]
+
+    @app.post("/api/admin/content/gallery", status_code=201)
+    def create_gallery_item(
+        payload: GalleryItemPayload,
+        db: Session = Depends(get_db),
+        admin_session=Depends(csrf_session),
+    ):
+        item = GalleryItem(
+            title=payload.title.strip(),
+            category=payload.category.strip(),
+            description=payload.description.strip(),
+            tags_json=json.dumps([tag.strip() for tag in payload.tags if tag.strip()]),
+            image_url=payload.imageUrl,
+            gradient=payload.gradient.strip(),
+            accent=payload.accent.strip(),
+            published=payload.published,
+            sort_order=payload.sortOrder,
+        )
+        db.add(item)
+        db.flush()
+        db.add(AuditEvent(admin_id=admin_session.admin_id, event_type="gallery.created", entity_type="gallery_item", entity_id=str(item.id)))
+        db.commit()
+        return gallery_item_view(item)
+
+    @app.put("/api/admin/content/gallery/{item_id}")
+    def update_gallery_item(
+        item_id: int,
+        payload: GalleryItemPayload,
+        db: Session = Depends(get_db),
+        admin_session=Depends(csrf_session),
+    ):
+        item = db.get(GalleryItem, item_id)
+        if not item:
+            raise HTTPException(status_code=404, detail="Gallery item not found")
+        item.title = payload.title.strip()
+        item.category = payload.category.strip()
+        item.description = payload.description.strip()
+        item.tags_json = json.dumps([tag.strip() for tag in payload.tags if tag.strip()])
+        item.image_url = payload.imageUrl
+        item.gradient = payload.gradient.strip()
+        item.accent = payload.accent.strip()
+        item.published = payload.published
+        item.sort_order = payload.sortOrder
+        db.add(AuditEvent(admin_id=admin_session.admin_id, event_type="gallery.updated", entity_type="gallery_item", entity_id=str(item.id)))
+        db.commit()
+        return gallery_item_view(item)
+
+    @app.delete("/api/admin/content/gallery/{item_id}", status_code=204)
+    def delete_gallery_item(
+        item_id: int,
+        db: Session = Depends(get_db),
+        admin_session=Depends(csrf_session),
+    ):
+        item = db.get(GalleryItem, item_id)
+        if not item:
+            raise HTTPException(status_code=404, detail="Gallery item not found")
+        db.delete(item)
+        db.add(AuditEvent(admin_id=admin_session.admin_id, event_type="gallery.deleted", entity_type="gallery_item", entity_id=str(item_id)))
+        db.commit()
+
+    @app.get("/api/admin/content/store")
+    def admin_store(db: Session = Depends(get_db), _admin_session=Depends(current_session)):
+        return [
+            store_item_view(item)
+            for item in db.scalars(select(StoreItem).order_by(StoreItem.sort_order, StoreItem.id)).all()
+        ]
+
+    @app.post("/api/admin/content/store", status_code=201)
+    def create_store_item(
+        payload: StoreItemPayload,
+        db: Session = Depends(get_db),
+        admin_session=Depends(csrf_session),
+    ):
+        if db.get(StoreItem, payload.id):
+            raise HTTPException(status_code=409, detail="Store item ID already exists")
+        item = StoreItem(
+            id=payload.id,
+            title=payload.title.strip(),
+            category=payload.category.strip(),
+            description=payload.description.strip(),
+            price_paise=payload.pricePaise,
+            currency=payload.currency,
+            image_url=payload.imageUrl,
+            gradient=payload.gradient.strip(),
+            accent=payload.accent.strip(),
+            badge=payload.badge.strip() if payload.badge else None,
+            published=payload.published,
+            available=payload.available,
+            sort_order=payload.sortOrder,
+        )
+        db.add(item)
+        db.add(AuditEvent(admin_id=admin_session.admin_id, event_type="store.created", entity_type="store_item", entity_id=item.id))
+        db.commit()
+        return store_item_view(item)
+
+    @app.put("/api/admin/content/store/{item_id}")
+    def update_store_item(
+        item_id: str,
+        payload: StoreItemPayload,
+        db: Session = Depends(get_db),
+        admin_session=Depends(csrf_session),
+    ):
+        item = db.get(StoreItem, item_id)
+        if not item:
+            raise HTTPException(status_code=404, detail="Store item not found")
+        if payload.id != item_id:
+            raise HTTPException(status_code=422, detail="Store item ID cannot be changed")
+        item.title = payload.title.strip()
+        item.category = payload.category.strip()
+        item.description = payload.description.strip()
+        item.price_paise = payload.pricePaise
+        item.currency = payload.currency
+        item.image_url = payload.imageUrl
+        item.gradient = payload.gradient.strip()
+        item.accent = payload.accent.strip()
+        item.badge = payload.badge.strip() if payload.badge else None
+        item.published = payload.published
+        item.available = payload.available
+        item.sort_order = payload.sortOrder
+        db.add(AuditEvent(admin_id=admin_session.admin_id, event_type="store.updated", entity_type="store_item", entity_id=item.id))
+        db.commit()
+        return store_item_view(item)
+
+    @app.delete("/api/admin/content/store/{item_id}", status_code=204)
+    def delete_store_item(
+        item_id: str,
+        db: Session = Depends(get_db),
+        admin_session=Depends(csrf_session),
+    ):
+        item = db.get(StoreItem, item_id)
+        if not item:
+            raise HTTPException(status_code=404, detail="Store item not found")
+        db.delete(item)
+        db.add(AuditEvent(admin_id=admin_session.admin_id, event_type="store.deleted", entity_type="store_item", entity_id=item_id))
+        db.commit()
 
     @app.post("/api/admin/jobs/{job_id}/retry", status_code=202)
     def retry_job(
