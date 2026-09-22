@@ -60,7 +60,7 @@ export async function POST(request: Request) {
     console.log(`[Relay] Transmission successful: ${data.id || 'No ID returned'}`);
 
     return NextResponse.json(data);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("[Relay] Fatal error during relay operation:", error);
     return NextResponse.json(
       { error: "Internal Relay Fault: Transmission interrupted." },

@@ -1,13 +1,15 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { motion, useAnimationControls, PanInfo } from "framer-motion";
+import { motion, useAnimationControls, useReducedMotion, PanInfo } from "framer-motion";
 import { testimonials } from "@/data/testimonials";
 
 export function TestimonialMarquee() {
   const [index, setIndex] = useState(0);
+  const [isPausedByUser, setIsPausedByUser] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const reduceMotion = useReducedMotion();
   const [layout, setLayout] = useState({ cardWidth: 380, gap: 24, offset: 404 });
   const controls = useAnimationControls();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -38,7 +40,7 @@ export function TestimonialMarquee() {
     } else {
       await controls.start({
         x: targetX,
-        transition: { duration: 0.8, ease: [0.32, 0.72, 0, 1] }
+        transition: { duration: reduceMotion ? 0 : 0.8, ease: [0.32, 0.72, 0, 1] }
       });
     }
 
@@ -54,7 +56,7 @@ export function TestimonialMarquee() {
     } else {
       setIndex(newIndex);
     }
-  }, [layout.offset, controls]);
+  }, [layout.offset, controls, reduceMotion]);
 
   const advance = useCallback(() => {
     if (isDragging) return;
@@ -62,10 +64,10 @@ export function TestimonialMarquee() {
   }, [index, goToIndex, isDragging]);
 
   useEffect(() => {
-    if (isHovered || isDragging) return;
+    if (isPausedByUser || isHovered || isDragging || reduceMotion) return;
     const timer = setInterval(() => advance(), 4000);
     return () => clearInterval(timer);
-  }, [isHovered, isDragging, advance]);
+  }, [isPausedByUser, isHovered, isDragging, reduceMotion, advance]);
 
   const handleDragEnd = (_: unknown, info: PanInfo) => {
     setIsDragging(false);
@@ -89,14 +91,16 @@ export function TestimonialMarquee() {
     <div 
       ref={containerRef}
       className="relative w-full bg-slate-950/20 py-16 lg:py-24 border-y border-slate-800/40 overflow-hidden"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
       {/* Edge Fades */}
       <div className="absolute inset-y-0 left-0 w-24 lg:w-60 bg-gradient-to-r from-slate-950 to-transparent z-20 pointer-events-none" />
       <div className="absolute inset-y-0 right-0 w-24 lg:w-60 bg-gradient-to-l from-slate-950 to-transparent z-20 pointer-events-none" />
 
-      <div className="relative cursor-grab active:cursor-grabbing">
+      <div
+        className="relative cursor-grab active:cursor-grabbing"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
         <motion.div
           className="flex px-[10%] sm:px-[15%] lg:px-[25%]"
           drag="x"
@@ -151,6 +155,18 @@ export function TestimonialMarquee() {
           />
         ))}
       </div>
+      {!reduceMotion && (
+        <div className="mt-5 text-center">
+          <button
+            type="button"
+            onClick={() => setIsPausedByUser((paused) => !paused)}
+            aria-pressed={isPausedByUser}
+            className="rounded-full border border-slate-700 px-4 py-2 text-xs text-slate-300 hover:border-brand-gold hover:text-brand-gold"
+          >
+            {isPausedByUser ? "Play testimonials" : "Pause testimonials"}
+          </button>
+        </div>
+      )}
     </div>
   );
 }

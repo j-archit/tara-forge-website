@@ -1,9 +1,17 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 
-const constellationPoints = [
+interface ConstellationPoint {
+  id: number;
+  x: number;
+  y: number;
+  scale: number;
+  isGolden?: boolean;
+}
+
+const constellationPoints: ConstellationPoint[] = [
   // Threads Outline
   { id: 0, x: 42, y: 15, scale: 0.8, isGolden: true },
   { id: 1, x: 58, y: 15, scale: 0.9 },
@@ -42,13 +50,8 @@ const constellationLines = [
 ];
 
 export const CelestialBackground = () => {
+  const reduceMotion = useReducedMotion();
   const [mounted, setMounted] = React.useState(false);
-
-  React.useEffect(() => {
-    // Delay non-critical background decor to prioritize LCP rendering
-    const timer = setTimeout(() => setMounted(true), 100);
-    return () => clearTimeout(timer);
-  }, []);
 
   const [stars, setStars] = React.useState<{id: number, top: string, left: string, duration: number, delay: number, scale: number, isGolden: boolean}[]>([]);
 
@@ -61,7 +64,7 @@ export const CelestialBackground = () => {
       duration: 2 + Math.random() * 3,
       delay: Math.random() * 5,
       scale: p.scale,
-      isGolden: (p as any).isGolden || false
+      isGolden: p.isGolden ?? false
     })));
 
     // Delay non-critical background decor to prioritize LCP rendering
@@ -76,7 +79,7 @@ export const CelestialBackground = () => {
       
       {/* Nebula Clouds */}
       <motion.div 
-        animate={{ 
+        animate={reduceMotion ? undefined : {
           scale: [1, 1.1, 1],
           opacity: [0.3, 0.5, 0.3],
           x: [0, 20, 0],
@@ -86,7 +89,7 @@ export const CelestialBackground = () => {
         className="absolute -top-[20%] -left-[10%] w-[70%] h-[70%] rounded-full bg-blue-500/30 blur-[120px]"
       />
       <motion.div 
-        animate={{ 
+        animate={reduceMotion ? undefined : {
           scale: [1, 1.2, 1],
           opacity: [0.3, 0.5, 0.3],
           x: [0, -30, 0],
@@ -96,7 +99,7 @@ export const CelestialBackground = () => {
         className="absolute top-[20%] -right-[10%] w-[60%] h-[60%] rounded-full bg-indigo-500/25 blur-[100px]"
       />
       <motion.div 
-        animate={{ 
+        animate={reduceMotion ? undefined : {
           scale: [1, 1.15, 1],
           opacity: [0.25, 0.4, 0.25],
         }}
@@ -106,7 +109,7 @@ export const CelestialBackground = () => {
 
       {/* Forge Heat Glow */}
       <motion.div 
-        animate={{ 
+        animate={reduceMotion ? undefined : {
           opacity: [0.15, 0.35, 0.15],
         }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
@@ -143,8 +146,8 @@ export const CelestialBackground = () => {
           {stars.map((star) => (
             <motion.div
               key={star.id}
-              initial={{ opacity: 0.3, scale: star.scale * 1.5 }}
-              animate={{ opacity: [0.3, 1, 0.3], scale: [star.scale * 1.5, star.scale * 1.8, star.scale * 1.5] }}
+              initial={reduceMotion ? false : { opacity: 0.3, scale: star.scale * 1.5 }}
+              animate={reduceMotion ? undefined : { opacity: [0.3, 1, 0.3], scale: [star.scale * 1.5, star.scale * 1.8, star.scale * 1.5] }}
               transition={{ 
                 duration: star.duration, 
                 repeat: Infinity, 

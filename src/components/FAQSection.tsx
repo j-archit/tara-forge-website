@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { trackFAQInteraction } from "@/lib/analytics";
 
@@ -72,6 +72,9 @@ export function FAQSection() {
                 }`}
               >
                 <button
+                  id={`faq-question-${idx}`}
+                  aria-expanded={isOpen}
+                  aria-controls={`faq-answer-${idx}`}
                   onClick={() => {
                     setOpenIndex(isOpen ? null : idx);
                     trackFAQInteraction(faq.question, isOpen ? 'close' : 'open');
@@ -83,20 +86,20 @@ export function FAQSection() {
                   </span>
                   <ChevronDown className={`h-5 w-5 transition-all duration-300 ${isOpen ? "rotate-180 text-brand-gold" : "text-slate-500 group-hover:text-slate-300"}`} />
                 </button>
-                <AnimatePresence>
-                  {isOpen && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3, ease: "easeInOut" }}
-                    >
-                      <div className="px-6 pb-6 text-sm leading-relaxed text-slate-400 font-light border-t border-brand-gold/10 pt-4">
-                        {faq.answer}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                <motion.div
+                  id={`faq-answer-${idx}`}
+                  role="region"
+                  aria-labelledby={`faq-question-${idx}`}
+                  aria-hidden={!isOpen}
+                  initial={false}
+                  animate={{ height: isOpen ? "auto" : 0, opacity: isOpen ? 1 : 0 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  className="overflow-hidden"
+                >
+                  <div className="px-6 pb-6 text-sm leading-relaxed text-slate-400 font-light border-t border-brand-gold/10 pt-4">
+                    {faq.answer}
+                  </div>
+                </motion.div>
               </div>
             );
           })}

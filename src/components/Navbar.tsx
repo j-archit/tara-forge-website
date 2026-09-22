@@ -5,7 +5,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Logo } from "./Logo";
 import { Menu, X } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import { trackNavigation, trackCTA, trackMobileMenu } from "@/lib/analytics";
 
 export function Navbar() {
@@ -116,51 +115,48 @@ export function Navbar() {
             setIsMobileMenuOpen(!isMobileMenuOpen);
           }}
           aria-label="Toggle navigation"
+          aria-expanded={isMobileMenuOpen}
+          aria-controls="mobile-navigation"
         >
           {isMobileMenuOpen ? <X size={20} strokeWidth={2.5} /> : <Menu size={20} strokeWidth={2.5} />}
         </button>
       </div>
 
       {/* Mobile Nav Overlay */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.nav 
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="absolute left-0 right-0 top-full border-b border-slate-800 bg-slate-950/95 p-6 backdrop-blur-xl md:hidden"
-          >
-            <ul className="flex flex-col items-center gap-6 text-center">
-              {navLinks.map((link) => (
-                <li key={link.href}>
-                  <Link 
-                    href={link.href} 
-                    className={`text-lg font-medium transition-colors ${pathname === link.href ? 'text-brand-gold' : 'text-slate-300'}`}
-                    onClick={() => {
-                      trackNavigation(link.label, pathname);
-                      setIsMobileMenuOpen(false);
-                    }}
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-              <li className="w-full pt-4 border-t border-slate-800">
-                <Link
-                  href="/quote"
-                  onClick={() => {
-                    trackCTA('get_a_quote_nav_mobile', '/quote');
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className="flex w-full items-center justify-center rounded-xl bg-brand-gold py-4 text-sm font-bold text-slate-950 shadow-[var(--brand-glow-gold)]"
-                >
-                  Get a quote
-                </Link>
-              </li>
-            </ul>
-          </motion.nav>
-        )}
-      </AnimatePresence>
+      <nav
+        id="mobile-navigation"
+        aria-hidden={!isMobileMenuOpen}
+        className={`absolute left-0 right-0 top-full border-b border-slate-800 bg-slate-950/95 p-6 backdrop-blur-xl transition-[opacity,transform,visibility] duration-200 md:hidden ${isMobileMenuOpen ? "visible translate-y-0 opacity-100" : "pointer-events-none invisible -translate-y-2 opacity-0"}`}
+      >
+        <ul className="flex flex-col items-center gap-6 text-center">
+          {navLinks.map((link) => (
+            <li key={link.href}>
+              <Link
+                href={link.href}
+                className={`text-lg font-medium transition-colors ${pathname === link.href ? 'text-brand-gold' : 'text-slate-300'}`}
+                onClick={() => {
+                  trackNavigation(link.label, pathname);
+                  setIsMobileMenuOpen(false);
+                }}
+              >
+                {link.label}
+              </Link>
+            </li>
+          ))}
+          <li className="w-full pt-4 border-t border-slate-800">
+            <Link
+              href="/quote"
+              onClick={() => {
+                trackCTA('get_a_quote_nav_mobile', '/quote');
+                setIsMobileMenuOpen(false);
+              }}
+              className="flex w-full items-center justify-center rounded-xl bg-brand-gold py-4 text-sm font-bold text-slate-950 shadow-[var(--brand-glow-gold)]"
+            >
+              Get a quote
+            </Link>
+          </li>
+        </ul>
+      </nav>
     </header>
   );
 }

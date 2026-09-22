@@ -6,8 +6,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Logo } from "@/components/Logo";
 import { fadeIn } from "@/lib/animations";
-import { Cpu, Microchip as Chip, Rocket, Mail, Globe } from "lucide-react";
-import Link from "next/link";
+import { Cpu, Microchip as Chip, Rocket } from "lucide-react";
 
 export function TeamClient() {
   return (
@@ -110,7 +109,7 @@ export function TeamClient() {
               <div className="grid gap-6 sm:grid-cols-2">
                 <div className="p-5 rounded-2xl bg-slate-900/50 border border-slate-800">
                   <h4 className="text-sm font-bold uppercase tracking-wider text-brand-gold mb-2">Technical Rigor</h4>
-                  <p className="text-xs text-slate-500 leading-relaxed">Applying an engineer's attention to detail to every print and prototype we forge.</p>
+                  <p className="text-xs text-slate-500 leading-relaxed">Applying an engineer&apos;s attention to detail to every print and prototype we forge.</p>
                 </div>
                 <div className="p-5 rounded-2xl bg-slate-900/50 border border-slate-800">
                   <h4 className="text-sm font-bold uppercase tracking-wider text-brand-gold mb-2">Open Access</h4>

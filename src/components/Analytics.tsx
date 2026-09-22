@@ -19,10 +19,18 @@ function AnalyticsInner() {
   // 1. Route Change Tracking
   useEffect(() => {
     if (pathname && GA_MEASUREMENT_ID) {
-      // Small timeout to allow the actual page to render and title to update
-      setTimeout(() => {
-         pageview(`${pathname}${searchParams?.toString() ? `?${searchParams.toString()}` : ''}`);
-      }, 100);
+      const path = `${pathname}${searchParams?.toString() ? `?${searchParams.toString()}` : ''}`;
+      let attempts = 0;
+      let timer: number;
+      const sendPageview = () => {
+        if (typeof window.gtag === "function") {
+          pageview(path);
+        } else if (attempts++ < 20) {
+          timer = window.setTimeout(sendPageview, 100);
+        }
+      };
+      timer = window.setTimeout(sendPageview, 100);
+      return () => window.clearTimeout(timer);
     }
   }, [pathname, searchParams]);
 
@@ -99,13 +107,16 @@ function AnalyticsInner() {
     }, observerOptions);
 
     // Observe all main sections with an ID after a short delay
-    setTimeout(() => {
+    const timer = window.setTimeout(() => {
       document.querySelectorAll('section[id], footer[id]').forEach(section => {
         sectionObserver.observe(section);
       });
     }, 500);
 
-    return () => sectionObserver.disconnect();
+    return () => {
+      window.clearTimeout(timer);
+      sectionObserver.disconnect();
+    };
   }, [pathname]); // Re-observe when route changes
 
   // 5. Time on Page Heartbeat
@@ -140,7 +151,7 @@ export function Analytics() {
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', '${GA_MEASUREMENT_ID}', {
-              page_path: window.location.pathname,
+              send_page_view: false,
             });
           `,
         }}
