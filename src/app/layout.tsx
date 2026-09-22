@@ -102,10 +102,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -125,10 +121,7 @@ export default function RootLayout({
                     "addressLocality": "Bangalore",
                     "addressRegion": "Karnataka",
                     "addressCountry": "IN"
-                  },
-                  "sameAs": [
-                    "https://www.instagram.com/taraforge"
-                  ]
+                  }
                 },
                 {
                   "@type": "LocalBusiness",
@@ -136,7 +129,6 @@ export default function RootLayout({
                   "name": "TaraForge3D",
                   "description": "Specialized 3D printing services based in Bangalore, serving all of India.",
                   "url": "https://taraforge.in",
-                  "telephone": "+91-80-XXXX-XXXX",
                   "address": {
                     "@type": "PostalAddress",
                     "addressLocality": "Bangalore",

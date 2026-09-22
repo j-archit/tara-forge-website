@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Logo } from "./Logo";
-import { Mail, Instagram, Twitter, MoveUpRight } from "lucide-react";
+import { Mail, MoveUpRight } from "lucide-react";
 import { trackNavigation, trackSocialClick } from "@/lib/analytics";
 
 export function Footer() {
@@ -18,8 +18,6 @@ export function Footer() {
     ],
     connect: [
       { label: "Email", href: "mailto:taraforge3d@gmail.com", icon: <Mail className="w-3.5 h-3.5" /> },
-      { label: "Instagram", href: "#", icon: <Instagram className="w-3.5 h-3.5" /> },
-      { label: "Twitter", href: "#", icon: <Twitter className="w-3.5 h-3.5" /> },
     ]
   };
 
@@ -83,6 +81,8 @@ export function Footer() {
                 <li key={link.label}>
                   <a 
                     href={link.href}
+                    target={link.href.startsWith("https://") ? "_blank" : undefined}
+                    rel={link.href.startsWith("https://") ? "noopener noreferrer" : undefined}
                     onClick={() => trackSocialClick(link.label.toLowerCase())}
                     className="flex items-center gap-3 text-sm text-slate-400 hover:text-slate-100 transition-colors"
                   >
@@ -102,10 +102,6 @@ export function Footer() {
           <p className="text-xs text-slate-500 font-light">
             © {currentYear} TaraForge3D. Crafted in India.
           </p>
-          <div className="flex gap-8 text-[10px] uppercase tracking-widest text-slate-600 font-bold">
-            <span className="hover:text-slate-400 cursor-default transition-colors">Privacy</span>
-            <span className="hover:text-slate-400 cursor-default transition-colors">Terms</span>
-          </div>
         </div>
       </div>
     </footer>
