@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { IntakeForm } from "@/components/IntakeForm";
 import { ManualIntake } from "@/components/ManualIntake";
 import { ShieldCheck, Clock, Zap } from "lucide-react";
 import type { Metadata } from "next";
@@ -22,7 +23,10 @@ export default function QuotePage() {
         <div className="section-max-width relative px-6 lg:px-4">
           <div className="grid gap-16 lg:grid-cols-2 lg:items-start">
             
-            <div className="order-1 lg:order-2">
+            <div className="relative order-1 lg:order-2">
+              <div aria-hidden="true" inert className="pointer-events-none blur-[1px] grayscale opacity-50">
+                <IntakeForm />
+              </div>
               <ManualIntake />
             </div>
 
