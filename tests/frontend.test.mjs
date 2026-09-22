@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { createPageMetadata, SITE_URL } from "../src/lib/siteMetadata.ts";
 import { MAX_DESIGN_FILE_SIZE_BYTES, validateDesignFile } from "../src/lib/intakeFile.ts";
 import { QUOTE_EMAIL, quoteMailtoHref } from "../src/lib/contact.ts";
+import { PAYMENT_TERMS } from "../src/lib/paymentTerms.ts";
 
 test("page metadata uses its own canonical and social URL", () => {
   const metadata = createPageMetadata("Services", "Service description", "/services");
@@ -37,4 +38,10 @@ test("quote email asks for details and reminds the sender to attach a file", () 
   }
   assert.match(body, /Please attach your design file before sending/);
   assert.doesNotMatch(body, /I've attached/);
+});
+
+test("payment terms identify UPI and both project milestones", () => {
+  assert.match(PAYMENT_TERMS, /UPI only/);
+  assert.match(PAYMENT_TERMS, /50%.*confirm the project/);
+  assert.match(PAYMENT_TERMS, /remaining 50%.*before shipping/);
 });

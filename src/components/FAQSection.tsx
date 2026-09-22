@@ -4,6 +4,7 @@ import * as React from "react";
 import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { trackFAQInteraction } from "@/lib/analytics";
+import { PAYMENT_TERMS } from "@/lib/paymentTerms";
 
 interface FAQItem {
   question: string;
@@ -26,6 +27,10 @@ const faqs: FAQItem[] = [
   {
     question: "How do I get a quote for my 3D printing project?",
     answer: "Simply send your 3D design file (.stl, .obj, or .step) to taraforge3d@gmail.com. We review every model for printability and provide a quote based on material, volume, and complexity."
+  },
+  {
+    question: "What payment methods and terms do you offer?",
+    answer: PAYMENT_TERMS
   },
   {
     question: "Can you help optimize my design for 3D printing?",

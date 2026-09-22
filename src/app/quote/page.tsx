@@ -5,6 +5,7 @@ import { ManualIntake } from "@/components/ManualIntake";
 import { ShieldCheck, Clock, Zap } from "lucide-react";
 import type { Metadata } from "next";
 import { createPageMetadata } from "@/lib/siteMetadata";
+import { PAYMENT_TERMS } from "@/lib/paymentTerms";
 
 export const metadata: Metadata = createPageMetadata(
   "Get a Quote",
@@ -73,6 +74,11 @@ export default function QuotePage() {
                     <p className="mt-1 text-sm text-slate-500 leading-relaxed">We optimize your design for the best finish and strength based on how you plan to use it.</p>
                   </div>
                 </div>
+              </div>
+
+              <div className="mt-12 rounded-2xl border border-brand-gold/30 bg-brand-gold/5 p-6">
+                <h2 className="text-lg font-semibold text-slate-100">Payment terms</h2>
+                <p className="mt-2 text-sm leading-relaxed text-slate-300">{PAYMENT_TERMS}</p>
               </div>
               
               <div className="mt-16 p-6 rounded-3xl border border-slate-800/40 bg-slate-900/20 backdrop-blur-sm">
