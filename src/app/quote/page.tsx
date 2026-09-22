@@ -1,15 +1,16 @@
 import * as React from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { IntakeForm } from "@/components/IntakeForm";
 import { ManualIntake } from "@/components/ManualIntake";
-import { ShieldCheck, Clock, Zap, MessageSquare } from "lucide-react";
+import { ShieldCheck, Clock, Zap } from "lucide-react";
 import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/siteMetadata";
 
-export const metadata: Metadata = {
-  title: "Get a Quote",
-  description: "Share your designs for a custom 3D print quote. We handle everything from personal keepsakes to community projects with care.",
-};
+export const metadata: Metadata = createPageMetadata(
+  "Get a Quote",
+  "Email us your design for a custom 3D print quote. We handle everything from personal keepsakes to community projects with care.",
+  "/quote"
+);
 
 export default function QuotePage() {
   return (
@@ -20,14 +21,7 @@ export default function QuotePage() {
         <div className="section-max-width relative px-6 lg:px-4">
           <div className="grid gap-16 lg:grid-cols-2 lg:items-start">
             
-            {/* Intake Portal (First on mobile) */}
-            <div className="relative order-1 lg:order-2">
-              {/* Greyed out existing form */}
-              <div className="opacity-50 pointer-events-none filter blur-[1px] grayscale">
-                <IntakeForm />
-              </div>
-
-              {/* Status Message Overlay */}
+            <div className="order-1 lg:order-2">
               <ManualIntake />
             </div>
 

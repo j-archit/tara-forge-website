@@ -3,16 +3,29 @@
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Clock, Zap, MessageSquare, Copy, Check } from "lucide-react";
+import { QUOTE_EMAIL, quoteMailtoHref } from "@/lib/contact";
 
 export function ManualIntake() {
-  const [copied, setCopied] = React.useState(false);
-  const email = "taraforge3d@gmail.com";
+  const [copyStatus, setCopyStatus] = React.useState<"idle" | "copied" | "failed">("idle");
+  const copied = copyStatus === "copied";
 
-  const copyEmail = (e: React.MouseEvent) => {
-    e.preventDefault();
-    navigator.clipboard.writeText(email);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  React.useEffect(() => {
+    if (!copied) return;
+    const timer = window.setTimeout(() => setCopyStatus("idle"), 2000);
+    return () => window.clearTimeout(timer);
+  }, [copied]);
+
+  const copyEmail = async () => {
+    if (!navigator.clipboard?.writeText) {
+      setCopyStatus("failed");
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(QUOTE_EMAIL);
+      setCopyStatus("copied");
+    } catch {
+      setCopyStatus("failed");
+    }
   };
 
   return (
@@ -20,24 +33,24 @@ export function ManualIntake() {
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-      className="absolute inset-0 flex items-start justify-center p-4 pt-4 sm:pt-12 lg:items-center lg:pt-0"
+      className="flex justify-center"
     >
       <div className="w-full max-w-md p-8 rounded-[2.5rem] border border-white/10 bg-slate-950/80 backdrop-blur-xl shadow-2xl text-center">
         <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-gold/10 border border-brand-gold/20 mb-6">
-          <Clock className="w-6 h-6 text-brand-gold animate-pulse" />
+          <Clock className="w-6 h-6 text-brand-gold motion-safe:animate-pulse" />
         </div>
         
-        <h2 className="text-2xl font-semibold text-slate-50 mb-3">Intake Portal <span className="text-brand-gold">Coming Soon</span></h2>
+        <h2 className="text-2xl font-semibold text-slate-50 mb-3">Request a <span className="text-brand-gold">Quote</span></h2>
         <p className="text-slate-400 text-sm leading-relaxed mb-8">
-          We&apos;re putting final polish on our automated design review system. In the meantime, we are accepting project requests manually.
+          Email your design file and a few project details, or message us on WhatsApp to discuss your idea.
         </p>
 
         <div className="space-y-4">
-          <p className="text-xs font-bold uppercase tracking-widest text-brand-gold/60">Ready to quote now?</p>
+          <p className="text-xs font-bold uppercase tracking-widest text-brand-gold/60">Send your project details</p>
           <div className="flex flex-col gap-3">
             <div className="flex gap-2">
               <a 
-                href={`mailto:${email}?subject=New Project Quote Request&body=Hi TaraForge3D Team,%0D%0AI have a project I'd like to get a quote for.%0D%0A%0D%0A(Attach STL/OBJ files to this email)`}
+                href={quoteMailtoHref()}
                 className="flex-[3] inline-flex items-center justify-center gap-2 rounded-xl bg-brand-gold px-4 py-3 text-sm font-semibold text-slate-950 shadow-[var(--brand-glow-gold)] transition hover:bg-brand-gold-bright active:scale-95"
               >
                 Send Email
@@ -47,6 +60,7 @@ export function ManualIntake() {
                 onClick={copyEmail}
                 className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-slate-900 px-4 py-3 text-sm font-semibold text-slate-100 transition hover:border-brand-gold/50 hover:bg-slate-800 active:scale-95 group"
                 title="Copy email address"
+                aria-label={copied ? "Email address copied" : "Copy email address"}
               >
                 <AnimatePresence mode="wait">
                   {copied ? (
@@ -71,6 +85,10 @@ export function ManualIntake() {
                 </AnimatePresence>
               </button>
             </div>
+            <p className="text-xs text-slate-400" role="status">
+              {copyStatus === "failed" ? "Copy unavailable. Select the address below instead." : copied ? "Email address copied." : "Email address:"}
+            </p>
+            <p className="select-all text-sm text-slate-200">{QUOTE_EMAIL}</p>
 
             <a 
               href="https://wa.me/917042337788?text=Hi TaraForge3D, I'd like to get a quote for a 3D printing project!"

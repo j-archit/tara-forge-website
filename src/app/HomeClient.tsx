@@ -117,7 +117,7 @@ export function ShopHighlight() {
               onClick={() => trackCTA('browse_shop_home', '/shop')}
               className="inline-flex items-center gap-2 rounded-full bg-slate-800 px-8 py-3.5 text-sm font-semibold text-slate-100 shadow-xl transition-all hover:bg-brand-gold hover:text-slate-950 hover:scale-105"
             >
-              Browse the Shop
+              Preview the Collection
             </a>
           </div>
         </motion.div>

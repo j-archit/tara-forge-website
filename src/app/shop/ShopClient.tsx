@@ -87,12 +87,11 @@ const products: Product[] = [
 ];
 
 export default function ShopClient() {
-  const handleCheckout = (product: Product) => {
-    console.log(`Starting checkout for: ${product.title} (ID: ${product.id})`);
-    trackProductInterest(product.id.toString(), product.title, product.price, 'buy_click');
+  const handleInquiry = (product: Product) => {
+    trackProductInterest(product.id.toString(), product.title, product.price, 'inquiry_click');
     
-    const subject = encodeURIComponent(`Order Inquiry: ${product.title}`);
-    const body = encodeURIComponent(`Hello TaraForge3D,\n\nI am interested in purchasing the ${product.title} (SKU: ${product.id}).\n\nPlease let me know the shipping process.\n\nThank you!`);
+    const subject = encodeURIComponent(`Availability Inquiry: ${product.title}`);
+    const body = encodeURIComponent(`Hello TaraForge3D,\n\nI'm interested in the ${product.title} (SKU: ${product.id}). Could you confirm availability, final pricing, and shipping options?\n\nThank you!`);
     window.location.assign(`mailto:taraforge3d@gmail.com?subject=${subject}&body=${body}`);
   };
 
@@ -111,7 +110,7 @@ export default function ShopClient() {
               </span>
             </h1>
             <p className="max-w-2xl text-pretty text-base text-slate-300 text-center sm:text-left">
-              Own a piece of the stars. Every item in our shop is designed in-house and 3D printed with the same attention to detail we apply to professional prototypes.
+              Preview our upcoming collection. Interested in an item? Send us an inquiry to check availability, final pricing, and shipping.
             </p>
           </motion.div>
         </div>
@@ -150,7 +149,7 @@ export default function ShopClient() {
                       {product.category}
                     </span>
                     <span className="text-sm font-bold text-brand-gold">
-                      {product.currency}{product.price.toLocaleString()}
+                      Indicative: {product.currency}{product.price.toLocaleString()}
                     </span>
                   </div>
                   <h3 className="text-lg font-semibold text-slate-100 group-hover:text-brand-gold transition-colors">
@@ -162,10 +161,10 @@ export default function ShopClient() {
                   
                   <div className="mt-auto pt-6">
                     <button 
-                      onClick={() => handleCheckout(product)}
+                      onClick={() => handleInquiry(product)}
                       className="w-full rounded-xl bg-slate-800 py-3 text-xs font-bold text-slate-100 transition-all hover:bg-brand-gold hover:text-slate-950 active:scale-95 shadow-lg group-hover:shadow-brand-gold/10"
                     >
-                      Buy Now
+                      Ask About Availability
                     </button>
                   </div>
                 </div>

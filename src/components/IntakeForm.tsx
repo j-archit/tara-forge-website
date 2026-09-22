@@ -2,9 +2,9 @@
 
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { fadeIn } from "@/lib/animations";
-import { Send, CheckCircle2, Loader2, Sparkles, Upload, FileText, X } from "lucide-react";
+import { Send, CheckCircle2, Loader2, Upload, FileText, X } from "lucide-react";
 import { trackFormStep, trackFileUpload } from "@/lib/analytics";
+import { validateDesignFile } from "@/lib/intakeFile";
 
 type FormState = "idle" | "submitting" | "success";
 
@@ -22,12 +22,21 @@ export function IntakeForm() {
     hp_id: "", // Honeypot field
   });
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const selectedFile = e.target.files[0];
-      setFile(selectedFile);
-      trackFileUpload(selectedFile.name, selectedFile.size / (1024 * 1024));
+  const selectFile = (selectedFile: File) => {
+    const validationError = validateDesignFile(selectedFile);
+    if (validationError) {
+      setFile(null);
+      alert(validationError);
+      return;
     }
+    setFile(selectedFile);
+    trackFileUpload(selectedFile.name, selectedFile.size / (1024 * 1024));
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+    if (selectedFile) selectFile(selectedFile);
+    e.target.value = "";
   };
 
   const onDragOver = (e: React.DragEvent) => {
@@ -43,15 +52,7 @@ export function IntakeForm() {
     e.preventDefault();
     setIsDragging(false);
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      const droppedFile = e.dataTransfer.files[0];
-      const validExtensions = ['.stl', '.step', '.stp', '.3mf'];
-      const fileName = droppedFile.name.toLowerCase();
-      if (validExtensions.some(ext => fileName.endsWith(ext))) {
-        setFile(droppedFile);
-        trackFileUpload(droppedFile.name, droppedFile.size / (1024 * 1024));
-      } else {
-        alert("Please upload a valid 3D file (.stl, .step, .3mf)");
-      }
+      selectFile(e.dataTransfer.files[0]);
     }
   };
 
@@ -74,15 +75,17 @@ export function IntakeForm() {
       if (file) {
         // Convert file to Base64 for the relay
         const reader = new FileReader();
-        const base64Promise = new Promise((resolve) => {
+        const base64Promise = new Promise<string>((resolve, reject) => {
           reader.onload = () => {
             const result = reader.result as string;
             resolve(result.split(',')[1]); // Extract base64 part
           };
+          reader.onerror = () => reject(reader.error ?? new Error("Unable to read design file"));
+          reader.onabort = () => reject(new Error("Design file reading was interrupted"));
           reader.readAsDataURL(file);
         });
 
-        fileData = (await base64Promise) as string;
+        fileData = await base64Promise;
         fileName = file.name;
         fileType = file.type || "application/octet-stream";
       }
@@ -250,7 +253,7 @@ export function IntakeForm() {
           </div>
 
           <div className="col-span-full space-y-1.5">
-            <label className="text-xs font-semibold uppercase tracking-wider text-slate-500">Upload Your Design (STL, STEP, 3MF)</label>
+            <label htmlFor="file-upload" className="text-xs font-semibold uppercase tracking-wider text-slate-500">Upload Your Design (STL, STEP, STP, 3MF)</label>
             <div
               onDragOver={onDragOver}
               onDragLeave={onDragLeave}
@@ -264,7 +267,7 @@ export function IntakeForm() {
               <input
                 type="file"
                 id="file-upload"
-                className="absolute inset-0 cursor-pointer opacity-0"
+                className="absolute inset-0 z-0 w-full cursor-pointer opacity-0"
                 accept=".stl,.step,.stp,.3mf"
                 onChange={handleFileChange}
               />
@@ -276,7 +279,7 @@ export function IntakeForm() {
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.9 }}
-                    className="flex items-center gap-4 text-left"
+                    className="pointer-events-none relative z-10 flex items-center gap-4 text-left"
                   >
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-gold/20">
                       <FileText className="h-6 w-6 text-brand-gold" />
@@ -288,7 +291,8 @@ export function IntakeForm() {
                     <button
                       type="button"
                       onClick={(e) => { e.stopPropagation(); removeFile(); }}
-                      className="rounded-full p-2 hover:bg-slate-800 text-slate-400 hover:text-red-400 transition-colors"
+                      aria-label="Remove selected design file"
+                      className="pointer-events-auto rounded-full p-2 hover:bg-slate-800 text-slate-400 hover:text-red-400 transition-colors"
                     >
                       <X className="h-4 w-4" />
                     </button>
@@ -296,7 +300,7 @@ export function IntakeForm() {
                 ) : (
                   <motion.div 
                     key="no-file"
-                    className="text-center"
+                    className="pointer-events-none relative z-10 text-center"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                   >

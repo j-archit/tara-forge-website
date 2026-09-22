@@ -7,7 +7,6 @@ import { Footer } from "@/components/Footer";
 import { Logo } from "@/components/Logo";
 import { fadeIn } from "@/lib/animations";
 import { 
-  Zap, 
   Settings, 
   Layers, 
   Brush, 
@@ -88,7 +87,7 @@ const detailedServices = [
 const processSteps = [
   {
     step: "01",
-    title: "Upload & Consult",
+    title: "Email & Consult",
     body: "Send us your .STL or .STEP files. We review every model for printability and strength requirements."
   },
   {
