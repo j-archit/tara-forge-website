@@ -24,7 +24,7 @@ export default function QuotePage() {
           <div className="grid gap-16 lg:grid-cols-2 lg:items-start">
             
             <div className="relative order-1 lg:order-2">
-              <div aria-hidden="true" inert className="pointer-events-none blur-[1px] grayscale opacity-50">
+              <div aria-hidden="true" inert className="opacity-50 pointer-events-none filter blur-[1px] grayscale">
                 <IntakeForm />
               </div>
               <ManualIntake />
