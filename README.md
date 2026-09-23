@@ -1,6 +1,6 @@
 # TaraForge3D website
 
-The public TaraForge3D site is a Next.js application exported as static files and hosted on GitHub Pages at [taraforge.in](https://taraforge.in). It presents services, a gallery, a preview catalogue, and a manual quote path. The intake and administration work is separate; `main` is the public static site.
+The public TaraForge3D site is a Next.js application exported as static files and hosted on GitHub Pages at [taraforge.in](https://taraforge.in). It presents services, a gallery, a preview catalogue, and a manual quote path. The old standalone dashboard has been retired. `main` is the public static site; it does not deploy an admin interface or a functional intake backend.
 
 ## Customer journey today
 
@@ -51,7 +51,7 @@ These files are versioned content, not an admin editor. The product cards are in
 
 `src/app/api/relay/route.ts` is legacy server-side code. GitHub Pages does not run it. Its `PI_RELAY_URL` and `PI_AUTH_TOKEN` variables are relevant only to an actual Next.js server deployment, and they are not required for this static deployment. Do not publish those secrets to browser code. The visible quote form remains disabled until a separate backend and upload flow are ready.
 
-The separate backend work lives on `feat/full-stack-rewrite`; it is not part of the production site on `main`.
+Experimental backend and admin work remains on `feat/full-stack-rewrite`; it is not part of the production site on `main` and should not be treated as a replacement for the retired dashboard yet.
 
 ## Future integration
 

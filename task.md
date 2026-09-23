@@ -9,6 +9,7 @@
 - [x] Customer journey, quote response time, conditional production timing, and indicative shop pricing explained.
 - [x] Editable business content grouped in typed files under `src/data/`.
 - [x] Lint, Node tests, and production build in the deployment workflow.
+- [x] Retire the old standalone dashboard; no admin UI is deployed with the public static site.
 
 ## Decisions and next work
 
@@ -18,4 +19,4 @@
 - [ ] Audit catalogue items, indicative prices, and shipping promises against current availability.
 - [ ] Decide the API contract and hosting for future functional intake and admin applications.
 
-The public `main` branch remains static. `feat/full-stack-rewrite` is separate experimental backend work and is not deployed from `main`.
+The public `main` branch remains static. The old dashboard is retired. `feat/full-stack-rewrite` is separate experimental backend and admin work and is not deployed from `main`.
