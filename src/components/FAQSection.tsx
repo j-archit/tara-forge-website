@@ -4,39 +4,7 @@ import * as React from "react";
 import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { trackFAQInteraction } from "@/lib/analytics";
-import { PAYMENT_TERMS } from "@/lib/paymentTerms";
-
-interface FAQItem {
-  question: string;
-  answer: string;
-}
-
-const faqs: FAQItem[] = [
-  {
-    question: "Where is TaraForge3D located?",
-    answer: "We are a boutique 3D printing studio based in Bangalore, serving creators, engineers, and makers across all of India with high-quality custom prints."
-  },
-  {
-    question: "What materials do you print with?",
-    answer: "We focus on high-reliability materials: PLA for high-detail prototypes and PETG for functional parts that require better heat resistance and durability."
-  },
-  {
-    question: "Do you offer small-batch manufacturing?",
-    answer: "Yes. We specialize in custom series and small batches (typically 1–100 units). We optimize our production process for consistency across every unit in your batch."
-  },
-  {
-    question: "How do I get a quote for my 3D printing project?",
-    answer: "Simply send your 3D design file (.stl, .obj, or .step) to taraforge3d@gmail.com. We review every model for printability and provide a quote based on material, volume, and complexity."
-  },
-  {
-    question: "What payment methods and terms do you offer?",
-    answer: PAYMENT_TERMS
-  },
-  {
-    question: "Can you help optimize my design for 3D printing?",
-    answer: "Absolutely. We provide process advisory to ensure your part is successful—adjusting wall thicknesses, supports, and orientation to deliver the best possible result."
-  }
-];
+import { faqs } from "@/data/faqs";
 
 export function FAQSection() {
   const [openIndex, setOpenIndex] = React.useState<number | null>(null);

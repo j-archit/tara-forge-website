@@ -6,7 +6,7 @@ import { ManualIntake } from "@/components/ManualIntake";
 import { ShieldCheck, Clock, Zap } from "lucide-react";
 import type { Metadata } from "next";
 import { createPageMetadata } from "@/lib/siteMetadata";
-import { PAYMENT_TERMS } from "@/lib/paymentTerms";
+import { CUSTOMER_JOURNEY, PAYMENT_TERMS, PRODUCTION_TIMING, QUOTE_RESPONSE_TIME } from "@/data/siteContent";
 
 export const metadata: Metadata = createPageMetadata(
   "Get a Quote",
@@ -31,7 +31,7 @@ export default function QuotePage() {
             </div>
 
             {/* Context & Trust (Second on mobile) */}
-            <div className="lg:sticky lg:top-32 order-2 lg:order-1">
+            <div className="order-2 lg:order-1">
               <div className="flex items-center gap-3 mb-6 group justify-start">
                 <span className="h-px w-10 bg-brand-gold/50" />
                 <span className="text-sm font-bold uppercase tracking-[0.4em] text-brand-gold">
@@ -48,6 +48,22 @@ export default function QuotePage() {
                 Whether it&apos;s a personal project, a community gift, or a custom component, we&apos;re here to help. Share your designs and we&apos;ll handle the rest.
               </p>
 
+              <section aria-labelledby="next-steps-heading" className="mt-10 rounded-3xl border border-slate-800/80 bg-slate-900/30 p-6 sm:p-8">
+                <h2 id="next-steps-heading" className="text-2xl font-semibold text-slate-50">What happens next?</h2>
+                <ol className="mt-6 space-y-5">
+                  {CUSTOMER_JOURNEY.map((step) => (
+                    <li key={step.number} className="flex gap-4">
+                      <span className="shrink-0 font-semibold text-brand-gold">{step.number}</span>
+                      <div>
+                        <h3 className="font-semibold text-slate-100">{step.title}</h3>
+                        <p className="mt-1 text-sm leading-relaxed text-slate-400">{step.description}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+                <p className="mt-6 border-t border-slate-800 pt-4 text-sm leading-relaxed text-slate-300">{PRODUCTION_TIMING}</p>
+              </section>
+
               <div className="mt-12 space-y-8">
                 <div className="flex gap-4">
                   <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-slate-900 border border-slate-800">
@@ -55,7 +71,7 @@ export default function QuotePage() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-slate-100">Personalized Support</h3>
-                    <p className="mt-1 text-sm text-slate-500 leading-relaxed">Receive a response within 24 hours with project feedback and a clear path forward.</p>
+                    <p className="mt-1 text-sm text-slate-500 leading-relaxed">{QUOTE_RESPONSE_TIME} We&apos;ll confirm what is needed to finalise your quote.</p>
                   </div>
                 </div>
 
@@ -85,15 +101,9 @@ export default function QuotePage() {
                 <p className="mt-2 text-sm leading-relaxed text-slate-300">{PAYMENT_TERMS}</p>
               </div>
               
-              <div className="mt-16 p-6 rounded-3xl border border-slate-800/40 bg-slate-900/20 backdrop-blur-sm">
-                <div className="flex items-center gap-4">
-                  <div className="flex h-10 w-10 -space-x-2">
-                    {[1, 2, 3].map((i) => (
-                      <div key={i} className="h-full w-full rounded-full border-2 border-slate-900 bg-slate-800" />
-                    ))}
-                  </div>
-                  <p className="text-sm text-slate-300">Join Over <span className="text-brand-gold font-bold">200+</span> Makers & Engineers</p>
-                </div>
+              <div className="mt-12 rounded-3xl border border-slate-800/40 bg-slate-900/20 p-6 backdrop-blur-sm">
+                <h2 className="font-semibold text-slate-100">Still preparing your file?</h2>
+                <p className="mt-2 text-sm leading-relaxed text-slate-400">Send what you have and describe the part you need. We&apos;ll discuss printability before you confirm the project.</p>
               </div>
             </div>
             

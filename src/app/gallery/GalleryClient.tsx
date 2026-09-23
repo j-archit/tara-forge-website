@@ -7,6 +7,7 @@ import { Footer } from "@/components/Footer";
 import { fadeIn } from "@/lib/animations";
 import { TestimonialMarquee } from "@/components/TestimonialMarquee";
 import { trackCTA, trackEvent } from "@/lib/analytics";
+import { CONTACT } from "@/data/siteContent";
 
 const galleryItems = [
   {
@@ -144,8 +145,8 @@ export default function GalleryClient() {
           <motion.div {...fadeIn(0.1)}>
             <h2 className="text-3xl font-semibold text-slate-50 mb-6">Ready to start your next project?</h2>
             <a
-              href="mailto:taraforge3d@gmail.com"
-              onClick={() => trackCTA('get_quote_gallery', 'mailto:taraforge3d@gmail.com')}
+              href={`mailto:${CONTACT.email}`}
+              onClick={() => trackCTA('get_quote_gallery', `mailto:${CONTACT.email}`)}
               className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-gold px-8 py-3 text-base font-semibold text-slate-950 shadow-[var(--brand-glow-gold)] transition hover:bg-brand-gold-bright hover:scale-105"
             >
               Get a Quote Now

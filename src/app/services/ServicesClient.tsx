@@ -16,96 +16,15 @@ import {
   Timer
 } from "lucide-react";
 import Link from "next/link";
+import { detailedServices, type ServiceIcon } from "@/data/services";
+import { CUSTOMER_JOURNEY, PRODUCTION_TIMING } from "@/data/siteContent";
 
-const detailedServices = [
-  {
-    id: "prototyping",
-    label: "Rapid Prototyping",
-    title: "Iterate Fast. Hold it in your hands.",
-    description: "Turn your digital concepts into physical reality overnight.",
-    features: [
-      "24-48 hour typical turnaround",
-      "Multiple iteration cycles supported",
-      "Fit-check and assembly validation",
-      "Precision layer heights (0.12mm - 0.28mm)",
-      "Process advisory & printability review"
-    ],
-    icon: Timer,
-    gradient: "from-blue-600/20 to-indigo-600/20",
-    accent: "text-blue-400"
-  },
-  {
-    id: "parts",
-    label: "Custom Functional Parts",
-    title: "Build what you need. Parts that just work.",
-    description: "Performance-oriented prints designed for real-world mechanical durability.",
-    features: [
-      "Performance materials: PETG, PLA+",
-      "Optimized print orientation for strength",
-      "High-density infill for mechanical integrity",
-      "Chemical and heat resistant options",
-      "Reinforced wall & shell structures"
-    ],
-    icon: Settings,
-    gradient: "from-emerald-600/20 to-teal-600/20",
-    accent: "text-emerald-400"
-  },
-  {
-    id: "batching",
-    label: "Component Batching",
-    title: "Go Beyond One-Offs. Reliable Manufacturing.",
-    description: "Bridge the gap between prototyping and mass-injection molding.",
-    features: [
-      "Tiered pricing for volume orders",
-      "Strict quality control across the batch",
-      "Custom branding integration",
-      "Repeatable manufacturing accuracy",
-      "India-wide shipping & fulfillment"
-    ],
-    icon: Layers,
-    gradient: "from-amber-600/20 to-orange-600/20",
-    accent: "text-amber-400"
-  },
-  {
-    id: "artistic",
-    label: "Artistic & Giftables",
-    title: "Detail in every layer. Craft the otherworldly.",
-    description: "High-resolution prints with a focus on visual excellence and premium finishes.",
-    features: [
-      "Ultra-fine resolution options",
-      "Manual post-processing and cleanup",
-      "Specialty aesthetic filaments",
-      "Custom display bases and assemblies",
-      "Premium textures & silk finishes"
-    ],
-    icon: Brush,
-    gradient: "from-purple-600/20 to-pink-600/20",
-    accent: "text-purple-400"
-  }
-];
-
-const processSteps = [
-  {
-    step: "01",
-    title: "Email & Consult",
-    body: "Send us your .STL or .STEP files. We review every model for printability and strength requirements."
-  },
-  {
-    step: "02",
-    title: "Optimization",
-    body: "We adjust orientation, supports, and material settings to ensure your part is built for success."
-  },
-  {
-    step: "03",
-    title: "Precision Print",
-    body: "Your project is queued on our professionally calibrated fleet using premium-grade materials."
-  },
-  {
-    step: "04",
-    title: "Final Inspection",
-    body: "Every part is hand-checked for accuracy and shipped securely to your doorstep."
-  }
-];
+const serviceIcons: Record<ServiceIcon, typeof Timer> = {
+  timer: Timer,
+  settings: Settings,
+  layers: Layers,
+  brush: Brush,
+};
 
 export default function ServicesClient() {
   return (
@@ -127,7 +46,9 @@ export default function ServicesClient() {
       </section>
 
       {/* Services Detailed List */}
-      {detailedServices.map((service, idx) => (
+      {detailedServices.map((service, idx) => {
+        const ServiceIcon = serviceIcons[service.icon];
+        return (
         <section 
           key={service.id} 
           className={`py-8 lg:py-12 border-b border-white/5 ${idx % 2 === 1 ? 'bg-slate-950/60' : 'bg-slate-950/20'}`}
@@ -141,7 +62,7 @@ export default function ServicesClient() {
               <div className="flex-1">
                 <div className={`relative aspect-square max-w-sm mx-auto overflow-hidden rounded-3xl border border-white/5 bg-gradient-to-br ${service.gradient} flex items-center justify-center group`}>
                   <div className="p-8 rounded-full bg-slate-950/40 backdrop-blur-md border border-white/10 transition-transform duration-500 group-hover:scale-110 shadow-2xl">
-                    <service.icon className={`w-16 h-16 ${service.accent}`} />
+                    <ServiceIcon className={`w-16 h-16 ${service.accent}`} />
                   </div>
                   {/* Subtle Brand Logo Watermark */}
                   <div className="absolute bottom-6 right-6 opacity-10">
@@ -191,7 +112,8 @@ export default function ServicesClient() {
             </motion.div>
           </div>
         </section>
-      ))}
+        );
+      })}
 
       {/* Process Section - More targeted to general users */}
       <section className="py-16 border-y border-white/5 bg-slate-950/60">
@@ -202,18 +124,19 @@ export default function ServicesClient() {
           </div>
 
           <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
-            {processSteps.map((step) => (
-              <div key={step.step} className="relative group">
+            {CUSTOMER_JOURNEY.map((step) => (
+              <div key={step.number} className="relative group">
                 <span className="text-5xl font-bold text-white/5 absolute -top-8 -left-2 transition-colors group-hover:text-brand-gold/10">
-                  {step.step}
+                  {step.number}
                 </span>
                 <div className="relative">
                   <h3 className="text-lg font-semibold text-slate-100 mb-3">{step.title}</h3>
-                  <p className="text-sm text-slate-400 leading-relaxed font-light">{step.body}</p>
+                  <p className="text-sm text-slate-400 leading-relaxed font-light">{step.description}</p>
                 </div>
               </div>
             ))}
           </div>
+          <p className="mt-12 text-center text-sm leading-relaxed text-slate-400">{PRODUCTION_TIMING}</p>
         </div>
       </section>
 

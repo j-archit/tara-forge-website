@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Logo } from "./Logo";
 import { Mail, MoveUpRight } from "lucide-react";
 import { trackNavigation, trackSocialClick } from "@/lib/analytics";
+import { CONTACT } from "@/data/siteContent";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -17,7 +18,7 @@ export function Footer() {
       { label: "Why TaraForge3D", href: "/#about" },
     ],
     connect: [
-      { label: "Email", href: "mailto:taraforge3d@gmail.com", icon: <Mail className="w-3.5 h-3.5" /> },
+      { label: "Email", href: `mailto:${CONTACT.email}`, icon: <Mail className="w-3.5 h-3.5" /> },
     ]
   };
 

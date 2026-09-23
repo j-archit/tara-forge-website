@@ -56,7 +56,7 @@ export default function HomePage() {
 
             <div className="mt-10 flex flex-wrap gap-4 justify-center sm:justify-start">
               {[
-                { label: "Quick Turnaround", sub: "24-48h typical lead" },
+                { label: "Quote First", sub: "Timing confirmed with you" },
                 { label: "Small Run Support", sub: "Creative-Focused" },
                 { label: "Local Artisan Studio", sub: "Hand-finished with care" }
               ].map((badge, idx) => (

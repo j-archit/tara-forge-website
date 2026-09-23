@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Send, CheckCircle2, Loader2, Upload, FileText, X } from "lucide-react";
 import { trackFormStep, trackFileUpload } from "@/lib/analytics";
 import { validateDesignFile } from "@/lib/intakeFile";
+import { CONTACT } from "@/data/siteContent";
 
 type FormState = "idle" | "submitting" | "success";
 
@@ -115,7 +116,7 @@ export function IntakeForm() {
       trackFormStep('form_success');
     } catch (error) {
       console.error("Submission error:", error);
-      alert("There was an issue sending your design. Please try again or email us directly at taraforge3d@gmail.com");
+      alert(`There was an issue sending your design. Please try again or email us directly at ${CONTACT.email}`);
       setState("idle");
       trackFormStep('form_error', { error: error instanceof Error ? error.message : String(error) });
     }

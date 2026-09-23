@@ -7,84 +7,8 @@ import { Footer } from "@/components/Footer";
 import { Logo } from "@/components/Logo";
 import { fadeIn } from "@/lib/animations";
 import { trackProductInterest, trackCTA } from "@/lib/analytics";
-
-interface Product {
-  id: string | number;
-  title: string;
-  category: string;
-  description: string;
-  price: number; 
-  currency: string;
-  imageGradient: string;
-  accent: string;
-  tag?: string;
-}
-
-const products: Product[] = [
-  {
-    id: "tf-desk-organizer",
-    title: "Minimalist Desk Set",
-    category: "Living",
-    description: "A geometric 3-piece set for your workspace. Designed for modularity and a clean aesthetic finish.",
-    price: 1249,
-    currency: "₹",
-    imageGradient: "from-blue-900/40 via-slate-900 to-slate-950",
-    accent: "rgba(56, 189, 248, 0.4)",
-    tag: "Popular",
-  },
-  {
-    id: "tf-planter-stellar",
-    title: "Celestial Planter",
-    category: "Living",
-    description: "Self-watering geometric planter with a celestial pattern. Durable PETG construction for indoor/outdoor use.",
-    price: 899,
-    currency: "₹",
-    imageGradient: "from-purple-900/40 via-slate-900 to-slate-950",
-    accent: "rgba(168, 85, 247, 0.4)",
-  },
-  {
-    id: "tf-lamp-nebula",
-    title: "Nebula Ambient Lamp",
-    category: "Decor",
-    description: "Lithophane-style light cover that projects cosmic shadows. Includes custom base and LED fitting.",
-    price: 2499,
-    currency: "₹",
-    imageGradient: "from-amber-900/40 via-slate-900 to-slate-950",
-    accent: "rgba(251, 191, 36, 0.4)",
-    tag: "Premium",
-  },
-  {
-    id: "tf-keycap-forge",
-    title: "Forge Edition Keycaps",
-    category: "Customs",
-    description: "Set of 4 artisan keycaps featuring the TaraForge3D logo. High-detail precision prints for mechanical keyboards.",
-    price: 599,
-    currency: "₹",
-    imageGradient: "from-emerald-900/40 via-slate-900 to-slate-950",
-    accent: "rgba(16, 185, 129, 0.4)",
-  },
-  {
-    id: "tf-headphone-stand",
-    title: "Aero Headphone Stand",
-    category: "Living",
-    description: "Ergonomic stand designed for weight balance and minimalistic profile. Printed in reinforced PLA.",
-    price: 1599,
-    currency: "₹",
-    imageGradient: "from-rose-900/40 via-slate-900 to-slate-950",
-    accent: "rgba(244, 63, 94, 0.4)",
-  },
-  {
-    id: "tf-swatch-pack",
-    title: "Material Swatch Pack",
-    category: "Makers",
-    description: "Complete set of 12 material swatches including PLA, PETG, and Specialty filaments for tactile review.",
-    price: 450,
-    currency: "₹",
-    imageGradient: "from-slate-800 via-slate-900 to-slate-950",
-    accent: "rgba(148, 163, 184, 0.4)",
-    tag: "Sample Kit"
-  }
-];
+import { products, type Product } from "@/data/products";
+import { CONTACT, SHOP_NOTICE } from "@/data/siteContent";
 
 export default function ShopClient() {
   const handleInquiry = (product: Product) => {
@@ -92,7 +16,7 @@ export default function ShopClient() {
     
     const subject = encodeURIComponent(`Availability Inquiry: ${product.title}`);
     const body = encodeURIComponent(`Hello TaraForge3D,\n\nI'm interested in the ${product.title} (SKU: ${product.id}). Could you confirm availability, final pricing, and shipping options?\n\nThank you!`);
-    window.location.assign(`mailto:taraforge3d@gmail.com?subject=${subject}&body=${body}`);
+    window.location.assign(`mailto:${CONTACT.email}?subject=${subject}&body=${body}`);
   };
 
   return (
@@ -110,7 +34,7 @@ export default function ShopClient() {
               </span>
             </h1>
             <p className="max-w-2xl text-pretty text-base text-slate-300 text-center sm:text-left">
-              Preview our upcoming collection. Interested in an item? Send us an inquiry to check availability, final pricing, and shipping.
+              Preview our upcoming collection. {SHOP_NOTICE}
             </p>
           </motion.div>
         </div>
@@ -179,8 +103,8 @@ export default function ShopClient() {
         <div className="section-max-width px-6">
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
             <div className="text-center">
-              <p className="text-sm font-bold text-brand-gold">Precision Batches</p>
-              <p className="text-[10px] text-slate-500 uppercase tracking-widest mt-1">High-volume reliability</p>
+              <p className="text-sm font-bold text-brand-gold">Custom Batches</p>
+              <p className="text-[10px] text-slate-500 uppercase tracking-widest mt-1">Quantity confirmed in quote</p>
             </div>
             <div className="text-center border-l border-slate-800">
               <p className="text-sm font-bold text-brand-gold">Custom Finishes</p>
@@ -207,11 +131,11 @@ export default function ShopClient() {
           >
             <h2 className="text-3xl font-semibold text-slate-50 mb-4">Bulk Orders & Custom Series</h2>
             <p className="text-slate-400 text-sm mb-8 max-w-xl mx-auto">
-              Looking for 100+ units for a specific project or retail need? We offer competitive tiered pricing and can integrate your own branding into our designs.
+              Planning a repeat run for a project or retail need? Tell us the quantity and requirements so we can quote the price, production time, and any custom branding.
             </p>
             <a
-              href="mailto:taraforge3d@gmail.com"
-              onClick={() => trackCTA('request_batch_quote', 'mailto:taraforge3d@gmail.com')}
+              href={`mailto:${CONTACT.email}`}
+              onClick={() => trackCTA('request_batch_quote', `mailto:${CONTACT.email}`)}
               className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-gold px-10 py-4 text-sm font-bold text-slate-950 shadow-[var(--brand-glow-gold)] transition hover:bg-brand-gold-bright hover:scale-105 active:scale-95"
             >
               Request Batch Quote

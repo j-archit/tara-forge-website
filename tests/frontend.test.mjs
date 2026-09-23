@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { createPageMetadata, SITE_URL } from "../src/lib/siteMetadata.ts";
 import { MAX_DESIGN_FILE_SIZE_BYTES, validateDesignFile } from "../src/lib/intakeFile.ts";
 import { QUOTE_EMAIL, quoteMailtoHref } from "../src/lib/contact.ts";
-import { PAYMENT_TERMS } from "../src/lib/paymentTerms.ts";
+import { PAYMENT_TERMS } from "../src/data/siteContent.ts";
 
 test("page metadata uses its own canonical and social URL", () => {
   const metadata = createPageMetadata("Services", "Service description", "/services");

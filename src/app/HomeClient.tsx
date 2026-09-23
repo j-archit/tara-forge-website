@@ -7,6 +7,7 @@ import { ShieldCheck, Leaf, Eye, UserCheck, Zap, Heart, ArrowRight } from "lucid
 import Link from "next/link";
 import { FAQSection } from "@/components/FAQSection";
 import { trackCTA } from "@/lib/analytics";
+import { homeServices } from "@/data/services";
 
 export { FAQSection };
 
@@ -22,33 +23,6 @@ export function HeroClient({ children }: { children: React.ReactNode }) {
 }
 
 export function ServiceCards() {
-  const services = [
-    {
-      label: "Rapid prototyping",
-      title: "Iterate fast. Hold it in your hands.",
-      body: "From first sketch to functional form—tight tolerances, fit-checks, and iteration-friendly prints for teams and makers.",
-      tag: "Fast turnaround",
-    },
-    {
-      label: "Custom parts",
-      title: "Build what you need. Parts that just work.",
-      body: "Replacement parts, enclosures, brackets, jigs—designed (or refined) for strength, orientation, and real-world use.",
-      tag: "Functional prints",
-    },
-    {
-      label: "Component batching",
-      title: "Go Beyond One-Offs. Reliable Batch Manufacturing.",
-      body: "Need 100+ precision parts? We optimize for repeat consistency and mechanical integrity across small print runs.",
-      tag: "Small-batch printing",
-    },
-    {
-      label: "Figurines & Giftables",
-      title: "Craft the otherworldly. Detail in every layer.",
-      body: "From custom tabletop miniatures to unique corporate gifts—we provide high-resolution prints that highlight every fine detail.",
-      tag: "Custom Art",
-    },
-  ];
-
   return (
     <section id="services" className="relative border-b border-slate-800/40 bg-slate-950/20 px-6 pb-12 pt-4 lg:px-4 lg:pb-20 lg:pt-8">
       <div className="section-max-width">
@@ -59,7 +33,7 @@ export function ServiceCards() {
       <div 
         className="grid gap-8 sm:grid-cols-2 lg:grid-cols-2"
       >
-        {services.map((item, i) => (
+        {homeServices.map((item, i) => (
           <motion.div 
             key={i}
             {...fadeIn(i * 0.1)}

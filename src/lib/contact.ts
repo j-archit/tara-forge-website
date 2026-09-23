@@ -1,4 +1,6 @@
-export const QUOTE_EMAIL = "taraforge3d@gmail.com";
+import { CONTACT } from "../data/siteContent.ts";
+
+export const QUOTE_EMAIL = CONTACT.email;
 
 export const QUOTE_EMAIL_BODY = [
   "Hi TaraForge3D Team,",

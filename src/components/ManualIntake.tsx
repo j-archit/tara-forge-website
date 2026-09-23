@@ -4,6 +4,7 @@ import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Clock, Zap, MessageSquare, Copy, Check } from "lucide-react";
 import { QUOTE_EMAIL, quoteMailtoHref } from "@/lib/contact";
+import { CONTACT, QUOTE_RESPONSE_TIME } from "@/data/siteContent";
 
 export function ManualIntake() {
   const [copyStatus, setCopyStatus] = React.useState<"idle" | "copied" | "failed">("idle");
@@ -91,7 +92,7 @@ export function ManualIntake() {
             <p className="select-all text-sm text-slate-200">{QUOTE_EMAIL}</p>
 
             <a 
-              href="https://wa.me/917042337788?text=Hi TaraForge3D, I'd like to get a quote for a 3D printing project!"
+              href={`https://wa.me/${CONTACT.whatsappNumber}?text=${encodeURIComponent("Hi TaraForge3D, I'd like to get a quote for a 3D printing project!")}`}
               target="_blank"
               rel="noopener noreferrer"
               className="w-full inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-slate-900 px-4 py-3 text-sm font-semibold text-slate-100 transition hover:border-brand-gold/50 hover:bg-slate-800 active:scale-[0.98]"
@@ -100,7 +101,7 @@ export function ManualIntake() {
               <MessageSquare className="w-3.5 h-3.5" />
             </a>
           </div>
-          <p className="text-[10px] text-slate-500 italic">Usual response: ~2-4 hours via WhatsApp </p>
+          <p className="text-[10px] text-slate-500 italic">{QUOTE_RESPONSE_TIME}</p>
         </div>
       </div>
     </motion.div>
