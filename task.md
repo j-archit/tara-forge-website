@@ -1,24 +1,21 @@
-# Tara Forge Website Task List
+# TaraForge3D public site status
 
-- [x] **Phase 1: Planning and Design**
-    - [x] Brainstorm tech stack
-    - [x] Refine implementation plan with Next.js and Component Library
-    - [x] Select and document component library choice (Shadcn/UI selected)
-- [x] **Phase 2: Project Initialization**
-    - [x] Initialize Next.js app with Tailwind and TypeScript
-    - [x] Configure for GitHub Pages (Static Export)
-    - [x] Configure component library (Shadcn/UI)
-    - [x] Set up global theme and CSS variables (Celestial theme)
-- [/] **Phase 3: Core Components**
-    - [x] Navbar (Glassmorphic)
-    - [x] Hero Section (Celestial Forge visuals)
-    - [x] Service Cards
-    - [x] Gallery Showcase
-    - [x] Footer
-- [x] **Phase 4: Content and Polish**
-    - [x] Add copy and "Your Idea, in 3D" branding
-    - [x] Implement scroll animations (Framer Motion)
-    - [x] Responsive design check
-- [x] **Phase 5: Deployment Prep**
-    - [x] Static export configuration (`output: 'export'`)
-    - [x] SEO audit (Meta tags, titles)
+## Current release
+
+- [x] Static Next.js export on GitHub Pages with a custom domain.
+- [x] Public services, gallery, shop preview, team, and quote pages.
+- [x] Manual quote intake by email and WhatsApp, with the inactive form visible beneath the original overlay.
+- [x] UPI-only 50/50 payment milestones shown on the site.
+- [x] Customer journey, quote response time, conditional production timing, and indicative shop pricing explained.
+- [x] Editable business content grouped in typed files under `src/data/`.
+- [x] Lint, Node tests, and production build in the deployment workflow.
+
+## Decisions and next work
+
+- [ ] Review and choose cancellation, revisions, defects, refund, and shipping terms from `docs/customer-policy-draft.md` before publishing a policy.
+- [ ] Add genuine project case studies as photographs and customer permission become available. Do not use invented counts or claims.
+- [ ] Implement the browser tests described in `docs/browser-testing-plan.md`.
+- [ ] Audit catalogue items, indicative prices, and shipping promises against current availability.
+- [ ] Decide the API contract and hosting for future functional intake and admin applications.
+
+The public `main` branch remains static. `feat/full-stack-rewrite` is separate experimental backend work and is not deployed from `main`.
