@@ -73,9 +73,12 @@ export const CelestialBackground = () => {
   }, []);
 
   return (
-    <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none bg-slate-950">
+    <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none bg-[#020617]">
       {/* Deep Space Base */}
       <div className="absolute inset-0 bg-[#020617]" />
+
+      {/* Keep the hero effects viewport-sized, and fade them into the page-wide sky. */}
+      <div className="absolute inset-x-0 top-0 h-screen [mask-image:linear-gradient(to_bottom,#000_0%,#000_55%,transparent_100%)]">
       
       {/* Nebula Clouds */}
       <motion.div 
@@ -116,10 +119,6 @@ export const CelestialBackground = () => {
         className="absolute bottom-0 left-0 right-0 h-[40%] bg-gradient-to-t from-amber-600/15 to-transparent blur-3xl opacity-30"
       />
 
-      {/* Static Stars (Small) */}
-      <div className="absolute inset-0 opacity-40" style={{ backgroundImage: 'radial-gradient(white 1px, transparent 0)', backgroundSize: '40px 40px' }} />
-      <div className="absolute inset-0 opacity-25" style={{ backgroundImage: 'radial-gradient(white 1px, transparent 0)', backgroundSize: '70px 70px', backgroundPosition: '20px 20px' }} />
-      
       {mounted && (
         <>
           {/* Constellation Lines */}
@@ -169,6 +168,11 @@ export const CelestialBackground = () => {
 
       {/* Grid Overlay */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:60px_60px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
+      </div>
+
+      {/* The repeating stars continue beyond the first viewport without a seam. */}
+      <div className="absolute inset-0 opacity-40" style={{ backgroundImage: 'radial-gradient(white 1px, transparent 0)', backgroundSize: '40px 40px' }} />
+      <div className="absolute inset-0 opacity-25" style={{ backgroundImage: 'radial-gradient(white 1px, transparent 0)', backgroundSize: '70px 70px', backgroundPosition: '20px 20px' }} />
     </div>
   );
 };
