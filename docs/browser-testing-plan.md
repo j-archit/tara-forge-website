@@ -1,6 +1,6 @@
 # Browser testing plan
 
-The current `npm test` suite checks small data and helper functions. The next phase should test the exported site in a real browser, using the files in `out/` served locally after `npm run build`.
+`npm test` checks small data and helper functions. `npm run test:browser` checks the exported site in a real browser after `npm run build`, using the files in `out/` served locally. GitHub Actions runs the browser suite before deployment.
 
 ## Priority 1: protect the ordering path
 
@@ -23,4 +23,4 @@ The current `npm test` suite checks small data and helper functions. The next ph
 2. Scan internal links in the exported output for broken destinations.
 3. Check the static site never sends a request to `/api/relay` while the manual overlay is active.
 
-Use Playwright with installed Edge or Chromium and run the browser suite after the production build in GitHub Actions. Keep unit tests for logic such as file validation and mailto construction. Prefer visible behaviour and exported output over tests that merely search source files for words.
+The ordering-path checks above, mobile navigation, FAQ keyboard behaviour, and export/link checks are automated in `tests/browser/journey.spec.ts`. Testimonial controls, reduced-motion behaviour, automated accessibility scans, and manual contrast/focus review remain follow-up work. Keep unit tests for logic such as file validation and mailto construction. Prefer visible behaviour and exported output over tests that merely search source files for words.

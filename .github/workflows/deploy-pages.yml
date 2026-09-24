@@ -43,6 +43,12 @@ jobs:
       - name: Build static export
         run: npm run build
 
+      - name: Install Chromium for browser tests
+        run: npx playwright install --with-deps chromium
+
+      - name: Test exported site in browser
+        run: npm run test:browser
+
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v4
 
