@@ -12,6 +12,8 @@ The public TaraForge3D site is a Next.js application exported as static files an
 
 The quote page deliberately shows an inactive form behind a contact overlay. The overlay's email and WhatsApp actions are the active intake paths. The form is inert and hidden from assistive technology so it cannot submit on the static site.
 
+The [shipping, returns and refunds page](https://taraforge.in/shipping-returns/) explains pan-India shipping at actual cost, pre-dispatch images, delivery-damage claims, custom-print returns, and refund processing. The shop and quote pages link to it.
+
 ## Local development
 
 Use Node.js 24 and npm.
@@ -43,6 +45,7 @@ Install a Playwright browser once with `npx playwright install chromium` (Window
 | Home page FAQ | `src/data/faqs.ts` |
 | Customer testimonials | `src/data/testimonials.ts` |
 | Quote email template | `src/lib/contact.ts` |
+| Shipping, returns and refunds policy | `src/app/shipping-returns/page.tsx` |
 
 These files are versioned content, not an admin editor. The product cards are inquiries, not a checkout. Check every product description and indicative price against what can actually be supplied before publishing it.
 
@@ -58,4 +61,4 @@ Experimental backend and admin work remains on `feat/full-stack-rewrite`; it is 
 
 Keep the public site and intake system independently deployable. Before activating the form, agree on an API contract for customer details, project requirements, file uploads, consent, quote status, and errors. The backend should issue a safe upload method for large files, validate submissions, store files in object storage, and expose authenticated admin endpoints. The public site should call that API through a configured HTTPS origin. A later AWS deployment could serve the public site from S3 and CloudFront and run the API and admin app separately with PostgreSQL and object storage.
 
-See [the browser test plan](docs/browser-testing-plan.md) for the next quality phase and [the policy draft](docs/customer-policy-draft.md) for decisions still needed before publishing cancellation and refund terms.
+See [the browser test plan](docs/browser-testing-plan.md) for the next quality phase and [the policy draft](docs/customer-policy-draft.md) for remaining cancellation, revision, and warranty decisions.
