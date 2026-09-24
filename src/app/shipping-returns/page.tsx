@@ -50,10 +50,10 @@ export default function ShippingReturnsPage() {
                 We do not accept change-of-mind returns for a custom print that arrives undamaged and matches the agreed specification.
               </p>
               <p className="mt-4 leading-relaxed text-slate-300">
-                If your parcel or print arrives damaged, defective, or materially different from what we agreed, please contact us as soon as possible. Share your quote or order details, photos of the product and packaging, and, if possible, an unboxing video starting with the unopened shipping package. Please keep the packaging while we review the claim.
+                If your parcel or print arrives damaged in transit, please contact us as soon as possible. An unboxing video is required to verify a shipping-damage claim. Start recording before opening the shipping package and show the package, the product as you unbox it, and the damage. Send the video with your quote or order details and photos of the product and packaging. Please keep the packaging while we review the claim.
               </p>
               <p className="mt-4 leading-relaxed text-slate-400">
-                An unboxing video helps us verify transit damage, but please contact us even if you could not record one. We review the available evidence and each claim on its facts.
+                If the print is defective or materially different from the agreed specification for a reason other than shipping damage, contact us with your order details and photos. We review these concerns separately and assess each claim on its facts.
               </p>
               <p className="mt-4 leading-relaxed text-slate-300">
                 If verified shipping damage requires the parcel to be returned, TaraForge3D covers the postage to send it back to us (return-to-origin or RTO postage). Please contact us before sending it so we can arrange the return. For any other agreed return, we will confirm the arrangements first.

@@ -98,8 +98,9 @@ test("shipping and returns policy states the agreed terms", async ({ page }) => 
   await expect(page.getByText(/ship pan-India.*charged separately at the actual carrier cost/i)).toBeVisible();
   await expect(page.getByText(/images of the finished product and its shipping package before dispatch/i)).toBeVisible();
   await expect(page.getByText(/do not accept change-of-mind returns for a custom print/i)).toBeVisible();
-  await expect(page.getByText(/unboxing video starting with the unopened shipping package/i)).toBeVisible();
-  await expect(page.getByText(/contact us even if you could not record one/i)).toBeVisible();
+  await expect(page.getByText(/An unboxing video is required to verify a shipping-damage claim/i)).toBeVisible();
+  await expect(page.getByText(/Start recording before opening the shipping package/i)).toBeVisible();
+  await expect(page.getByText(/defective or materially different from the agreed specification for a reason other than shipping damage/i)).toBeVisible();
   await expect(page.getByText(/verified shipping damage.*TaraForge3D covers the postage.*return-to-origin or RTO postage/i)).toBeVisible();
   await expect(page.getByText(/process the refund within 2–4 business days/i)).toBeVisible();
   await expect(page.getByRole("link", { name: /Email taraforge3d@gmail.com/i })).toHaveAttribute("href", /mailto:taraforge3d@gmail.com/);
