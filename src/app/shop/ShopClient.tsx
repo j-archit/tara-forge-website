@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -28,6 +29,9 @@ export default function ShopClient() {
             </h1>
             <p className="max-w-2xl text-pretty text-base text-slate-300 text-center sm:text-left">
               Preview our upcoming collection. {SHOP_NOTICE}
+            </p>
+            <p className="mt-3 text-center text-sm sm:text-left">
+              <Link href="/shipping-returns" className="text-brand-gold underline underline-offset-4 hover:text-brand-gold-bright">Read our shipping and returns policy</Link>
             </p>
           </motion.div>
         </div>

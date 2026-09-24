@@ -9,6 +9,7 @@ const routes = [
   { path: "/shop/", heading: /The Shop/i },
   { path: "/team/", heading: /The Team.*Behind the Forge/i },
   { path: "/quote/", heading: /Bring your ideas to life/i },
+  { path: "/shipping-returns/", heading: /Shipping, returns & refunds/i },
 ];
 
 for (const route of routes) {
@@ -90,6 +91,17 @@ test("quote page states the journey, timing, and UPI milestones", async ({ page 
   await expect(page.getByText("We respond to quote requests within 24 hours.", { exact: true })).toBeVisible();
   await expect(page.getByText(/Typical projects are completed within 48 hours after the quote and 3D files are finalised/i)).toBeVisible();
   await expect(page.getByText(/UPI only.*50%.*confirm the project.*remaining 50%.*before shipping/i)).toBeVisible();
+});
+
+test("shipping and returns policy states the agreed terms", async ({ page }) => {
+  await page.goto("/shipping-returns/");
+  await expect(page.getByText(/ship pan-India.*charged separately at the actual carrier cost/i)).toBeVisible();
+  await expect(page.getByText(/images of the finished product and its shipping package before dispatch/i)).toBeVisible();
+  await expect(page.getByText(/do not accept change-of-mind returns for a custom print/i)).toBeVisible();
+  await expect(page.getByText(/unboxing video starting with the unopened shipping package/i)).toBeVisible();
+  await expect(page.getByText(/contact us even if you could not record one/i)).toBeVisible();
+  await expect(page.getByText(/process the refund within 2–4 business days/i)).toBeVisible();
+  await expect(page.getByRole("link", { name: /Email taraforge3d@gmail.com/i })).toHaveAttribute("href", /mailto:taraforge3d@gmail.com/);
 });
 
 for (const width of [390, 768, 1440]) {

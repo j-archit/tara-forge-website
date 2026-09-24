@@ -16,6 +16,7 @@ export function Footer() {
       { label: "Shop", href: "/shop" },
       { label: "Team", href: "/team" },
       { label: "Why TaraForge3D", href: "/#about" },
+      { label: "Shipping & returns", href: "/shipping-returns" },
     ],
     connect: [
       { label: "Email", href: `mailto:${CONTACT.email}`, icon: <Mail className="w-3.5 h-3.5" /> },

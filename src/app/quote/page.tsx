@@ -1,4 +1,5 @@
 import * as React from "react";
+import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { IntakeForm } from "@/components/IntakeForm";
@@ -99,6 +100,7 @@ export default function QuotePage() {
               <div className="mt-12 rounded-2xl border border-brand-gold/30 bg-brand-gold/5 p-6">
                 <h2 className="text-lg font-semibold text-slate-100">Payment terms</h2>
                 <p className="mt-2 text-sm leading-relaxed text-slate-300">{PAYMENT_TERMS}</p>
+                <Link href="/shipping-returns" className="mt-3 inline-block text-sm text-brand-gold underline underline-offset-4 hover:text-brand-gold-bright">Shipping, returns and refunds</Link>
               </div>
               
               <div className="mt-12 rounded-3xl border border-slate-800/40 bg-slate-900/20 p-6 backdrop-blur-sm">
