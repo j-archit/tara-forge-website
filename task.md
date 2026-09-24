@@ -14,7 +14,7 @@
 
 ## Decisions and next work
 
-- [ ] Decide remaining cancellation, revision, return-postage, and warranty details from `docs/customer-policy-draft.md`.
+- [ ] Decide remaining cancellation, revision, non-transit return-postage, and warranty details from `docs/customer-policy-draft.md`.
 - [ ] Add genuine project case studies as photographs and customer permission become available. Do not use invented counts or claims.
 - [ ] Implement the browser tests described in `docs/browser-testing-plan.md`.
 - [ ] Audit catalogue items, indicative prices, and shipping promises against current availability.

@@ -53,7 +53,10 @@ export default function ShippingReturnsPage() {
                 If your parcel or print arrives damaged, defective, or materially different from what we agreed, please contact us as soon as possible. Share your quote or order details, photos of the product and packaging, and, if possible, an unboxing video starting with the unopened shipping package. Please keep the packaging while we review the claim.
               </p>
               <p className="mt-4 leading-relaxed text-slate-400">
-                An unboxing video helps us verify transit damage, but please contact us even if you could not record one. We review the available evidence and each claim on its facts. If a return is needed, we will confirm the return arrangements before you send anything back.
+                An unboxing video helps us verify transit damage, but please contact us even if you could not record one. We review the available evidence and each claim on its facts.
+              </p>
+              <p className="mt-4 leading-relaxed text-slate-300">
+                If verified shipping damage requires the parcel to be returned, TaraForge3D covers the postage to send it back to us (return-to-origin or RTO postage). Please contact us before sending it so we can arrange the return. For any other agreed return, we will confirm the arrangements first.
               </p>
             </section>
 

@@ -16,7 +16,7 @@ The written quote should specify the final file version, material, colour, quant
 
 ## Decisions to make before publication
 
-- Who pays return shipping for a confirmed defect or damage in transit?
+- TaraForge3D covers return-to-origin postage for verified shipping damage. Who pays return shipping for a confirmed defect not caused by transit?
 - Is there a suggested period for reporting a problem, while preserving legal rights?
 - What counts as included design work, and how is its cost approved?
 - Will you offer any voluntary fit or durability warranty beyond the agreed specification?
