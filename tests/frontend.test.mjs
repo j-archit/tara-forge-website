@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { createPageMetadata, SITE_URL } from "../src/lib/siteMetadata.ts";
 import { MAX_DESIGN_FILE_SIZE_BYTES, validateDesignFile } from "../src/lib/intakeFile.ts";
-import { QUOTE_EMAIL, quoteMailtoHref } from "../src/lib/contact.ts";
+import { QUOTE_EMAIL, productInquiryHref, quoteMailtoHref } from "../src/lib/contact.ts";
 import { PAYMENT_TERMS } from "../src/data/siteContent.ts";
 
 test("page metadata uses its own canonical and social URL", () => {
@@ -44,4 +44,11 @@ test("payment terms identify UPI and both project milestones", () => {
   assert.match(PAYMENT_TERMS, /UPI only/);
   assert.match(PAYMENT_TERMS, /50%.*confirm the project/);
   assert.match(PAYMENT_TERMS, /remaining 50%.*before shipping/);
+});
+
+test("product inquiry email includes the item and SKU", () => {
+  const url = new URL(productInquiryHref({ id: "tf-test", title: "Sample Print" }));
+  assert.equal(url.pathname, QUOTE_EMAIL);
+  assert.match(url.searchParams.get("subject"), /Sample Print/);
+  assert.match(url.searchParams.get("body"), /Sample Print \(SKU: tf-test\)/);
 });

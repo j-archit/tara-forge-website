@@ -7,18 +7,11 @@ import { Footer } from "@/components/Footer";
 import { Logo } from "@/components/Logo";
 import { fadeIn } from "@/lib/animations";
 import { trackProductInterest, trackCTA } from "@/lib/analytics";
-import { products, type Product } from "@/data/products";
+import { products } from "@/data/products";
 import { CONTACT, SHOP_NOTICE } from "@/data/siteContent";
+import { productInquiryHref } from "@/lib/contact";
 
 export default function ShopClient() {
-  const handleInquiry = (product: Product) => {
-    trackProductInterest(product.id.toString(), product.title, product.price, 'inquiry_click');
-    
-    const subject = encodeURIComponent(`Availability Inquiry: ${product.title}`);
-    const body = encodeURIComponent(`Hello TaraForge3D,\n\nI'm interested in the ${product.title} (SKU: ${product.id}). Could you confirm availability, final pricing, and shipping options?\n\nThank you!`);
-    window.location.assign(`mailto:${CONTACT.email}?subject=${subject}&body=${body}`);
-  };
-
   return (
     <main className="relative flex min-h-screen flex-col text-slate-50">
       <Navbar />
@@ -84,12 +77,13 @@ export default function ShopClient() {
                   </p>
                   
                   <div className="mt-auto pt-6">
-                    <button 
-                      onClick={() => handleInquiry(product)}
-                      className="w-full rounded-xl bg-slate-800 py-3 text-xs font-bold text-slate-100 transition-all hover:bg-brand-gold hover:text-slate-950 active:scale-95 shadow-lg group-hover:shadow-brand-gold/10"
+                    <a
+                      href={productInquiryHref(product)}
+                      onClick={() => trackProductInterest(product.id, product.title, product.price, 'inquiry_click')}
+                      className="block w-full rounded-xl bg-slate-800 py-3 text-center text-xs font-bold text-slate-100 transition-all hover:bg-brand-gold hover:text-slate-950 active:scale-95 shadow-lg group-hover:shadow-brand-gold/10"
                     >
                       Ask About Availability
-                    </button>
+                    </a>
                   </div>
                 </div>
               </motion.article>

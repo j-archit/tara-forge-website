@@ -19,3 +19,9 @@ export const QUOTE_EMAIL_BODY = [
 export function quoteMailtoHref(): string {
   return `mailto:${QUOTE_EMAIL}?subject=${encodeURIComponent("New Project Quote Request")}&body=${encodeURIComponent(QUOTE_EMAIL_BODY)}`;
 }
+
+export function productInquiryHref(product: { readonly id: string; readonly title: string }): string {
+  const subject = encodeURIComponent(`Availability Inquiry: ${product.title}`);
+  const body = encodeURIComponent(`Hello TaraForge3D,\n\nI'm interested in the ${product.title} (SKU: ${product.id}). Could you confirm availability, final pricing, and shipping options?\n\nThank you!`);
+  return `mailto:${QUOTE_EMAIL}?subject=${subject}&body=${body}`;
+}

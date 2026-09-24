@@ -87,7 +87,7 @@ export function Navbar() {
         </div>
 
         {/* Desktop Nav */}
-        <nav className="hidden items-center gap-8 text-sm font-medium text-slate-300 md:flex">
+        <nav className="hidden items-center gap-8 text-sm font-medium text-slate-300 lg:flex">
           {navLinks.map((link) => (
             <Link 
               key={link.href}
@@ -109,7 +109,7 @@ export function Navbar() {
 
         {/* Mobile Menu Toggle */}
         <button 
-          className={`group flex h-11 w-11 items-center justify-center rounded-full border border-slate-700/50 bg-slate-900/60 text-slate-100 shadow-xl backdrop-blur-md transition-all duration-300 md:hidden hover:scale-105 active:scale-95 ${isMobileMenuOpen ? "bg-brand-gold border-brand-gold/40 text-slate-950" : ""}`}
+          className={`group flex h-11 w-11 items-center justify-center rounded-full border border-slate-700/50 bg-slate-900/60 text-slate-100 shadow-xl backdrop-blur-md transition-all duration-300 lg:hidden hover:scale-105 active:scale-95 ${isMobileMenuOpen ? "bg-brand-gold border-brand-gold/40 text-slate-950" : ""}`}
           onClick={() => {
             trackMobileMenu(isMobileMenuOpen ? 'close' : 'open');
             setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -126,7 +126,7 @@ export function Navbar() {
       <nav
         id="mobile-navigation"
         aria-hidden={!isMobileMenuOpen}
-        className={`absolute left-0 right-0 top-full border-b border-slate-800 bg-slate-950/95 p-6 backdrop-blur-xl transition-[opacity,transform,visibility] duration-200 md:hidden ${isMobileMenuOpen ? "visible translate-y-0 opacity-100" : "pointer-events-none invisible -translate-y-2 opacity-0"}`}
+        className={`absolute left-0 right-0 top-full border-b border-slate-800 bg-slate-950/95 p-6 backdrop-blur-xl transition-[opacity,transform,visibility] duration-200 lg:hidden ${isMobileMenuOpen ? "visible translate-y-0 opacity-100" : "pointer-events-none invisible -translate-y-2 opacity-0"}`}
       >
         <ul className="flex flex-col items-center gap-6 text-center">
           {navLinks.map((link) => (
