@@ -50,20 +50,20 @@ export default function ShippingReturnsPage() {
                 We do not accept change-of-mind returns for a custom print that arrives undamaged and matches the agreed specification.
               </p>
               <p className="mt-4 leading-relaxed text-slate-300">
-                If your parcel or print arrives damaged in transit, please contact us as soon as possible. An unboxing video is required to verify a shipping-damage claim. Start recording before opening the shipping package and show the package, the product as you unbox it, and the damage. Send the video with your quote or order details and photos of the product and packaging. Please keep the packaging while we review the claim.
+                If your parcel or print arrives damaged in transit, please contact us as soon as possible. Please include an unboxing video with your claim; we need it to verify shipping damage. Start recording before opening the shipping package and show the package, the product as you unbox it, and the damage. Send the video with your quote or order details and photos of the product and packaging. Please keep the packaging while we review the claim.
               </p>
               <p className="mt-4 leading-relaxed text-slate-400">
                 If the print is defective or materially different from the agreed specification for a reason other than shipping damage, contact us with your order details and photos. We review these concerns separately and assess each claim on its facts.
               </p>
               <p className="mt-4 leading-relaxed text-slate-300">
-                If verified shipping damage requires the parcel to be returned, TaraForge3D covers the postage to send it back to us (return-to-origin or RTO postage). Please contact us before sending it so we can arrange the return. For any other agreed return, we will confirm the arrangements first.
+                If we require a return as part of resolving your claim, TaraForge3D covers the postage to send it back to us (return-to-origin or RTO postage). Please contact us before sending the parcel so we can arrange the return.
               </p>
             </section>
 
             <section aria-labelledby="refunds-heading" className="rounded-3xl border border-brand-gold/30 bg-brand-gold/5 p-6 sm:p-8">
               <h2 id="refunds-heading" className="text-2xl font-semibold">Verified claims and refunds</h2>
               <p className="mt-4 leading-relaxed text-slate-300">
-                For a verified problem, we will discuss an appropriate resolution, which may include a correction, replacement, or refund. Refund claims are reviewed case by case.
+                We review each claim case by case and discuss an appropriate resolution with you. For a verified problem, this may be a correction, replacement, or refund, depending on the circumstances.
               </p>
               <p className="mt-4 leading-relaxed text-slate-300">
                 Once a refund claim is verified, we process the refund within 2–4 business days. The time for the credit to appear in your account may depend on your bank or payment provider.

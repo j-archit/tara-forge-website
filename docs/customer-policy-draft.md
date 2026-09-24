@@ -10,13 +10,13 @@ The written quote should specify the final file version, material, colour, quant
 
 1. **Changes:** Changes before production starts can be discussed and re-quoted. Changes after printing starts may require new material, print time, and a revised schedule. Obtain the customer's approval before charging more or restarting production.
 2. **Cancellation:** Before production starts, offer a refund of the advance, subtracting only separately agreed design work already completed, if any. After production starts, provide an itemised account of actual work and materials already used and refund any unused amount. Avoid a blanket “non-refundable advance” statement.
-3. **Print defects or mismatch:** The public page requires an unboxing video to verify shipping-damage claims and asks for photos and order details for other defects or specification mismatches. Decide internally when to correct, reprint, or refund. A reporting window or evidence requirement should not purport to remove statutory rights.
+3. **Print defects or mismatch:** The public page treats verified claims case by case, with correction, replacement, or refund as possible resolutions. It asks for an unboxing video, which is needed to verify shipping damage, and for photos and order details for other defects or specification mismatches. Decide internally how to assess each remedy. A reporting window or evidence requirement should not purport to remove statutory rights.
 4. **Customer files:** Review obvious printability issues before confirmation. Record any known limitations or tolerances in the quote. Do not promise that a print will meet unspecified fit, strength, or use requirements.
 5. **Shipping and delays:** The public page says pan-India shipping is charged separately at actual carrier cost and confirmed before dispatch. Agree an estimated dispatch date with each customer. If a committed schedule slips, contact them with a revised date and a fair cancellation or refund option where appropriate.
 
 ## Decisions to make before publication
 
-- TaraForge3D covers return-to-origin postage for verified shipping damage. Who pays return shipping for a confirmed defect not caused by transit?
+- TaraForge3D covers return-to-origin postage whenever it requires a return to resolve a claim. How will the return be arranged with the customer and carrier?
 - Is there a suggested period for reporting a problem, while preserving legal rights?
 - What counts as included design work, and how is its cost approved?
 - Will you offer any voluntary fit or durability warranty beyond the agreed specification?
