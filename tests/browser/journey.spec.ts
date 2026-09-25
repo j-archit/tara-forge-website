@@ -23,6 +23,13 @@ for (const route of routes) {
   });
 }
 
+test("footer FAQs link reaches the home FAQ section from another page", async ({ page }) => {
+  await page.goto("/shipping-returns/");
+  await page.locator("footer").getByRole("link", { name: "FAQs" }).click();
+  await expect(page).toHaveURL(/\/#faq$/);
+  await expect(page.locator("#faq")).toBeVisible();
+});
+
 test("the quote overlay protects the inactive form", async ({ page }) => {
   const relayRequests: string[] = [];
   page.on("request", (request) => {

@@ -16,6 +16,7 @@ export function Footer() {
       { label: "Shop", href: "/shop" },
       { label: "Team", href: "/team" },
       { label: "Why TaraForge3D", href: "/#about" },
+      { label: "FAQs", href: "/#faq" },
       { label: "Shipping & returns", href: "/shipping-returns" },
     ],
     connect: [
