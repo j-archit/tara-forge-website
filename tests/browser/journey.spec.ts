@@ -30,6 +30,14 @@ test("footer FAQs link reaches the home FAQ section from another page", async ({
   await expect(page.locator("#faq")).toBeVisible();
 });
 
+test("footer offers the studio WhatsApp contact", async ({ page }) => {
+  await page.goto("/shipping-returns/");
+  const whatsapp = page.locator("footer").getByRole("link", { name: "WhatsApp" });
+  await expect(whatsapp).toHaveAttribute("href", "https://wa.me/917042337788");
+  await expect(whatsapp).toHaveAttribute("target", "_blank");
+  await expect(whatsapp).toHaveAttribute("rel", "noopener noreferrer");
+});
+
 test("the quote overlay protects the inactive form", async ({ page }) => {
   const relayRequests: string[] = [];
   page.on("request", (request) => {

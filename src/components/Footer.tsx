@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Logo } from "./Logo";
-import { Mail, MoveUpRight } from "lucide-react";
+import { Mail, MessageSquare, MoveUpRight } from "lucide-react";
 import { trackNavigation, trackSocialClick } from "@/lib/analytics";
 import { CONTACT } from "@/data/siteContent";
 
@@ -21,6 +21,7 @@ export function Footer() {
     ],
     connect: [
       { label: "Email", href: `mailto:${CONTACT.email}`, icon: <Mail className="w-3.5 h-3.5" /> },
+      { label: "WhatsApp", href: `https://wa.me/${CONTACT.whatsappNumber}`, icon: <MessageSquare className="w-3.5 h-3.5" /> },
     ]
   };
 
