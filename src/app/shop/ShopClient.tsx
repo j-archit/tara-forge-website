@@ -69,18 +69,18 @@ export default function ShopClient() {
                 </div>
 
                 <div className="flex flex-1 flex-col p-6">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                  <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500 break-words">
                       {product.category}
                     </span>
                     <span className="text-sm font-bold text-brand-gold">
                       Indicative: {product.currency}{product.price.toLocaleString()}
                     </span>
                   </div>
-                  <h3 className="text-lg font-semibold text-slate-100 group-hover:text-brand-gold transition-colors">
+                  <h3 className="text-lg font-semibold text-slate-100 group-hover:text-brand-gold transition-colors break-words">
                     {product.title}
                   </h3>
-                  <p className="mt-3 text-xs leading-relaxed text-slate-400 font-light">
+                  <p className="mt-3 text-xs leading-relaxed text-slate-400 font-light break-words">
                     {product.description}
                   </p>
                   

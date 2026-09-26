@@ -1,4 +1,4 @@
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { expect, test } from "@playwright/test";
 
@@ -88,12 +88,18 @@ test("quote contact actions contain the details customers need", async ({ page }
 
 test("product inquiry identifies the item and SKU", async ({ page }) => {
   await page.goto("/shop/");
-  const card = page.locator("article").filter({ hasText: "Minimalist Desk Set" });
+  const document = JSON.parse(readFileSync(resolve("content/products.json"), "utf8"));
+  const product = document.items.find((item: { published: boolean }) => item.published);
+  if (!product) {
+    await expect(page.getByText("New products will be shared here soon.")).toBeVisible();
+    return;
+  }
+  const card = page.locator("article").filter({ has: page.getByRole("heading", { name: product.title, exact: true }) }).first();
   const href = await card.getByRole("link", { name: "Ask About Availability" }).getAttribute("href");
   const inquiry = new URL(href!);
   expect(inquiry.pathname).toBe("taraforge3d@gmail.com");
-  expect(inquiry.searchParams.get("subject")).toContain("Minimalist Desk Set");
-  expect(inquiry.searchParams.get("body")).toContain("SKU: tf-desk-organizer");
+  expect(inquiry.searchParams.get("subject")).toContain(product.title);
+  expect(inquiry.searchParams.get("body")).toContain(`SKU: ${product.id}`);
   await expect(page.getByText(/Prices shown are indicative/)).toBeVisible();
 });
 
@@ -160,6 +166,9 @@ test("static export contains every linked public route", async ({ page }) => {
   const output = resolve("out");
   for (const file of ["CNAME", "robots.txt", "sitemap.xml", "images/jet-engine.webp", "images/archit-portrait.webp"]) {
     expect(existsSync(resolve(output, file)), `${file} is missing from the export`).toBe(true);
+  }
+  for (const path of ["content-manager", "tools", "api/content", "api/upload", ".content-manager"]) {
+    expect(existsSync(resolve(output, path)), `Local editor leaked into export: ${path}`).toBe(false);
   }
 
   for (const route of routes) {

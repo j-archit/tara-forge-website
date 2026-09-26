@@ -41,13 +41,16 @@ Install a Playwright browser once with `npx playwright install chromium` (Window
 | --- | --- |
 | Contact details, payment terms, quote timing, customer journey, shop notice | `src/data/siteContent.ts` |
 | Services and their presentation data | `src/data/services.ts` |
-| Preview catalogue and indicative prices | `src/data/products.ts` |
+| Preview catalogue and indicative prices (local editor) | `content/products.json` |
+| Gallery entries (local editor) | `content/gallery.json` |
 | Home page FAQ | `src/data/faqs.ts` |
 | Customer testimonials | `src/data/testimonials.ts` |
 | Quote email template | `src/lib/contact.ts` |
 | Shipping, returns and refunds policy | `src/app/shipping-returns/page.tsx` |
 
-These files are versioned content, not an admin editor. The product cards are inquiries, not a checkout. Check every product description and indicative price against what can actually be supplied before publishing it.
+Run `npm run content:manage` to open the localhost-only gallery/catalogue editor. Save writes uncommitted JSON and processed image assets into this repository; review, commit and push `main` to publish. The editor never commits or pushes for you and is not deployed to GitHub Pages. See [the local editor guide](docs/local-content-manager.md) for image limits, backups, security and publishing steps.
+
+Other content files remain manual edits. Product cards are inquiries, not a checkout. Check every product description and indicative price against what can actually be supplied before publishing it.
 
 ## Deployment and current boundary
 
