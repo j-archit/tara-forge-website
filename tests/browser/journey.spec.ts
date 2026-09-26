@@ -191,6 +191,27 @@ for (const width of [390, 1440]) {
       const response = await page.request.get(image.src);
       expect(response.status()).toBe(200);
       expect(response.headers()["content-type"]).toContain("image/webp");
+      if (image.route === "/team/") {
+        const portrait = page.locator(".founder-portrait");
+        await expect(portrait).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+        await expect(portrait).toHaveCSS("border-top-width", "0px");
+        await expect(portrait).toHaveCSS("border-radius", "0px");
+        await expect(portrait).toHaveCSS("overflow", "visible");
+        expect(await portrait.evaluate(element => getComputedStyle(element).filter)).toContain("drop-shadow");
+        const mask = await photo.evaluate(element => ({ image: getComputedStyle(element).maskImage, composite: getComputedStyle(element).maskComposite }));
+        expect(mask.image).toMatch(/linear-gradient\((?:90deg|to right),/);
+        expect(mask.image).toContain("12%");
+        expect(mask.image).toContain("85%");
+        expect(mask.composite).toContain("intersect");
+        await expect(portrait).toHaveCSS("transform", "none");
+        await expect(photo).toHaveCSS("filter", "none");
+        await portrait.hover();
+        await expect(portrait).toHaveCSS("transform", "none");
+        await page.emulateMedia({ reducedMotion: "reduce" });
+        await expect(portrait).toHaveCSS("transform", "none");
+        await expect(portrait).toHaveCSS("transition-duration", "0s");
+        await page.emulateMedia({ reducedMotion: "no-preference" });
+      }
       expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
     }
   });

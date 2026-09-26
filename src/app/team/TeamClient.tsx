@@ -50,18 +50,15 @@ export function TeamClient() {
               <div className="flex flex-col md:flex-row gap-8 items-start md:items-center">
                 
                 {/* Founder portrait */}
-                <div className="relative shrink-0">
-                  <div className="h-48 w-48 overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800 to-slate-950 border border-slate-800 group-hover:border-brand-gold/40 transition-all duration-500 shadow-2xl flex items-center justify-center">
-                    <Image
-                      src="/images/archit-portrait.webp"
-                      alt="Archit, founder of TaraForge3D"
-                      width={1200}
-                      height={1140}
-                      sizes="192px"
-                      className="h-full w-full object-contain"
-                    />
-                  </div>
-                  <div className="absolute -inset-4 bg-brand-gold/5 blur-[40px] opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="founder-portrait relative w-48 shrink-0 self-center">
+                  <Image
+                    src="/images/archit-portrait.webp"
+                    alt="Archit, founder of TaraForge3D"
+                    width={1200}
+                    height={1140}
+                    sizes="192px"
+                    className="founder-portrait-image block h-auto w-full object-contain"
+                  />
                 </div>
 
                 <div className="flex-1">

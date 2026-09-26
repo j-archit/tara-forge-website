@@ -68,6 +68,19 @@
   box-sizing: border-box;
 }
 
+.founder-portrait {
+  /* Shadows follow the WebP alpha silhouette, not a rectangular photo frame. */
+  filter: drop-shadow(0 14px 12px rgb(0 0 0 / 55%))
+    drop-shadow(0 0 8px rgb(201 168 76 / 15%));
+}
+
+.founder-portrait-image {
+  /* Feather only the jacket's left and bottom cut edges; keep the face sharp. */
+  mask-image: linear-gradient(to right, transparent, black 12%),
+    linear-gradient(to bottom, black 85%, transparent 100%);
+  mask-composite: intersect;
+}
+
 body {
   min-height: 100vh;
   margin: 0;
