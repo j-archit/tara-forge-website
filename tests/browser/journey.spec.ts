@@ -158,7 +158,7 @@ test("mobile navigation and FAQ work with keyboard", async ({ page }) => {
 
 test("static export contains every linked public route", async ({ page }) => {
   const output = resolve("out");
-  for (const file of ["CNAME", "robots.txt", "sitemap.xml", "images/jet-engine.png"]) {
+  for (const file of ["CNAME", "robots.txt", "sitemap.xml", "images/jet-engine.webp", "images/archit-portrait.webp"]) {
     expect(existsSync(resolve(output, file)), `${file} is missing from the export`).toBe(true);
   }
 
@@ -174,3 +174,24 @@ test("static export contains every linked public route", async ({ page }) => {
     }
   }
 });
+
+for (const width of [390, 1440]) {
+  test(`WebP engine and founder portrait load at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    for (const image of [
+      { route: "/", alt: "3D Printed Jet Engine Model", src: "/images/jet-engine.webp" },
+      { route: "/team/", alt: "Archit, founder of TaraForge3D", src: "/images/archit-portrait.webp" },
+    ]) {
+      await page.goto(image.route);
+      const photo = page.getByRole("img", { name: image.alt, exact: true });
+      await photo.scrollIntoViewIfNeeded();
+      await expect(photo).toBeVisible();
+      await expect(photo).toHaveAttribute("src", image.src);
+      await expect.poll(() => photo.evaluate((element: HTMLImageElement) => element.complete && element.naturalWidth > 0)).toBe(true);
+      const response = await page.request.get(image.src);
+      expect(response.status()).toBe(200);
+      expect(response.headers()["content-type"]).toContain("image/webp");
+      expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
+    }
+  });
+}

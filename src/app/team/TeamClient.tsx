@@ -4,13 +4,13 @@ import * as React from "react";
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { Logo } from "@/components/Logo";
+import Image from "next/image";
 import { fadeIn } from "@/lib/animations";
 import { Cpu, Microchip as Chip, Rocket } from "lucide-react";
 
 export function TeamClient() {
   return (
-    <main className="relative flex min-h-screen flex-col selection:bg-brand-gold/20">
+    <main className="relative flex min-h-screen flex-col overflow-x-clip selection:bg-brand-gold/20">
       <Navbar />
 
       {/* Hero Header */}
@@ -49,14 +49,17 @@ export function TeamClient() {
             >
               <div className="flex flex-col md:flex-row gap-8 items-start md:items-center">
                 
-                {/* Image Placeholder */}
+                {/* Founder portrait */}
                 <div className="relative shrink-0">
                   <div className="h-48 w-48 overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800 to-slate-950 border border-slate-800 group-hover:border-brand-gold/40 transition-all duration-500 shadow-2xl flex items-center justify-center">
-                    <div className="text-slate-700 opacity-20 group-hover:opacity-40 transition-opacity">
-                      <Logo size={120} />
-                    </div>
-                    {/* Placeholder indicator */}
-                    <div className="absolute bottom-3 right-3 h-3 w-3 rounded-full bg-brand-gold blur-[2px] animate-pulse" />
+                    <Image
+                      src="/images/archit-portrait.webp"
+                      alt="Archit, founder of TaraForge3D"
+                      width={1200}
+                      height={1140}
+                      sizes="192px"
+                      className="h-full w-full object-contain"
+                    />
                   </div>
                   <div className="absolute -inset-4 bg-brand-gold/5 blur-[40px] opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>

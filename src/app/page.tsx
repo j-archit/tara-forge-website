@@ -111,7 +111,7 @@ export default function HomePage() {
               <div className="relative aspect-[4/3] w-[90%] overflow-hidden">
                 <div className="absolute inset-0 transition-transform duration-700 group-hover:scale-105">
                   <Image
-                    src="/images/jet-engine.png" 
+                    src="/images/jet-engine.webp"
                     alt="3D Printed Jet Engine Model"
                     fill
                     sizes="(max-width: 1024px) 90vw, 550px"
