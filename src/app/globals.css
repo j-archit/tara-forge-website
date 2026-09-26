@@ -1,210 +1,147 @@
 @import "tailwindcss";
-
+@import "./brand-fonts.css";
 @custom-variant dark (&:is(.dark *));
-
 :root {
-  /* Base palette */
-  --background: #020617; /* deep space */
-  --foreground: #e5e7eb;
-
-  /* Celestial Forge brand colors */
-  --celestial-bg: radial-gradient(circle at top, #1d4ed8 0, #020617 55%);
-  --celestial-accent: #38bdf8;
-  --celestial-accent-soft: rgba(56, 189, 248, 0.2);
-  --celestial-accent-strong: #7dd3fc;
-  --celestial-amber: #fbbf24;
-  --celestial-card: rgba(15, 23, 42, 0.85);
-  --celestial-border: rgba(148, 163, 184, 0.35);
-  --celestial-glass: rgba(15, 23, 42, 0.65);
-  --celestial-ring: rgba(129, 140, 248, 0.45);
-
-  /* Radiance + glow */
-  --celestial-glow-primary: 0 0 40px rgba(56, 189, 248, 0.35);
-  --celestial-glow-amber: 0 0 40px rgba(251, 191, 36, 0.4);
-  --celestial-glow-soft: 0 0 80px rgba(30, 64, 175, 0.55);
-
-  /* Brand Palette (Additive) */
-  --brand-void: #06070F;
-  --brand-deep-space: #0C0D1A;
-  --brand-nebula: #161828;
-  --brand-gold: #C9A84C;
-  --brand-gold-bright: #E8C46A;
-  --brand-stardust: #D4C9A8;
-  --brand-moonlight: #8A8070;
-  --brand-forge-white: #F0EBE0;
-
-  --brand-glow-gold: 0 0 30px rgba(201, 168, 76, 0.4);
+  --night: #050A1F;
+  --night-raised: #0B1230;
+  --line: #1C2744;
+  --control-line: #2A3656;
+  --gold: #C9A84C;
+  --gold-light: #E0C170;
+  --heading: #F1F5F9;
+  --text: #CAD5E2;
+  --text-muted: #90A1B9;
+  --sky: #38BDF8;
+  --nebula: #A78BFA;
+  --nebula-glow: rgb(91 70 190 / 28%);
+  --hero-gradient: linear-gradient(90deg, var(--gold), var(--gold-light) 30%, var(--sky) 65%, var(--nebula));
+  --dot-grid: radial-gradient(rgb(202 213 226 / 16%) 1px, transparent 1.2px);
+  --hero-button-glow: 0 6px 24px rgb(201 168 76 / 25%);
+  --portrait-shadow: drop-shadow(0 14px 12px rgb(0 0 0 / 55%)) drop-shadow(0 0 8px rgb(201 168 76 / 15%));
+  --font-brand-sans: "Archivo", system-ui, sans-serif;
+  --font-brand-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --space-section: 112px;
+  --space-section-mobile: 56px;
+  --radius-card: 6px;
+  --radius-badge: 12px;
+  --background: var(--night);
+  --foreground: var(--text);
+  /* Compatibility aliases while remaining-page preview approval is pending. */
+  --brand-gold: var(--gold);
+  --brand-gold-bright: var(--gold-light);
+  --brand-glow-gold: var(--hero-button-glow);
+  --celestial-accent: var(--sky);
+  --celestial-card: var(--night-raised);
+  --celestial-border: var(--line);
+  --celestial-glass: var(--night-raised);
 }
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-
-  --color-celestial-accent: var(--celestial-accent);
-  --color-celestial-accent-soft: var(--celestial-accent-soft);
-  --color-celestial-accent-strong: var(--celestial-accent-strong);
-  --color-celestial-amber: var(--celestial-amber);
-  --color-celestial-card: var(--celestial-card);
-  --color-celestial-border: var(--celestial-border);
-  --color-celestial-glass: var(--celestial-glass);
-
-  --color-brand-gold: var(--brand-gold);
-  --color-brand-gold-bright: var(--brand-gold-bright);
-  --color-brand-stardust: var(--brand-stardust);
+  --color-background: var(--night);
+  --color-foreground: var(--text);
+  --font-sans: var(--font-brand-sans);
+  --font-mono: var(--font-brand-mono);
+  --color-night: var(--night);
+  --color-raised: var(--night-raised);
+  --color-line: var(--line);
+  --color-gold: var(--gold);
+  --color-heading: var(--heading);
+  --color-mist: var(--text);
+  --color-dusk: var(--text-muted);
+  --color-brand-gold: var(--gold);
+  --color-brand-gold-bright: var(--gold-light);
+  --color-brand-stardust: var(--text);
+  --color-celestial-accent: var(--sky);
+  --color-celestial-accent-soft: var(--night-raised);
+  --color-celestial-accent-strong: var(--sky);
+  --color-celestial-amber: var(--gold);
+  --color-celestial-card: var(--night-raised);
+  --color-celestial-border: var(--line);
+  --color-celestial-glass: var(--night-raised);
 }
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #020617;
-    --foreground: #e5e7eb;
-  }
+*, *::before, *::after { box-sizing: border-box; }
+body { min-height: 100vh; margin: 0; background: var(--night); color: var(--text); font-family: var(--font-brand-sans); font-size: 17px; line-height: 1.6; }
+h1, h2, h3 { font-family: var(--font-brand-sans); font-stretch: 118%; font-weight: 700; letter-spacing: -.01em; color: var(--heading); }
+:where(a, button, input, select, textarea, summary):focus-visible { outline: 2px solid var(--gold-light); outline-offset: 2px; }
+.section-max-width { width: 100%; max-width: 1280px; margin-inline: auto; }
+.design-section { padding-block: var(--space-section-mobile); }
+.design-container { padding-inline: 20px; }
+.design-band { background: var(--night-raised); }
+.design-sky { background-image: var(--dot-grid); background-size: 44px 44px; }
+.design-page h1 { font-size: clamp(36px, 4.4vw, 58px); line-height: 1.06; }
+.design-page h2 { font-size: clamp(30px, 3.4vw, 48px); line-height: 1.05; }
+.design-page h3 { font-size: clamp(20px, 1.7vw, 24px); line-height: 1.2; }
+.design-page p { max-width: 68ch; }
+.design-page { color: var(--text); }
+.design-page :is(.text-slate-300, .text-slate-400) { color: var(--text); }
+.design-page :is(.text-slate-500, .text-slate-600) { color: var(--text-muted); }
+.design-page :is(.text-slate-50, .text-slate-100, .text-slate-200) { color: var(--heading); }
+.celestial-gradient-text { color: var(--heading); }
+.hero-gradient-text { background-image: var(--hero-gradient); background-clip: text; -webkit-background-clip: text; color: transparent; }
+.design-hero { background-image: radial-gradient(ellipse 60% 55% at 62% 45%, var(--nebula-glow), transparent 70%); }
+.design-card { border: 1px solid var(--line); border-radius: var(--radius-card); background: var(--night-raised); }
+.design-card:hover { border-color: var(--gold); }
+.design-label, .design-price { font-family: var(--font-brand-mono); font-size: 12px; font-weight: 500; }
+.design-label { letter-spacing: .14em; text-transform: uppercase; color: var(--text-muted); }
+.design-price { color: var(--gold); }
+.design-eyebrow { font-family: var(--font-brand-mono); color: var(--gold); font-size: 14px; font-weight: 500; letter-spacing: .4em; text-transform: uppercase; }
+.design-rule { width: 60px; height: 1px; background: var(--line); }
+.design-accent { color: var(--gold); font-style: italic; font-weight: 500; font-stretch: 100%; }
+.design-button { display: inline-flex; min-height: 44px; align-items: center; justify-content: center; gap: 8px; padding: 16px 26px; border-radius: 999px; font-family: var(--font-brand-sans); font-size: 16px; font-weight: 600; line-height: 1.3; transition: color 180ms ease-out, background-color 180ms ease-out, border-color 180ms ease-out; }
+.design-primary { background: var(--gold); color: var(--night); border: 1px solid var(--gold); }
+.design-primary:hover { background: var(--gold-light); border-color: var(--gold-light); }
+.design-secondary { background: color-mix(in srgb, var(--night-raised) 60%, transparent); color: var(--heading); border: 1px solid var(--control-line); }
+.design-secondary:hover { border-color: var(--gold); }
+.design-hero-cta { box-shadow: var(--hero-button-glow); }
+.design-button-note { color: var(--night); font-size: 14px; font-weight: 400; }
+.design-link { color: var(--sky); text-underline-offset: 4px; }
+.design-link:hover { color: var(--gold-light); }
+.design-badge { background: color-mix(in srgb, var(--night-raised) 70%, transparent); border: 1px solid var(--line); border-radius: var(--radius-badge); padding: 12px 16px; }
+.spark { display: inline-block; width: 16px; height: 16px; flex: 0 0 16px; background: var(--gold); mask: url('/brand/svg/spark.svg') center / contain no-repeat; }
+.design-placeholder { background: repeating-linear-gradient(to bottom, color-mix(in srgb, var(--gold) 10%, transparent) 0 1px, transparent 1px 6px), var(--night); }
+.design-product { background: var(--night); }
+.design-product-image { border-radius: var(--radius-card); }
+.design-footer { background: var(--night); border-top: 1px solid var(--line); padding-block: var(--space-section-mobile); }
+.design-footer a { min-height: 44px; display: inline-flex; align-items: center; color: var(--text); }
+.design-footer a:hover { color: var(--gold-light); }
+.design-footer h3 { color: var(--gold); }
+.design-footer-brand { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+.design-footer-tagline { font-family: var(--font-brand-mono); color: var(--text-muted); font-size: 12px; }
+.design-footer-bottom { border-top: 1px solid var(--line); font-family: var(--font-brand-mono); color: var(--text-muted); }
+.design-header { position: sticky; top: 0; z-index: 50; border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--night) 92%, transparent); }
+.design-header-inner { min-height: 80px; }
+.design-nav-link { min-height: 44px; display: inline-flex; align-items: center; color: var(--text); transition: color 180ms; }
+.design-nav-link:hover { color: var(--gold-light); }
+.design-nav-link[aria-current='page'] { color: var(--sky); }
+.brand { display: flex; align-items: center; gap: 10px; line-height: 1; color: var(--heading); flex-shrink: 0; }
+.brand__stack { display: flex; flex-direction: column; gap: 3px; }
+.brand__tara { position: relative; display: grid; width: 80px; height: 22px; padding-right: 4px; align-items: center; }
+.brand__word { grid-area: 1 / 1; white-space: nowrap; font-size: 15px; font-weight: 700; opacity: 0; transition: opacity 200ms ease-out; }
+.brand__word[data-active='true'] { opacity: 1; }
+.brand__word:lang(en) { font-size: 12px; font-stretch: 110%; letter-spacing: .2em; text-transform: uppercase; }
+.brand__forge { font-family: var(--font-brand-sans); font-size: 12px; font-weight: 600; font-stretch: 110%; letter-spacing: .32em; text-transform: uppercase; }
+.brand__3d { font-size: 34px; font-weight: 600; color: var(--gold); line-height: .9; }
+.brand__tagline { font-family: var(--font-brand-mono); font-size: 11px; letter-spacing: .14em; color: var(--text-muted); border-left: 1px solid var(--line); padding-left: 16px; }
+.design-menu-button { width: 44px; height: 44px; border-radius: 999px; border: 1px solid var(--control-line); background: var(--night-raised); color: var(--heading); position: relative; z-index: 2; }
+.design-mobile-nav { position: fixed; inset: 80px 0 0; background: var(--night); padding: 24px 20px; overflow-y: auto; overscroll-behavior: contain; }
+.design-mobile-nav[hidden] { display: none; }
+.design-mobile-nav a { min-height: 44px; }
+.design-faq { border-bottom: 1px solid var(--line); }
+.design-faq summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 44px; padding: 24px 0; list-style: none; cursor: pointer; font-weight: 600; color: var(--heading); }
+.design-faq summary::-webkit-details-marker { display: none; }
+.design-faq svg { color: var(--gold); flex-shrink: 0; transition: transform 180ms; }
+.design-faq[open] summary svg { transform: rotate(45deg); }
+.design-faq-answer { padding-bottom: 24px; color: var(--text); }
+.founder-portrait { filter: var(--portrait-shadow); }
+.founder-portrait-image { mask-image: linear-gradient(to right, transparent, black 12%), linear-gradient(to bottom, black 85%, transparent 100%); mask-composite: intersect; }
+.glass-surface { background: var(--night-raised); border: 1px solid var(--line); }
+.celestial-stars, .celestial-orbit, .celestial-grid, .shooting-star { display: none; }
+.design-constellation { position: absolute; right: 0; top: 10%; width: 24%; height: 80%; color: var(--text-muted); opacity: .5; pointer-events: none; }
+.design-constellation circle { fill: var(--gold); }
+@media (min-width: 1024px) {
+  .design-section, .design-footer { padding-block: var(--space-section); }
+  .design-container { padding-inline: 32px; }
 }
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-.founder-portrait {
-  /* Shadows follow the WebP alpha silhouette, not a rectangular photo frame. */
-  filter: drop-shadow(0 14px 12px rgb(0 0 0 / 55%))
-    drop-shadow(0 0 8px rgb(201 168 76 / 15%));
-}
-
-.founder-portrait-image {
-  /* Feather only the jacket's left and bottom cut edges; keep the face sharp. */
-  mask-image: linear-gradient(to right, transparent, black 12%),
-    linear-gradient(to bottom, black 85%, transparent 100%);
-  mask-composite: intersect;
-}
-
-body {
-  min-height: 100vh;
-  margin: 0;
-  background: var(--celestial-bg);
-  color: var(--foreground);
-}
-
-/* Subtle starfield background */
-.celestial-stars {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    radial-gradient(circle at 10% 20%, rgba(248, 250, 252, 0.12) 0, transparent 45%),
-    radial-gradient(circle at 80% 10%, rgba(56, 189, 248, 0.18) 0, transparent 55%),
-    radial-gradient(circle at 50% 80%, rgba(129, 140, 248, 0.22) 0, transparent 55%);
-  opacity: 0.42;
-  mix-blend-mode: screen;
-  z-index: -1;
-}
-
-.celestial-orbit {
-  position: absolute;
-  border-radius: 9999px;
-  border: 1px solid rgba(148, 163, 184, 0.25);
-  box-shadow: var(--celestial-glow-soft);
-}
-
-.glass-surface {
-  background: var(--celestial-glass);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid var(--celestial-border);
-}
-
-.forge-pill {
-  border-radius: 999px;
-  background: radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.7), transparent 50%),
-    rgba(15, 23, 42, 0.9);
-  border: 1px solid rgba(148, 163, 184, 0.55);
-  box-shadow: var(--celestial-glow-primary);
-}
-
-.celestial-gradient-text {
-  background: linear-gradient(
-    120deg,
-    #e5e7eb 0%,
-    var(--brand-gold) 25%,
-    #38bdf8 50%,
-    #a855f7 75%,
-    #f97316 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.brand-gold-text {
-  color: var(--brand-gold);
-  text-shadow: 0 0 20px rgba(201, 168, 76, 0.3);
-}
-
-.celestial-grid {
-  position: absolute;
-  inset: 0;
-  background-image: linear-gradient(
-      to right,
-      rgba(148, 163, 184, 0.25) 1px,
-      transparent 1px
-    ),
-    linear-gradient(to bottom, rgba(148, 163, 184, 0.18) 1px, transparent 1px);
-  background-size: 80px 80px;
-  opacity: 0.15;
-  mask-image: radial-gradient(circle at center, black 30%, transparent 75%);
-}
-
-/* Animations for Celestial Visuals */
-@keyframes drift {
-  from { transform: translate(0, 0) scale(1); }
-  to { transform: translate(-2%, -2%) scale(1.05); }
-}
-
-@keyframes pulse-glow {
-  0%, 100% { opacity: 0.4; transform: scale(1); }
-  50% { opacity: 0.7; transform: scale(1.1); }
-}
-
-@keyframes shooting-star {
-  0% { transform: translateX(0) translateY(0) rotate(-45deg) scale(0); opacity: 0; }
-  5% { opacity: 1; transform: scale(1); }
-  20% { transform: translateX(-500px) translateY(500px) rotate(-45deg) scale(1); opacity: 0; }
-  100% { transform: translateX(-500px) translateY(500px) rotate(-45deg) scale(0); opacity: 0; }
-}
-
-.animate-celestial-drift {
-  animation: drift 20s ease-in-out infinite alternate;
-}
-
-.animate-forge-pulse {
-  animation: pulse-glow 8s ease-in-out infinite;
-}
-
-.shooting-star {
-  position: absolute;
-  width: 2px;
-  height: 2px;
-  background: white;
-  border-radius: 50%;
-  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1), 0 0 0 8px rgba(255, 255, 255, 0.1), 0 0 20px rgba(255, 255, 255, 1);
-}
-
-.shooting-star::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 100px;
-  height: 1px;
-  background: linear-gradient(90deg, white, transparent);
-}
-
-.section-max-width {
-  width: 100%;
-  max-width: 1120px;
-  margin-left: auto;
-  margin-right: auto;
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation: none !important; }
+  .brand__word, .design-faq svg, .design-button { transition: none; }
 }

@@ -7,10 +7,12 @@
     "build": "npm run content:validate && next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --test tests/frontend.test.mjs tests/content-manager.test.mjs",
+    "test": "node --test tests/frontend.test.mjs tests/content-manager.test.mjs tests/design.test.mjs",
     "content:manage": "node tools/content-manager/start.mjs",
     "content:validate": "node tools/content-manager/validate.mjs",
-    "test:browser": "playwright test"
+    "test:browser": "playwright test",
+    "design:preview": "node tools/design/preview.mjs",
+    "design:check-copy": "node tools/design/copy-snapshot.mjs"
   },
   "dependencies": {
     "@next/third-parties": "^16.3.6",
