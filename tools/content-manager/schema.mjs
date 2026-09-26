@@ -31,6 +31,7 @@ export function validateDocument(collection, document) {
     if (collection === "gallery") {
       if (!Array.isArray(item.tags) || item.tags.length > 8) fail(`${label} needs at most 8 tags`);
       item.tags.forEach(tag => string(tag, 40, `${label} tag`));
+      if (new Set(item.tags).size !== item.tags.length) fail(`${label} tags must be unique`);
     } else {
       if (!Number.isFinite(item.price) || item.price < 0 || item.price > 10000000 || Math.abs(item.price * 100 - Math.round(item.price * 100)) > 0.000001) fail(`${label} price must be between 0 and 10000000 with at most two decimal places`);
       if (item.currency !== "₹") fail(`${label} currency must be ₹`);

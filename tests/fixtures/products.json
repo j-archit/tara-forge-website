@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "items": [
+    {
+      "id": "tf-desk-organizer",
+      "title": "Minimalist Desk Set",
+      "category": "Living",
+      "description": "A geometric 3-piece set for your workspace. Designed for modularity and a clean aesthetic finish.",
+      "price": 1249,
+      "currency": "₹",
+      "tag": "",
+      "theme": "blue",
+      "published": true,
+      "image": null
+    },
+    {
+      "id": "tf-planter-stellar",
+      "title": "Celestial Planter",
+      "category": "Living",
+      "description": "Self-watering geometric planter with a celestial pattern. Durable PETG construction for indoor/outdoor use.",
+      "price": 899,
+      "currency": "₹",
+      "tag": "",
+      "theme": "purple",
+      "published": true,
+      "image": null
+    },
+    {
+      "id": "tf-lamp-nebula",
+      "title": "Nebula Ambient Lamp",
+      "category": "Decor",
+      "description": "Lithophane-style light cover that projects cosmic shadows. Includes custom base and LED fitting.",
+      "price": 2499,
+      "currency": "₹",
+      "tag": "Premium",
+      "theme": "gold",
+      "published": true,
+      "image": null
+    },
+    {
+      "id": "tf-keycap-forge",
+      "title": "Forge Edition Keycaps",
+      "category": "Customs",
+      "description": "Set of 4 artisan keycaps featuring the TaraForge3D logo. High-detail precision prints for mechanical keyboards.",
+      "price": 599,
+      "currency": "₹",
+      "tag": "",
+      "theme": "green",
+      "published": true,
+      "image": null
+    },
+    {
+      "id": "tf-headphone-stand",
+      "title": "Aero Headphone Stand",
+      "category": "Living",
+      "description": "Ergonomic stand designed for weight balance and minimalistic profile. Printed in reinforced PLA.",
+      "price": 1599,
+      "currency": "₹",
+      "tag": "",
+      "theme": "rose",
+      "published": true,
+      "image": null
+    },
+    {
+      "id": "tf-swatch-pack",
+      "title": "Material Swatch Pack",
+      "category": "Makers",
+      "description": "Complete set of 12 material swatches including PLA, PETG, and Specialty filaments for tactile review.",
+      "price": 450,
+      "currency": "₹",
+      "tag": "Sample Kit",
+      "theme": "slate",
+      "published": true,
+      "image": null
+    }
+  ]
+}

@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
    * to GitHub Pages or any static host.
    */
   output: "export",
+  agentRules: false,
   images: {
     /**
      * Static export does not support the default Image optimization.

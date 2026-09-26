@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TaraForge3D — Local content manager</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header>
+    <p class="eyebrow">TaraForge3D · local tools</p>
+    <h1>Content manager</h1>
+    <p>Save creates uncommitted changes in your repository. Nothing is published until you commit and push to main.</p>
+  </header>
+  <main>
+    <nav aria-label="Content collections">
+      <button id="gallery-tab" type="button" aria-pressed="true">Gallery</button>
+      <button id="products-tab" type="button" aria-pressed="false">Catalogue</button>
+    </nav>
+    <div class="toolbar">
+      <h2 id="collection-heading">Gallery</h2>
+      <span id="dirty-state">Loading…</span>
+      <button id="add" type="button">Add entry</button>
+      <button id="reload" type="button">Reload from disk</button>
+      <button id="save" class="primary" type="button">Save changes</button>
+    </div>
+    <p id="status" role="status" aria-live="polite"></p>
+    <p id="error" role="alert"></p>
+    <p class="hint">One photo per entry. PNG, JPEG or WebP up to 8 MB / 25 megapixels. Images are resized to at most 1600 px, converted to WebP, and saved immediately when uploaded. Removing an image or entry does not delete its asset. Hidden entries are not confidential.</p>
+    <div id="entries"></div>
+    <aside>
+      <h2>Review before publishing</h2>
+      <p>For the actual website preview, run <code>npm run dev</code> in another terminal, then open <a id="preview" href="http://localhost:3000/gallery" target="_blank" rel="noopener noreferrer">the website preview</a>. Save first, then refresh the preview.</p>
+      <p>When satisfied, run <code>git diff</code> and <code>git status</code>, then commit the relevant <code>content/</code> and <code>public/images/content/</code> changes and push. The editor never runs Git commands.</p>
+    </aside>
+  </main>
+</body>
+</html>

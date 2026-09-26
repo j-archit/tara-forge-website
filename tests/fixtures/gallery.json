@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "items": [
+    {
+      "id": "one-piece-figurine",
+      "title": "One Piece Figurine",
+      "category": "Artistic Prints",
+      "description": "High-detail resin-like finish on a custom anime collectible. Optimized for fine features and smooth surfaces.",
+      "tags": [
+        "PLA+",
+        "0.12mm Layer"
+      ],
+      "theme": "blue",
+      "published": true,
+      "image": null
+    },
+    {
+      "id": "mechanical-gear-assembly",
+      "title": "Mechanical Gear Assembly",
+      "category": "Functional Parts",
+      "description": "Multi-part assembly with tight tolerances. Tested for fit and durability in a mechanical prototype.",
+      "tags": [
+        "PETG",
+        "40% Infill"
+      ],
+      "theme": "green",
+      "published": true,
+      "image": null
+    },
+    {
+      "id": "custom-drone-frame",
+      "title": "Custom Drone Frame",
+      "category": "Prototyping",
+      "description": "Lightweight and rigid frame design for a custom quadcopter. Iterated through 3 design cycles.",
+      "tags": [
+        "Carbon PLA",
+        "Rigid"
+      ],
+      "theme": "purple",
+      "published": true,
+      "image": null
+    },
+    {
+      "id": "architectural-scaled-model",
+      "title": "Architectural Scaled Model",
+      "category": "Visualization",
+      "description": "Detailed scale model of a modern villa. Used for client presentation and spatial analysis.",
+      "tags": [
+        "Matte PLA",
+        "Scalable"
+      ],
+      "theme": "cyan",
+      "published": true,
+      "image": null
+    },
+    {
+      "id": "industrial-cable-organizer",
+      "title": "Industrial Cable Organizer",
+      "category": "Batching",
+      "description": "Small-batch run of 50 units for a server room setup. Consistent quality across the entire batch.",
+      "tags": [
+        "PETG",
+        "Batch Run"
+      ],
+      "theme": "gold",
+      "published": true,
+      "image": null
+    },
+    {
+      "id": "ergonomic-mouse-shell",
+      "title": "Ergonomic Mouse Shell",
+      "category": "Design Validation",
+      "description": "Prototype for a custom vertical mouse. Used to validate grip comfort before final production.",
+      "tags": [
+        "PLA",
+        "Ergonomic"
+      ],
+      "theme": "rose",
+      "published": true,
+      "image": null
+    }
+  ]
+}
