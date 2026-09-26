@@ -33,7 +33,19 @@ npm run test:browser
 npx serve out
 ```
 
-Install a Playwright browser once with `npx playwright install chromium` (Windows test runs use installed Edge by default). Browser tests serve `out/` on port 8766. Open the local URL printed by `serve` for manual review. The build downloads Geist fonts through `next/font/google`, so it needs network access.
+Install a Playwright browser once with `npx playwright install chromium` (Windows test runs use installed Edge by default). Browser tests serve `out/` on port 8766. Open the local URL printed by `serve` for manual review. Fonts are licensed local WOFF2 assets: the build does not fetch Google Fonts.
+
+Tailwind scans `src/` explicitly, so inspection bundles, local audit output and archived build caches are excluded from class discovery. All public-site utility classes live under that source tree. See [Tailwind's source-scanning guidance](https://tailwindcss.com/docs/detecting-classes-in-source-files).
+
+### Design preview and verification
+
+The design update runs on `design-lang-update`; pushing it does not publish Pages. Home and Shop are the first preview gate before the remaining page-specific rollout. See [the approved scope and phased plan](docs/design-language-reconciliation.md).
+
+After a build, run `npm run design:preview` for a localhost-only static preview at `http://127.0.0.1:8765`. In another terminal, `npm run design:check-copy` compares all seven routes against the committed pre-design text fixture, including FAQ answers and the inactive quote form. Do not regenerate the fixture to make a regression pass. The header wordmark is the explicit branding exception; customer copy is not exempt.
+
+Run `npm run design:test:browser` for the complete browser suite **with** the migration copy-freeze checks enabled. Normal `npm run test:browser` skips those seven migration-only checks so future content-manager saves can change catalogue/gallery content without being blocked by a permanently frozen snapshot. Content rendering, schema, safety and all other design/journey checks still run normally.
+
+Brand masters live under `public/brand/`; fonts and licences under `public/fonts/`. `tools/design/install-brand.mjs` installs the supplied bundle from the inspection folder and generates the social card. `tools/design/install-fonts.mjs` is an explicit network-enabled maintainer utility to refresh the licensed fonts and generated `brand-fonts.css`, not a build step. Review its output, preload paths and visual/glyph tests if Google changes its exports. Neither utility belongs to the content-manager upload flow.
 
 ## Edit content
 

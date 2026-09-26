@@ -1,9 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { motion } from "framer-motion";
-import { fadeIn, heroFadeIn } from "@/lib/animations";
-import { ShieldCheck, Leaf, Eye, UserCheck, Zap, Heart, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { FAQSection } from "@/components/FAQSection";
 import { trackCTA } from "@/lib/analytics";
@@ -13,62 +11,58 @@ export { FAQSection };
 
 export function HeroClient({ children }: { children: React.ReactNode }) {
   return (
-    <motion.div
-      className="mx-auto max-w-2xl text-center sm:text-left"
-      {...heroFadeIn}
+    <div
+      className="max-w-2xl text-center sm:text-left"
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
 
 export function ServiceCards() {
   return (
-    <section id="services" className="relative border-b border-slate-800/40 bg-slate-950/20 px-6 pb-12 pt-4 lg:px-4 lg:pb-20 lg:pt-8">
-      <div className="section-max-width">
+    <section id="services" className="design-section border-b border-line">
+      <div className="section-max-width design-container">
       <div className="mb-16">
         <h2 className="text-3xl font-semibold text-slate-50 sm:text-4xl">Specialized <span className="celestial-gradient-text">Services</span></h2>
         <p className="mt-4 text-slate-400 font-light max-w-2xl">Precision printing solutions optimized for your specific project needs.</p>
       </div>
       <div 
-        className="grid gap-8 sm:grid-cols-2 lg:grid-cols-2"
+        className="grid gap-6 sm:grid-cols-2"
       >
         {homeServices.map((item, i) => (
-          <motion.div 
+          <div
             key={i}
-            {...fadeIn(i * 0.1)}
-            whileHover={{ y: -8 }}
-            className="group relative h-full flex flex-col overflow-hidden rounded-3xl border border-slate-800/80 bg-slate-900/30 p-8 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.5)] transition-all hover:border-brand-gold/40 hover:bg-slate-900/40"
+            className="design-card relative h-full flex flex-col p-8"
           >
-            <div className="absolute -right-12 -top-12 h-32 w-32 rounded-full bg-brand-gold/5 blur-[40px] transition-all group-hover:bg-brand-gold/10" />
             
             <header className="mb-8">
-              <span className="text-[14px] font-bold uppercase tracking-[0.3em] text-slate-100">
+              <span className="design-service-name">
                 {item.label}
               </span>
-              <h3 className="mt-4 text-2xl font-semibold leading-snug text-brand-gold transition-colors">
+              <h3 className="design-accent mt-4">
                 {item.title}
               </h3>
             </header>
             
-            <p className="mb-8 text-pretty text-sm leading-relaxed text-slate-400 font-light">
+            <p className="mb-8 text-pretty leading-relaxed">
               {item.body}
             </p>
             
-            <div className="mt-auto flex items-center justify-between pt-6 border-t border-slate-800/50">
+            <div className="mt-auto flex flex-wrap gap-4 items-center justify-between pt-6 border-t border-line">
               <Link 
                 href="/services"
                 onClick={() => trackCTA('learn_more_service', item.label)}
-                className="text-[11px] font-bold uppercase tracking-widest text-brand-gold hover:text-brand-gold-bright transition-colors flex items-center gap-1.5 group/link"
+                className="design-link inline-flex min-h-11 items-center gap-2"
               >
                 Learn More
                 <ArrowRight className="w-3 h-3 transition-transform group-hover/link:translate-x-0.5" />
               </Link>
-              <span className="text-[10px] font-medium text-slate-500 italic">
+              <span className="design-label">
                 {item.tag}
               </span>
             </div>
-          </motion.div>
+          </div>
         ))}
       </div>
       </div>
@@ -78,9 +72,9 @@ export function ServiceCards() {
 
 export function ShopHighlight() {
   return (
-    <section className="border-y border-slate-800/60 bg-slate-950/30 py-16 sm:py-24">
-      <div className="section-max-width px-6 lg:px-4 text-center">
-        <motion.div {...fadeIn(0.1)}>
+    <section className="design-section design-band border-y border-line">
+      <div className="section-max-width design-container text-center">
+        <div>
           <h2 className="text-3xl font-semibold text-slate-50 sm:text-4xl">The <span className="celestial-gradient-text">Stellar Collection</span></h2>
           <p className="mx-auto mt-6 max-w-2xl text-pretty text-base text-slate-400 lg:text-lg text-center">
             Every artifact in our collection is crafted with intention. We don&apos;t just print; we optimize for beauty, strength, and a professional finish you&apos;ll love to hold.
@@ -89,12 +83,12 @@ export function ShopHighlight() {
             <a
               href="/shop"
               onClick={() => trackCTA('browse_shop_home', '/shop')}
-              className="inline-flex items-center gap-2 rounded-full bg-slate-800 px-8 py-3.5 text-sm font-semibold text-slate-100 shadow-xl transition-all hover:bg-brand-gold hover:text-slate-950 hover:scale-105"
+              className="design-button design-secondary"
             >
               Preview the Collection
             </a>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
@@ -105,63 +99,57 @@ export function CoreValues() {
     {
       title: "Precision & Interaction",
       description: "Tight tolerances meet best-in-class support. We don't just ship parts; we solve problems.",
-      icon: <UserCheck className="w-5 h-5 text-brand-gold" />,
+      icon: <span className="spark" aria-hidden="true" />,
       highlight: false
     },
     {
       title: "Environment Forward",
       description: "We minimize waste through optimized supports and active material recycling.",
-      icon: <Leaf className="w-5 h-5 text-emerald-400" />,
+      icon: <span className="spark" aria-hidden="true" />,
       highlight: true
     },
     {
       title: "Radical Transparency",
       description: "Open communication on lead times and technical constraints. No surprises, ever.",
-      icon: <Eye className="w-5 h-5 text-blue-400" />,
+      icon: <span className="spark" aria-hidden="true" />,
       highlight: false
     },
     {
       title: "Unwavering Accountability",
       description: "If a part isn't right, we fix it. We take full ownership of our print quality.",
-      icon: <ShieldCheck className="w-5 h-5 text-purple-400" />,
+      icon: <span className="spark" aria-hidden="true" />,
       highlight: false
     },
     {
       title: "Iterative Excellence",
       description: "Refining our craft with every project, constantly benchmarking the latest additive tech.",
-      icon: <Zap className="w-5 h-5 text-amber-400" />,
+      icon: <span className="spark" aria-hidden="true" />,
       highlight: false
     },
     {
       title: "Maker Spirit",
       description: "A maker's curiosity meets professional discipline. We love what we do.",
-      icon: <Heart className="w-5 h-5 text-red-400" />,
+      icon: <span className="spark" aria-hidden="true" />,
       highlight: false
     }
   ];
 
   return (
-    <section className="relative border-b border-slate-800/40 bg-slate-950/60 px-6 py-12 lg:px-4 lg:py-20">
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-brand-gold/[0.01] to-transparent pointer-events-none" />
-      <div className="section-max-width relative">
-      <div className="max-w-2xl mb-16 ml-auto text-right">
+    <section className="design-section design-band border-b border-line">
+      <div className="section-max-width design-container relative">
+      <div className="max-w-2xl mb-16">
         <h2 className="text-3xl font-semibold text-slate-50 sm:text-4xl">Our <span className="celestial-gradient-text">Craft & Ethos</span></h2>
         <p className="mt-4 text-slate-400 font-light">The values that guide every layer we print and every partnership we build.</p>
       </div>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {values.map((v, i) => (
-          <motion.div
+          <div
             key={i}
-            {...fadeIn(i * 0.05)}
-            className={`p-6 rounded-2xl border ${
-              v.highlight 
-                ? 'border-emerald-500/30 bg-emerald-500/5 shadow-[0_0_20px_-10px_rgba(16,185,129,0.2)]' 
-                : 'border-slate-800/60 bg-slate-900/20'
-            } transition-colors hover:border-slate-700/80`}
+            className="design-card p-6"
           >
             <div className="flex items-center gap-3 mb-4">
-              <div className="p-2 rounded-lg bg-slate-800/50">
+              <div className="flex items-center">
                 {v.icon}
               </div>
               <h3 className="font-semibold text-brand-gold">{v.title}</h3>
@@ -169,7 +157,7 @@ export function CoreValues() {
             <p className="text-sm leading-relaxed text-slate-400 font-light">
               {v.description}
             </p>
-          </motion.div>
+          </div>
         ))}
       </div>
       </div>

@@ -6,7 +6,7 @@ import { brandScripts } from "../../src/lib/brandScripts.ts";
 const folder = new URL("../../public/fonts/", import.meta.url);
 await mkdir(folder, { recursive: true });
 const families = [
-  { family: "Archivo", spec: "Archivo:ital,wdth,wght@0,62..125,300..800;1,62..125,300..800" },
+  { family: "Archivo", spec: "Archivo:ital,wdth,wght@0,62..125,300..800;1,100,500" },
   { family: "IBM Plex Mono", spec: "IBM Plex Mono:wght@400;500" },
   ...[...new Set(brandScripts.slice(1).map(word => word.family))].map(family => ({ family, spec: `${family}:wght@700`, text: brandScripts.filter(word => word.family === family).map(word => word.text).join("") })),
 ];

@@ -193,3 +193,20 @@ Recommended scope boundary: public website first; optional editor visual alignme
 ## 9. What changed during this review
 
 This report was updated to reconcile the newly supplied brief and supersede its earlier recommendations. The previously extracted bundle remains in the untracked inspection directory. No website code, content, live assets, branch history or deployment was changed. No application tests were rerun for this documentation-only update. No commit, push or publication was performed.
+
+## 10. Implementation progress (after approval)
+
+- Phase 0: approved scope and seven-route copy fixture committed as `6b2fd24`. Captured pre-design branch output, including hidden FAQ answers and the protected intake form. Header wordmark presentation is the sole explicit branding exception in the text comparison.
+- Phase 1: full 238-file brand folder, licensed local fonts, root tokens, favicon/manifest and correctly sized social card committed as `a388b58`. Fonts are now vendored: static builds and visitors do not need Google Fonts API access. Only existing logo characters are included in Noto subsets. Upright Archivo retains its weight/width ranges; italic uses the specified 500 weight / normal width to avoid downloading unused axes.
+- Phase 2: shared live header, static stacked footer, accessible full-screen mobile navigation and native one-open FAQ committed as `7282ab3`. Removed obsolete `Logo.jsx`, `public/Logo.svg` and `public/icon.svg`; these remain recoverable from Git history. Replaced the existing favicon rather than leaving both identities active. All seven routes retained their text; menu focus/scroll/reduced-motion and quote/portrait regressions were tested.
+- Phase 3: Home and Shop are the first page-specific visual previews. No new Featured Work block, section movement, product changes, prices or schema changes. Shared shell/font effects are already visible on other routes, but their page-specific redesign is intentionally pending owner review.
+
+The supplied design boards remain unavailable. These previews follow the written specification and the owner's agreed exceptions. `main`, GitHub Pages hosting, backend behaviour and editor UI/security remain unchanged. Final all-page rollout and publication require the next review gate.
+
+Verification notes, 27 September:
+
+- 49 unit/API/security/design tests passed; lint and TypeScript checks passed. The original default Node 24 production build (Turbopack) and Webpack export both passed after restricting Tailwind's scan to application sources. No compiler-mode change remains in the build script. An old generated Webpack cache was archived under untracked `output/` during diagnosis, not deleted.
+- All 47 browser tests passed with migration copy checks enabled, including editor security/interaction, managed-content rendering, quote overlay, portrait and responsive Home/Shop checks. Exact text comparison passed on all seven routes. Copy checks wait for hydration/reduced-motion effects rather than sampling a transient testimonial control. Copy-freeze browser checks are opt-in through `npm run design:test:browser`; normal publishing does not freeze future content-manager changes against this migration fixture.
+- Mobile Lighthouse 13.5 against the final **gzip-served local production export**, analytics blocked and no concurrent build: Home **Performance 98 / Accessibility 100**, Shop **96 / 98**. These are local measurements, not a guarantee of identical deployed-network scores. Reports are under untracked `output/playwright/`.
+- Preview server checks passed for normal reads, rejected write methods, hostile Host headers, traversal and secret-file requests. It binds only to localhost and serves only the resolved `out/` directory.
+- Full-page captures deliberately load lazy images before capture and reset scroll/focus so the sticky header is not misplaced and the engine/footer artwork is not falsely shown as blank.

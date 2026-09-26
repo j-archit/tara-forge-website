@@ -12,6 +12,14 @@ try {
   for (const route of routes) {
     const response = await page.goto(origin + route);
     assert.equal(response.status(), 200, route);
+    // Wait for client hydration and reduced-motion effects before sampling.
+    // The baseline intentionally excludes motion-only testimonial controls.
+    await page.waitForFunction(() => {
+      const brand = document.querySelector(".brand__tara");
+      const hydrated = brand?.style.width;
+      const motionControl = [...document.querySelectorAll("button")].some(button => /^(Pause|Play) testimonials$/.test(button.textContent.trim()));
+      return hydrated && !motionControl;
+    });
     snapshot[route] = await page.locator("main").evaluate(main => {
       const copy = main.cloneNode(true);
       // The explicitly redesigned header wordmark is the sole branding exception.

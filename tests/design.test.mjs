@@ -48,6 +48,7 @@ test("fonts are local WOFF2 with swap and redistribution licences", () => {
 
 test("design stylesheet centralises colours and preserves portrait exception", () => {
   const css = readFileSync("src/app/globals.css", "utf8");
+  assert.match(css, /@import "tailwindcss" source\("\.\.\/"\)/);
   const outsideRoot = css.replace(/:root\s*\{[^}]+\}/g, "");
   assert.doesNotMatch(outsideRoot, /#[a-f\d]{3,8}\b/i);
   assert.match(css, /\.founder-portrait\s*\{ filter: var\(--portrait-shadow\)/);

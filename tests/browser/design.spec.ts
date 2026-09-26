@@ -5,15 +5,17 @@ import { brandScripts } from "../../src/lib/brandScripts";
 const baseline = JSON.parse(readFileSync("tests/fixtures/design-copy.json", "utf8"));
 for (const route of Object.keys(baseline)) {
   test(`design retains all copy on ${route}`, async ({ page }) => {
+    test.skip(process.env.VERIFY_DESIGN_COPY !== "1", "Migration-only freeze: run npm run design:test:browser; normal CMS publishing must allow approved content edits.");
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto(route);
-    const copy = await page.locator("main").evaluate(main => {
+    // Hydration can briefly render the marquee pause control before Framer's
+    // reduced-motion hook settles. Compare the settled DOM, not that transient.
+    await expect.poll(() => page.locator("main").evaluate(main => {
       const clone = main.cloneNode(true) as HTMLElement;
       clone.querySelector("header a[href='/']")?.remove();
       clone.querySelectorAll("script, style, svg").forEach(node => node.remove());
       return clone.textContent!.replace(/\s+/g, " ").trim();
-    });
-    expect(copy).toBe(baseline[route]);
+    }), { timeout: 10000 }).toBe(baseline[route]);
   });
 }
 
@@ -94,4 +96,37 @@ test("brand metadata, static footer and font files are served from the export", 
   expect((await page.request.get("/brand/site.webmanifest")).headers()["content-type"]).toContain("manifest");
   expect((await page.request.get("/fonts/archivo-5.woff2")).headers()["content-type"]).toBe("font/woff2");
   await expect(page.locator('img[src*="workdir"], img[src="/Logo.svg"], img[src="/icon.svg"]')).toHaveCount(0);
+  expect((await page.request.get("/Logo.svg")).status()).toBe(404);
+  expect((await page.request.get("/icon.svg")).status()).toBe(404);
 });
+
+for (const route of ["/", "/shop/"]) {
+  for (const width of [360, 768, 1440]) {
+    test(`${route} preview fits at ${width}px with accessible targets and restrained effects`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 900 });
+      await page.emulateMedia({ reducedMotion: "reduce" });
+      await page.goto(route);
+      await page.evaluate(() => document.fonts.ready);
+      if (width === 1440) await expect(page.locator('header nav').getByRole("link", { name: route === "/" ? "Home" : "Shop", exact: true }).first()).toHaveAttribute("aria-current", "page");
+      expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
+      const targets = await page.locator("a, button, summary").evaluateAll(elements => elements.filter(element => element.getClientRects().length > 0).map(element => ({ text: element.textContent?.trim(), height: element.getBoundingClientRect().height })));
+      for (const target of targets) expect(target.height, target.text).toBeGreaterThanOrEqual(44);
+      const shadows = await page.locator("main *").evaluateAll(elements => elements.filter(element => getComputedStyle(element).boxShadow !== "none" && !element.classList.contains("design-hero-cta")).map(element => element.className));
+      expect(shadows).toEqual([]);
+      await expect(page.locator(".hero-gradient-text")).toHaveCount(route === "/" ? 1 : 0);
+      const secondary = page.locator(".design-button.design-secondary").first();
+      await secondary.focus();
+      await expect(secondary).toHaveCSS("outline-width", "2px");
+      if (width !== 768) {
+        // Full-page captures must include lazy photos/branding below the fold.
+        await page.locator("img").evaluateAll(images => images.forEach(element => { (element as HTMLImageElement).loading = "eager"; }));
+        await expect.poll(() => page.locator("img").evaluateAll(images => images.every(element => {
+          const image = element as HTMLImageElement;
+          return image.complete && image.naturalWidth > 0;
+        }))).toBe(true);
+        await page.evaluate(() => { (document.activeElement as HTMLElement)?.blur(); window.scrollTo(0, 0); });
+        await page.screenshot({ path: `output/playwright/design-${route === "/" ? "home" : "shop"}-${width}.png`, fullPage: true });
+      }
+    });
+  }
+}

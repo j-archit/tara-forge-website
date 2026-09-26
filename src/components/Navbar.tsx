@@ -19,6 +19,7 @@ const navLinks = [
 
 export function Navbar() {
   const pathname = usePathname();
+  const activePath = pathname.replace(/\/$/, "") || "/";
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const [scriptIndex, setScriptIndex] = React.useState(0);
   const headerRef = React.useRef<HTMLElement>(null);
@@ -111,7 +112,7 @@ export function Navbar() {
         </div>
         <nav className="hidden items-center gap-5 text-sm lg:flex">
           {navLinks.map(link => (
-            <Link key={link.href} href={link.href} onClick={() => trackNavigation(link.label, pathname)} className="design-nav-link" aria-current={pathname === link.href ? "page" : undefined}>{link.label}</Link>
+            <Link key={link.href} href={link.href} onClick={() => trackNavigation(link.label, pathname)} className="design-nav-link" aria-current={activePath === link.href ? "page" : undefined}>{link.label}</Link>
           ))}
           <Link href="/quote" onClick={() => trackCTA("get_a_quote_nav", "/quote")} className="design-button design-primary">Get a quote</Link>
         </nav>
@@ -125,7 +126,7 @@ export function Navbar() {
       <nav id="mobile-navigation" aria-hidden={!isMobileMenuOpen} hidden={!isMobileMenuOpen} className="design-mobile-nav lg:hidden">
         <ul className="flex flex-col items-center gap-4 text-center">
           {navLinks.map(link => (
-            <li key={link.href}><Link href={link.href} className="design-nav-link text-lg" aria-current={pathname === link.href ? "page" : undefined} onClick={() => {
+            <li key={link.href}><Link href={link.href} className="design-nav-link text-lg" aria-current={activePath === link.href ? "page" : undefined} onClick={() => {
               trackNavigation(link.label, pathname);
               setIsMobileMenuOpen(false);
             }}>{link.label}</Link></li>

@@ -12,7 +12,8 @@
     "content:validate": "node tools/content-manager/validate.mjs",
     "test:browser": "playwright test",
     "design:preview": "node tools/design/preview.mjs",
-    "design:check-copy": "node tools/design/copy-snapshot.mjs"
+    "design:check-copy": "node tools/design/copy-snapshot.mjs",
+    "design:test:browser": "node tools/design/run-browser-tests.mjs"
   },
   "dependencies": {
     "@next/third-parties": "^16.3.6",
