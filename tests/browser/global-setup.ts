@@ -14,6 +14,9 @@ const contentTypes: Record<string, string> = {
   ".svg": "image/svg+xml",
   ".txt": "text/plain; charset=utf-8",
   ".webp": "image/webp",
+  ".avif": "image/avif",
+  ".woff2": "font/woff2",
+  ".webmanifest": "application/manifest+json",
   ".xml": "application/xml",
 };
 

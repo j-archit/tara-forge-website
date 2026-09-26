@@ -1,8 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { motion } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { Plus } from "lucide-react";
 import { trackFAQInteraction } from "@/lib/analytics";
 import { faqs } from "@/data/faqs";
 
@@ -24,8 +23,8 @@ export function FAQSection() {
   };
 
   return (
-    <section id="faq" className="relative border-b border-slate-800/40 bg-slate-950/60 px-6 py-12 lg:px-4 lg:py-20">
-      <div className="section-max-width">
+    <section id="faq" className="design-section relative border-b border-line">
+      <div className="section-max-width design-container">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
@@ -36,44 +35,39 @@ export function FAQSection() {
           {faqs.map((faq, idx) => {
             const isOpen = openIndex === idx;
             return (
-              <div 
+              <details
                 key={idx}
-                className={`overflow-hidden rounded-2xl border transition-all duration-300 ${
-                  isOpen 
-                    ? "border-brand-gold/40 bg-slate-900/40 shadow-[var(--brand-glow-gold)]" 
-                    : "border-slate-800/60 bg-slate-900/20 hover:border-slate-700/80"
-                }`}
+                name="studio-faq"
+                className="design-faq"
+                onToggle={(event) => {
+                  const opened = event.currentTarget.open;
+                  setOpenIndex(previous => opened ? idx : previous === idx ? null : previous);
+                  trackFAQInteraction(faq.question, opened ? 'open' : 'close');
+                }}
               >
-                <button
+                <summary
                   id={`faq-question-${idx}`}
                   aria-expanded={isOpen}
                   aria-controls={`faq-answer-${idx}`}
-                  onClick={() => {
-                    setOpenIndex(isOpen ? null : idx);
-                    trackFAQInteraction(faq.question, isOpen ? 'close' : 'open');
-                  }}
-                  className="flex w-full items-center justify-between p-6 text-left group"
+                  className="text-left"
                 >
-                  <span className={`text-base font-medium transition-colors duration-300 ${isOpen ? "text-brand-gold" : "text-slate-100 group-hover:text-slate-50"}`}>
+                  <span>
                     {faq.question}
                   </span>
-                  <ChevronDown className={`h-5 w-5 transition-all duration-300 ${isOpen ? "rotate-180 text-brand-gold" : "text-slate-500 group-hover:text-slate-300"}`} />
-                </button>
-                <motion.div
+                  <Plus aria-hidden="true" className="h-5 w-5" />
+                </summary>
+                <div
                   id={`faq-answer-${idx}`}
                   role="region"
                   aria-labelledby={`faq-question-${idx}`}
                   aria-hidden={!isOpen}
-                  initial={false}
-                  animate={{ height: isOpen ? "auto" : 0, opacity: isOpen ? 1 : 0 }}
-                  transition={{ duration: 0.3, ease: "easeInOut" }}
-                  className="overflow-hidden"
+                  className="design-faq-answer"
                 >
-                  <div className="px-6 pb-6 text-sm leading-relaxed text-slate-400 font-light border-t border-brand-gold/10 pt-4">
+                  <div>
                     {faq.answer}
                   </div>
-                </motion.div>
-              </div>
+                </div>
+              </details>
             );
           })}
         </div>

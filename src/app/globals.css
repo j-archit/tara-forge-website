@@ -113,9 +113,10 @@ h1, h2, h3 { font-family: var(--font-brand-sans); font-stretch: 118%; font-weigh
 .design-nav-link:hover { color: var(--gold-light); }
 .design-nav-link[aria-current='page'] { color: var(--sky); }
 .brand { display: flex; align-items: center; gap: 10px; line-height: 1; color: var(--heading); flex-shrink: 0; }
+.brand > img { margin: 4px; }
 .brand__stack { display: flex; flex-direction: column; gap: 3px; }
 .brand__tara { position: relative; display: grid; width: 80px; height: 22px; padding-right: 4px; align-items: center; }
-.brand__word { grid-area: 1 / 1; white-space: nowrap; font-size: 15px; font-weight: 700; opacity: 0; transition: opacity 200ms ease-out; }
+.brand__word { grid-area: 1 / 1; justify-self: start; width: max-content; white-space: nowrap; font-size: 15px; font-weight: 700; opacity: 0; transition: opacity 200ms ease-out; }
 .brand__word[data-active='true'] { opacity: 1; }
 .brand__word:lang(en) { font-size: 12px; font-stretch: 110%; letter-spacing: .2em; text-transform: uppercase; }
 .brand__forge { font-family: var(--font-brand-sans); font-size: 12px; font-weight: 600; font-stretch: 110%; letter-spacing: .32em; text-transform: uppercase; }

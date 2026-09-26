@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Logo } from "./Logo";
+import Image from "next/image";
 import { Mail, MessageSquare, MoveUpRight } from "lucide-react";
 import { trackNavigation, trackSocialClick } from "@/lib/analytics";
 import { CONTACT } from "@/data/siteContent";
@@ -28,29 +28,25 @@ export function Footer() {
   return (
     <footer
       id="contact"
-      className="relative border-t border-slate-800/60 bg-slate-950/40 py-20 backdrop-blur-md overflow-hidden"
+      className="design-footer relative overflow-hidden"
     >
-      {/* Subtle Background Glow */}
-      <div className="absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-brand-gold/5 blur-[100px]" />
-      <div className="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-blue-500/5 blur-[100px]" />
-
-      <div className="section-max-width px-6 lg:px-4">
+      <div className="section-max-width design-container">
         <div className="grid gap-12 lg:grid-cols-4 lg:gap-8">
           
           {/* Brand Column */}
           <div className="lg:col-span-2">
-            <div className="flex items-center gap-4">
-              <Logo size={64} className="drop-shadow-[var(--brand-glow-gold)]" />
+            <div className="design-footer-brand">
+              <Image src="/brand/lockup/svg/taraforge3d-lockup-stacked-on-dark.svg" alt="" width={148} height={151} />
               <div>
-                <h2 className="text-sm font-bold uppercase tracking-[0.25em] text-brand-gold">
+                <h2 className="sr-only">
                   TaraForge3D
                 </h2>
-                <p className="mt-1 text-xs font-semibold text-slate-500 tracking-wider">
+                <p className="design-footer-tagline">
                   Your Idea, in 3D ✶
                 </p>
               </div>
             </div>
-            <p className="mt-6 max-w-sm text-sm leading-relaxed text-slate-400 font-light">
+            <p className="mt-6 max-w-sm text-sm leading-relaxed">
               A 3D printing studio for everyone... from custom keepsakes to complex prototypes. Adding a personal touch to your high-detail prints, and giving shape to your ideas
             </p>
           </div>
@@ -60,7 +56,7 @@ export function Footer() {
             <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-gold/80 mb-6">
               Explore
             </h3>
-            <ul className="space-y-4">
+            <ul>
               {footerLinks.explore.map((link) => (
                 <li key={link.label}>
                   <Link 
@@ -80,7 +76,7 @@ export function Footer() {
             <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-gold/80 mb-6">
               Connect
             </h3>
-            <ul className="space-y-4">
+            <ul>
               {footerLinks.connect.map((link) => (
                 <li key={link.label}>
                   <a 
@@ -102,8 +98,8 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-20 pt-8 border-t border-slate-800/40 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-xs text-slate-500 font-light">
+        <div className="design-footer-bottom mt-16 pt-8 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs">
             © {currentYear} TaraForge3D. Crafted in India.
           </p>
         </div>

@@ -6,155 +6,134 @@ import { usePathname } from "next/navigation";
 import { Logo } from "./Logo";
 import { Menu, X } from "lucide-react";
 import { trackNavigation, trackCTA, trackMobileMenu } from "@/lib/analytics";
+import { brandScripts, BRAND_INTERVAL_MS } from "@/lib/brandScripts";
+
+const navLinks = [
+  { href: "/", label: "Home" },
+  { href: "/services", label: "Services" },
+  { href: "/gallery", label: "Gallery" },
+  { href: "/shop", label: "Shop" },
+  { href: "/#about", label: "Why TaraForge3D" },
+  { href: "/team", label: "Team" },
+];
 
 export function Navbar() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
-  
-  const scripts = React.useMemo(() => [
-    { text: "Tara", lang: "en", label: "Latin" },
-    { text: "तारा", lang: "hi", label: "Devanagari" },
-    { text: "তারা", lang: "bn", label: "Bengali" },
-    { text: "তৰা", lang: "as", label: "Assamese" },
-    { text: "તારા", lang: "gu", label: "Gujarati" },
-    { text: "ତାରା", lang: "or", label: "Odia" },
-    { text: "ਤਾਰਾ", lang: "pa", label: "Gurmukhi" },
-    { text: "తారా", lang: "te", label: "Telugu" },
-    { text: "ತಾರಾ", lang: "kn", label: "Kannada" },
-    { text: "தாரா", lang: "ta", label: "Tamil" },
-    { text: "താര", lang: "ml", label: "Malayalam" },
-    { text: "تارا", lang: "ur", label: "Perso-Arabic" },
-    { text: "ꯇꯥꯔꯥ", lang: "mni", label: "Meetei Mayek" },
-    { text: "ᱛᱟᱨᱟ", lang: "sat", label: "Ol Chiki" },
-  ], []);
-
-  const navLinks = React.useMemo(() => [
-    { href: "/", label: "Home" },
-    { href: "/services", label: "Services" },
-    { href: "/gallery", label: "Gallery" },
-    { href: "/shop", label: "Shop" },
-    { href: "/#about", label: "Why TaraForge3D" },
-    { href: "/team", label: "Team" },
-  ], []);
-
   const [scriptIndex, setScriptIndex] = React.useState(0);
+  const headerRef = React.useRef<HTMLElement>(null);
+  const menuRef = React.useRef<HTMLButtonElement>(null);
+  const slotRef = React.useRef<HTMLSpanElement>(null);
 
   React.useEffect(() => {
-    if (typeof window === "undefined") return;
-
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (media.matches) return;
+    let interval: number | undefined;
+    const sync = () => {
+      window.clearInterval(interval);
+      if (media.matches) setScriptIndex(0);
+      else interval = window.setInterval(() => setScriptIndex(prev => (prev + 1) % brandScripts.length), BRAND_INTERVAL_MS);
+    };
+    sync();
+    media.addEventListener("change", sync);
+    return () => { window.clearInterval(interval); media.removeEventListener("change", sync); };
+  }, []);
 
-    const interval = window.setInterval(() => {
-      setScriptIndex((prev) => (prev + 1) % scripts.length);
-    }, 1200);
+  React.useEffect(() => {
+    let cancelled = false;
+    void document.fonts.ready.then(() => {
+      if (cancelled || !slotRef.current) return;
+      const words = Array.from(slotRef.current.children);
+      const widest = Math.max(...words.map(word => word.getBoundingClientRect().width));
+      slotRef.current.style.width = `${Math.ceil(widest) + 4}px`;
+    });
+    return () => { cancelled = true; };
+  }, []);
 
-    return () => window.clearInterval(interval);
-  }, [scripts.length]);
-
-  const current = scripts[scriptIndex] ?? scripts[0]!;
+  React.useEffect(() => {
+    if (!isMobileMenuOpen || !headerRef.current) return;
+    const header = headerRef.current;
+    const menuButton = menuRef.current;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const background = Array.from(header.parentElement?.children ?? []).filter(element => element !== header) as HTMLElement[];
+    const previousInert = background.map(element => element.inert);
+    const previousHidden = background.map(element => element.getAttribute("aria-hidden"));
+    background.forEach(element => { element.inert = true; element.setAttribute("aria-hidden", "true"); });
+    const focusable = () => Array.from(header.querySelectorAll<HTMLElement>("a[href], button:not([disabled])")).filter(element => element.getClientRects().length > 0);
+    header.querySelector<HTMLElement>("#mobile-navigation a")?.focus();
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        trackMobileMenu("close");
+        setIsMobileMenuOpen(false);
+      }
+      if (event.key !== "Tab") return;
+      const elements = focusable();
+      const first = elements[0], last = elements.at(-1);
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+    };
+    const desktop = window.matchMedia("(min-width: 1024px)");
+    const onDesktop = () => { if (desktop.matches) setIsMobileMenuOpen(false); };
+    document.addEventListener("keydown", onKey);
+    desktop.addEventListener("change", onDesktop);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      background.forEach((element, i) => {
+        element.inert = previousInert[i];
+        const hidden = previousHidden[i];
+        if (hidden === null) element.removeAttribute("aria-hidden");
+        else element.setAttribute("aria-hidden", hidden);
+      });
+      document.removeEventListener("keydown", onKey);
+      desktop.removeEventListener("change", onDesktop);
+      menuButton?.focus();
+    };
+  }, [isMobileMenuOpen]);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-800/80 bg-slate-950/70 backdrop-blur-2xl">
-      <div className="section-max-width flex items-center justify-between px-6 py-4 lg:px-4">
+    <header ref={headerRef} className="design-header" role={isMobileMenuOpen ? "dialog" : undefined} aria-modal={isMobileMenuOpen ? true : undefined} aria-label={isMobileMenuOpen ? "Toggle navigation" : undefined}>
+      <div className="section-max-width design-container design-header-inner flex items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          <Link
-            href="/"
-            className="flex items-center gap-3 transition-transform hover:scale-105"
-            aria-label="TaraForge3D"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            <Logo size={40} className="drop-shadow-[var(--brand-glow-gold)] sm:size-[42px]" />
-            <div className="flex items-center gap-0.5 translate-y-[-1px]">
-              <div className="flex flex-col justify-center">
-                <span className="text-[11px] sm:text-[13px] font-bold uppercase tracking-[0.25em] text-slate-100 leading-[1.1]">
-                  <span lang={current.lang} className="inline-block min-w-[5ch] transition-all duration-500">
-                    {current.text}
-                  </span>
-                </span>
-                <span className="text-[11px] sm:text-[13px] font-bold uppercase tracking-[0.25em] text-brand-gold leading-[1.1]">
-                  Forge
-                </span>
-              </div>
-              <span className="text-[28px] sm:text-[32px] font-semibold tracking-normal text-brand-gold leading-[0.8] select-none self-center">
-                3D
+          <Link href="/" className="brand" aria-label="TaraForge3D home" onClick={() => setIsMobileMenuOpen(false)}>
+            <Logo size={34} />
+            <span className="brand__stack">
+              <span ref={slotRef} className="brand__tara" aria-hidden="true">
+                {brandScripts.map((word, index) => (
+                  <span key={word.lang} lang={word.lang} dir={word.lang === "ur" ? "rtl" : undefined} className="brand__word" data-active={index === scriptIndex} style={{ fontFamily: word.family }}>{word.text}</span>
+                ))}
               </span>
-            </div>
+              <span className="brand__forge">Forge</span>
+            </span>
+            <span className="brand__3d">3D</span>
           </Link>
-          <span className="hidden text-[10px] font-medium uppercase tracking-widest text-slate-500 sm:inline ml-2 border-l border-slate-800 pl-4 py-1">
-            Your Idea, in 3D
-          </span>
+          <span className="brand__tagline hidden xl:inline">Your Idea, in 3D</span>
         </div>
-
-        {/* Desktop Nav */}
-        <nav className="hidden items-center gap-8 text-sm font-medium text-slate-300 lg:flex">
-          {navLinks.map((link) => (
-            <Link 
-              key={link.href}
-              href={link.href} 
-              onClick={() => trackNavigation(link.label, pathname)}
-              className={`hover:text-celestial-accent transition-colors ${pathname === link.href ? 'text-celestial-accent' : ''}`}
-            >
-              {link.label}
-            </Link>
+        <nav className="hidden items-center gap-5 text-sm lg:flex">
+          {navLinks.map(link => (
+            <Link key={link.href} href={link.href} onClick={() => trackNavigation(link.label, pathname)} className="design-nav-link" aria-current={pathname === link.href ? "page" : undefined}>{link.label}</Link>
           ))}
-          <Link
-            href="/quote"
-            onClick={() => trackCTA('get_a_quote_nav', '/quote')}
-            className="rounded-full bg-brand-gold px-6 py-2 text-xs font-bold text-slate-950 shadow-[var(--brand-glow-gold)] transition-all hover:scale-105 hover:bg-brand-gold-bright active:scale-95"
-          >
-            Get a quote
-          </Link>
+          <Link href="/quote" onClick={() => trackCTA("get_a_quote_nav", "/quote")} className="design-button design-primary">Get a quote</Link>
         </nav>
-
-        {/* Mobile Menu Toggle */}
-        <button 
-          className={`group flex h-11 w-11 items-center justify-center rounded-full border border-slate-700/50 bg-slate-900/60 text-slate-100 shadow-xl backdrop-blur-md transition-all duration-300 lg:hidden hover:scale-105 active:scale-95 ${isMobileMenuOpen ? "bg-brand-gold border-brand-gold/40 text-slate-950" : ""}`}
-          onClick={() => {
-            trackMobileMenu(isMobileMenuOpen ? 'close' : 'open');
-            setIsMobileMenuOpen(!isMobileMenuOpen);
-          }}
-          aria-label="Toggle navigation"
-          aria-expanded={isMobileMenuOpen}
-          aria-controls="mobile-navigation"
-        >
-          {isMobileMenuOpen ? <X size={20} strokeWidth={2.5} /> : <Menu size={20} strokeWidth={2.5} />}
+        <button ref={menuRef} className="design-menu-button flex items-center justify-center lg:hidden" onClick={() => {
+          trackMobileMenu(isMobileMenuOpen ? "close" : "open");
+          setIsMobileMenuOpen(!isMobileMenuOpen);
+        }} aria-label="Toggle navigation" aria-expanded={isMobileMenuOpen} aria-controls="mobile-navigation">
+          {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
-
-      {/* Mobile Nav Overlay */}
-      <nav
-        id="mobile-navigation"
-        aria-hidden={!isMobileMenuOpen}
-        className={`absolute left-0 right-0 top-full border-b border-slate-800 bg-slate-950/95 p-6 backdrop-blur-xl transition-[opacity,transform,visibility] duration-200 lg:hidden ${isMobileMenuOpen ? "visible translate-y-0 opacity-100" : "pointer-events-none invisible -translate-y-2 opacity-0"}`}
-      >
-        <ul className="flex flex-col items-center gap-6 text-center">
-          {navLinks.map((link) => (
-            <li key={link.href}>
-              <Link
-                href={link.href}
-                className={`text-lg font-medium transition-colors ${pathname === link.href ? 'text-brand-gold' : 'text-slate-300'}`}
-                onClick={() => {
-                  trackNavigation(link.label, pathname);
-                  setIsMobileMenuOpen(false);
-                }}
-              >
-                {link.label}
-              </Link>
-            </li>
+      <nav id="mobile-navigation" aria-hidden={!isMobileMenuOpen} hidden={!isMobileMenuOpen} className="design-mobile-nav lg:hidden">
+        <ul className="flex flex-col items-center gap-4 text-center">
+          {navLinks.map(link => (
+            <li key={link.href}><Link href={link.href} className="design-nav-link text-lg" aria-current={pathname === link.href ? "page" : undefined} onClick={() => {
+              trackNavigation(link.label, pathname);
+              setIsMobileMenuOpen(false);
+            }}>{link.label}</Link></li>
           ))}
-          <li className="w-full pt-4 border-t border-slate-800">
-            <Link
-              href="/quote"
-              onClick={() => {
-                trackCTA('get_a_quote_nav_mobile', '/quote');
-                setIsMobileMenuOpen(false);
-              }}
-              className="flex w-full items-center justify-center rounded-xl bg-brand-gold py-4 text-sm font-bold text-slate-950 shadow-[var(--brand-glow-gold)]"
-            >
-              Get a quote
-            </Link>
-          </li>
+          <li className="w-full pt-4"><Link href="/quote" onClick={() => {
+            trackCTA("get_a_quote_nav_mobile", "/quote");
+            setIsMobileMenuOpen(false);
+          }} className="design-button design-primary w-full">Get a quote</Link></li>
         </ul>
       </nav>
     </header>
