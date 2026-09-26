@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -40,6 +41,7 @@ export default function ShopClient() {
       {/* Products Grid */}
       <section className="pb-16 sm:pb-24 pt-4">
         <div className="section-max-width px-6 lg:px-4">
+          {products.length === 0 && <p className="text-slate-300">New products will be shared here soon.</p>}
           <div 
             className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3"
           >
@@ -55,13 +57,15 @@ export default function ShopClient() {
                     style={{ background: `radial-gradient(circle at center, ${product.accent}, transparent 70%)` }}
                   />
                   {product.tag && (
-                    <span className="absolute left-4 top-4 rounded-full bg-brand-gold/90 px-3 py-1 text-[10px] font-bold text-slate-950 shadow-[var(--brand-glow-gold)]">
+                    <span className="absolute left-4 top-4 z-10 rounded-full bg-brand-gold/90 px-3 py-1 text-[10px] font-bold text-slate-950 shadow-[var(--brand-glow-gold)]">
                       {product.tag}
                     </span>
                   )}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-10 group-hover:scale-110 transition-transform duration-700">
+                  {product.image ? (
+                    <Image src={product.image.src} alt={product.image.alt} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className={product.image.fit === "cover" ? "object-cover" : "object-contain"} />
+                  ) : <div className="absolute inset-0 flex items-center justify-center opacity-10 group-hover:scale-110 transition-transform duration-700">
                     <Logo size={120} />
-                  </div>
+                  </div>}
                 </div>
 
                 <div className="flex flex-1 flex-col p-6">

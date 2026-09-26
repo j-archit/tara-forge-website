@@ -1,5 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { validateDocument } from "../tools/content-manager/schema.mjs";
 import { createPageMetadata, SITE_URL } from "../src/lib/siteMetadata.ts";
 import { MAX_DESIGN_FILE_SIZE_BYTES, validateDesignFile } from "../src/lib/intakeFile.ts";
 import { QUOTE_EMAIL, productInquiryHref, quoteMailtoHref } from "../src/lib/contact.ts";
@@ -51,4 +53,11 @@ test("product inquiry email includes the item and SKU", () => {
   assert.equal(url.pathname, QUOTE_EMAIL);
   assert.match(url.searchParams.get("subject"), /Sample Print/);
   assert.match(url.searchParams.get("body"), /Sample Print \(SKU: tf-test\)/);
+});
+
+test("versioned website content conforms to the editor schema", () => {
+  for (const collection of ["gallery", "products"]) {
+    const document = JSON.parse(readFileSync(new URL(`../content/${collection}.json`, import.meta.url), "utf8"));
+    validateDocument(collection, document);
+  }
 });

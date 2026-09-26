@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -9,56 +10,7 @@ import { TestimonialMarquee } from "@/components/TestimonialMarquee";
 import { trackCTA, trackEvent } from "@/lib/analytics";
 import { CONTACT } from "@/data/siteContent";
 
-const galleryItems = [
-  {
-    title: "One Piece Figurine",
-    category: "Artistic Prints",
-    description: "High-detail resin-like finish on a custom anime collectible. Optimized for fine features and smooth surfaces.",
-    tags: ["PLA+", "0.12mm Layer"],
-    gradient: "from-indigo-900 via-slate-950 to-slate-950",
-    accent: "rgba(96,165,250,0.55)"
-  },
-  {
-    title: "Mechanical Gear Assembly",
-    category: "Functional Parts",
-    description: "Multi-part assembly with tight tolerances. Tested for fit and durability in a mechanical prototype.",
-    tags: ["PETG", "40% Infill"],
-    gradient: "from-emerald-900 via-slate-950 to-slate-950",
-    accent: "rgba(45,212,191,0.55)"
-  },
-  {
-    title: "Custom Drone Frame",
-    category: "Prototyping",
-    description: "Lightweight and rigid frame design for a custom quadcopter. Iterated through 3 design cycles.",
-    tags: ["Carbon PLA", "Rigid"],
-    gradient: "from-fuchsia-900 via-slate-950 to-slate-950",
-    accent: "rgba(244,114,182,0.6)"
-  },
-  {
-    title: "Architectural Scaled Model",
-    category: "Visualization",
-    description: "Detailed scale model of a modern villa. Used for client presentation and spatial analysis.",
-    tags: ["Matte PLA", "Scalable"],
-    gradient: "from-blue-900 via-slate-950 to-slate-950",
-    accent: "rgba(59,130,246,0.5)"
-  },
-  {
-    title: "Industrial Cable Organizer",
-    category: "Batching",
-    description: "Small-batch run of 50 units for a server room setup. Consistent quality across the entire batch.",
-    tags: ["PETG", "Batch Run"],
-    gradient: "from-amber-900 via-slate-950 to-slate-950",
-    accent: "rgba(251,191,36,0.5)"
-  },
-  {
-    title: "Ergonomic Mouse Shell",
-    category: "Design Validation",
-    description: "Prototype for a custom vertical mouse. Used to validate grip comfort before final production.",
-    tags: ["PLA", "Ergonomic"],
-    gradient: "from-rose-900 via-slate-950 to-slate-950",
-    accent: "rgba(244,63,94,0.5)"
-  }
-];
+import { galleryItems } from "@/data/gallery";
 
 
 export default function GalleryClient() {
@@ -83,21 +35,25 @@ export default function GalleryClient() {
       {/* Gallery Grid */}
       <section className="pb-16 sm:pb-24 pt-4">
         <div className="section-max-width px-6 lg:px-4">
+          {galleryItems.length === 0 && <p className="text-slate-300">New projects will be shared here soon.</p>}
           <div 
             className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
           >
             {galleryItems.map((item, idx) => (
               <motion.div 
-                key={idx}
+                key={item.id}
                 {...fadeIn(idx * 0.1)}
                 onViewportEnter={() => trackEvent('gallery_item_view', 'engagement', item.title, undefined, { category: item.category })}
-                className={`relative aspect-[4/3] overflow-hidden rounded-2xl border border-slate-800/80 bg-gradient-to-br ${item.gradient} p-6 shadow-[0_20px_90px_rgba(15,23,42,0.95)] group`}
+                className={`relative min-h-80 overflow-hidden rounded-2xl border border-slate-800/80 bg-gradient-to-br ${item.gradient} p-6 shadow-[0_20px_90px_rgba(15,23,42,0.95)] group`}
               >
                 <div 
                   className="absolute inset-0 opacity-80 transition-opacity group-hover:opacity-100" 
                   style={{ background: `radial-gradient(circle at center, ${item.accent}, transparent 70%)` }}
                 />
-                <div className="relative flex h-full flex-col justify-between">
+                {item.image && (
+                  <Image src={item.image.src} alt={item.image.alt} width={item.image.width} height={item.image.height} className={`relative mb-5 aspect-[4/3] w-full rounded-lg bg-slate-950/50 ${item.image.fit === "cover" ? "object-cover" : "object-contain"}`} />
+                )}
+                <div className="relative flex flex-col gap-5 justify-between">
                   <div>
                     <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2 block">
                       {item.category}
