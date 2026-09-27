@@ -3,10 +3,11 @@ import assert from "node:assert/strict";
 import { readFile, readdir, writeFile, mkdir, symlink, rename } from "node:fs/promises";
 import { join } from "node:path";
 import { request } from "node:http";
+import { randomBytes } from "node:crypto";
 import sharp from "sharp";
 import { validateDocument } from "../tools/content-manager/schema.mjs";
 import { createStore, hash, MAX_IMAGE_BYTES } from "../tools/content-manager/storage.mjs";
-import { startContentManager } from "../tools/content-manager/server.mjs";
+import { startContentManager, MAX_SAVE_BODY } from "../tools/content-manager/server.mjs";
 import { editorFixture } from "./helpers/content-manager.mjs";
 
 const gallery = () => ({ schemaVersion: 1, items: [{ id: "test-print", title: "Print", category: "Test", description: "A print", tags: [], theme: "blue", published: true, image: null }] });
@@ -170,6 +171,38 @@ test("API reads and saves authorised content, uploads images and preserves optim
   assert.equal((await fetch(`${manager.origin}/images/content/${"a".repeat(64)}.webp`)).status, 404);
 });
 
+test("API uploads a valid near-limit photo without overflowing base64 validation", async t => {
+  const manager = await apiFixture(t);
+  const png = await sharp(randomBytes(1600 * 1600 * 3), { raw: { width: 1600, height: 1600, channels: 3 } }).png().toBuffer();
+  assert.ok(png.length > 7 * 1024 * 1024 && png.length <= MAX_IMAGE_BYTES);
+  const response = await manager.fetchApi("/api/upload", { method: "POST", body: JSON.stringify({ data: png.toString("base64") }) });
+  assert.equal(response.status, 200);
+  const image = await response.json();
+  assert.equal(image.width, 1600);
+  assert.equal(image.height, 1600);
+  assert.equal((await fetch(`${manager.origin}${image.src}`)).status, 200);
+});
+
+test("API saves full multilingual collections within schema limits", async t => {
+  const manager = await apiFixture(t);
+  for (const collection of ["gallery", "products"]) {
+    const loaded = await manager.store.load(collection);
+    const template = collection === "gallery" ? gallery().items[0] : product().items[0];
+    loaded.document.items = Array.from({ length: 200 }, (_, index) => ({
+      ...template, id: `item-${index}`, title: "त".repeat(120), category: "त".repeat(80), description: "त".repeat(1200),
+      ...(collection === "gallery" ? { tags: Array.from({ length: 8 }, (_, i) => `${i}${"त".repeat(39)}`) } : { tag: "त".repeat(40) }),
+    }));
+    validateDocument(collection, loaded.document);
+    // Exercise even the more verbose, valid JSON Unicode-escape representation.
+    const body = JSON.stringify(loaded).replace(/त/g, "\\u0924");
+    assert.ok(Buffer.byteLength(body) > 512 * 1024);
+    assert.ok(Buffer.byteLength(body) < MAX_SAVE_BODY);
+    const response = await manager.fetchApi(`/api/content/${collection}`, { method: "PUT", body });
+    assert.equal(response.status, 200);
+    assert.deepEqual((await manager.store.load(collection)).document, loaded.document);
+  }
+});
+
 test("API denies missing sessions, hostile origins, DNS rebinding and cross-site requests", async t => {
   const manager = await apiFixture(t);
   assert.equal((await fetch(`${manager.origin}/api/content/gallery`)).status, 403);
@@ -195,10 +228,12 @@ test("forged browser writes cannot modify the repository", async t => {
 
 test("API rejects malformed writes, oversized bodies and arbitrary filesystem routes", async t => {
   const manager = await apiFixture(t);
-  for (const [body, headers, status] of [["not-json", {}, 400], ["[]", {}, 400], ["{}", { "Content-Type": "text/plain" }, 415], [JSON.stringify({ x: "x".repeat(512 * 1024) }), {}, 413]]) {
+  for (const [body, headers, status] of [["not-json", {}, 400], ["[]", {}, 400], ["{}", { "Content-Type": "text/plain" }, 415], [JSON.stringify({ x: "x".repeat(MAX_SAVE_BODY) }), {}, 413]]) {
     assert.equal((await manager.fetchApi("/api/content/gallery", { method: "PUT", body, headers })).status, status);
   }
-  assert.equal((await manager.fetchApi("/api/upload", { method: "POST", body: JSON.stringify({ data: "%%%" }) })).status, 400);
+  for (const data of ["%%%", "A", "AAAA=", "A===", "AA=A", "AAAA\n", "===="]) {
+    assert.equal((await manager.fetchApi("/api/upload", { method: "POST", body: JSON.stringify({ data }) })).status, 400);
+  }
   assert.equal((await manager.fetchApi("/api/content/unknown")).status, 404);
   for (const path of ["/package.json", "/content/gallery.json", "/.git/config", "/api/publish", "/api/git"]) assert.equal((await manager.fetchApi(path)).status, 404);
   assert.equal((await fetch(manager.origin, { method: "POST" })).status, 405);

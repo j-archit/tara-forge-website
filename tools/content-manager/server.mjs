@@ -5,6 +5,9 @@ import { createStore, ContentError, MAX_IMAGE_BYTES } from "./storage.mjs";
 
 const UI_ROOT = new URL("./ui/", import.meta.url);
 const MAX_BODY = Math.ceil(MAX_IMAGE_BYTES / 3) * 4 + 1024;
+// Covers 200 maximum-sized entries, even with six-byte JSON-escaped characters.
+// Keep a finite transport bound in addition to the schema's per-field limits.
+export const MAX_SAVE_BODY = 4 * 1024 * 1024;
 const CSP = "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' blob:; connect-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'";
 
 export async function startContentManager({ repoRoot, port = 4317 }) {
@@ -31,7 +34,7 @@ export async function startContentManager({ repoRoot, port = 4317 }) {
         const match = /^\/api\/content\/(gallery|products)$/.exec(pathname);
         if (match && request.method === "GET") return json(response, await store.load(match[1]));
         if (match && request.method === "PUT") {
-          const body = await readJson(request, 512 * 1024);
+          const body = await readJson(request, MAX_SAVE_BODY);
           if (Object.keys(body).some(key => !["document", "revision"].includes(key))) throw new ContentError("Unsupported save fields");
           return json(response, await store.save(match[1], body.document, body.revision));
         }
@@ -40,7 +43,9 @@ export async function startContentManager({ repoRoot, port = 4317 }) {
           uploading = true;
           try {
             const body = await readJson(request, MAX_BODY);
-            if (Object.keys(body).some(key => key !== "data") || typeof body.data !== "string" || !/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(body.data)) throw new ContentError("Invalid image payload");
+            // A repeated four-character regex group can overflow V8's stack on
+            // ordinary multi-megabyte photos. Validate the alphabet linearly.
+            if (Object.keys(body).some(key => key !== "data") || typeof body.data !== "string" || body.data.length % 4 !== 0 || !/^[A-Za-z0-9+/]*={0,2}$/.test(body.data)) throw new ContentError("Invalid image payload");
             return json(response, await store.upload(Buffer.from(body.data, "base64")));
           } finally { uploading = false; }
         }
