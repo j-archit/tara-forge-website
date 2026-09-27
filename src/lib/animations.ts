@@ -2,7 +2,8 @@ export const fadeIn = (delay = 0) => ({
   initial: { opacity: 0, y: 24 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true, amount: 0.1 },
-  transition: { duration: 0.7, delay, ease: [0.22, 0.61, 0.36, 1] as const },
+  // Viewport-triggered reveals must stay responsive as managed lists grow.
+  transition: { duration: 0.7, delay: Math.min(delay, 0.5), ease: [0.22, 0.61, 0.36, 1] as const },
 });
 
 export const staggerChildren = {

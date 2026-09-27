@@ -6,6 +6,19 @@ import { createPageMetadata, SITE_URL } from "../src/lib/siteMetadata.ts";
 import { MAX_DESIGN_FILE_SIZE_BYTES, validateDesignFile } from "../src/lib/intakeFile.ts";
 import { QUOTE_EMAIL, productInquiryHref, quoteMailtoHref } from "../src/lib/contact.ts";
 import { PAYMENT_TERMS } from "../src/data/siteContent.ts";
+import { fadeIn } from "../src/lib/animations.ts";
+
+test("card reveals preserve six-card timing and cap delays across 200 entries", () => {
+  assert.equal(fadeIn().transition.delay, 0);
+  assert.equal(fadeIn(0.05).transition.delay, 0.05);
+  for (let index = 0; index < 200; index++) {
+    const animation = fadeIn(index * 0.1);
+    assert.equal(animation.transition.delay, index < 6 ? index * 0.1 : 0.5);
+    assert.equal(animation.transition.duration, 0.7);
+    assert.equal(animation.whileInView.opacity, 1);
+    assert.equal(animation.viewport.once, true);
+  }
+});
 
 test("page metadata uses its own canonical and social URL", () => {
   const metadata = createPageMetadata("Services", "Service description", "/services");
