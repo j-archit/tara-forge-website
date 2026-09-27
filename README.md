@@ -33,7 +33,7 @@ npm run test:browser
 npx serve out
 ```
 
-Install a Playwright browser once with `npx playwright install chromium` (Windows test runs use installed Edge by default). Browser tests serve `out/` on port 8766. Open the local URL printed by `serve` for manual review. The build downloads Geist fonts through `next/font/google`, so it needs network access.
+Install a Playwright browser once with `npx playwright install chromium` (Windows test runs use installed Edge by default). Browser tests serve `out/` on port 8766. Open the local URL printed by `serve` for manual review. Archivo, IBM Plex Mono and multilingual logo fonts are licensed local WOFF2 assets under `public/fonts/`; builds do not download fonts. The original colours, layout, effects and interactions are retained.
 
 ## Edit content
 

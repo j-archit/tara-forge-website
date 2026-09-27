@@ -1,8 +1,12 @@
-@import "tailwindcss";
+/* Exclude local bundles, screenshots and caches from class discovery. */
+@import "tailwindcss" source("../");
+@import "./brand-fonts.css";
 
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  --font-geist-sans: "Archivo", Arial, sans-serif;
+  --font-geist-mono: "IBM Plex Mono", monospace;
   /* Base palette */
   --background: #020617; /* deep space */
   --foreground: #e5e7eb;
@@ -82,10 +86,17 @@
 }
 
 body {
+  font-family: var(--font-geist-sans);
   min-height: 100vh;
   margin: 0;
   background: var(--celestial-bg);
   color: var(--foreground);
+}
+
+/* Typography only: preserve the original sizes, weights, colours and spacing. */
+h1, h2, h3 {
+  font-family: var(--font-geist-sans);
+  font-stretch: 118%;
 }
 
 /* Subtle starfield background */

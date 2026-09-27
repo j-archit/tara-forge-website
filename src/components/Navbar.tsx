@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { Logo } from "./Logo";
 import { Menu, X } from "lucide-react";
 import { trackNavigation, trackCTA, trackMobileMenu } from "@/lib/analytics";
+import { brandScripts } from "@/lib/brandScripts";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -60,15 +61,15 @@ export function Navbar() {
         <div className="flex items-center gap-4">
           <Link
             href="/"
-            className="flex items-center gap-3 transition-transform hover:scale-105"
+            className="flex min-h-[40px] items-center gap-3 transition-transform hover:scale-105 sm:min-h-[42px]"
             aria-label="TaraForge3D"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <Logo size={40} className="drop-shadow-[var(--brand-glow-gold)] sm:size-[42px]" />
+            <Logo size={24} className="h-5 w-auto shrink-0 -translate-y-px drop-shadow-[var(--brand-glow-gold)] sm:h-6" />
             <div className="flex items-center gap-0.5 translate-y-[-1px]">
               <div className="flex flex-col justify-center">
                 <span className="text-[11px] sm:text-[13px] font-bold uppercase tracking-[0.25em] text-slate-100 leading-[1.1]">
-                  <span lang={current.lang} className="inline-block min-w-[5ch] transition-all duration-500">
+                  <span lang={current.lang} style={{ fontFamily: brandScripts.find(script => script.lang === current.lang)?.family }} className="inline-block min-w-[5ch] transition-all duration-500">
                     {current.text}
                   </span>
                 </span>

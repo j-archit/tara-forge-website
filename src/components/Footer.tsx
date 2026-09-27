@@ -39,8 +39,8 @@ export function Footer() {
           
           {/* Brand Column */}
           <div className="lg:col-span-2">
-            <div className="flex items-center gap-4">
-              <Logo size={64} className="drop-shadow-[var(--brand-glow-gold)]" />
+            <div className="flex min-h-16 items-center gap-4">
+              <Logo size={32} className="h-8 w-auto shrink-0 drop-shadow-[var(--brand-glow-gold)]" />
               <div>
                 <h2 className="text-sm font-bold uppercase tracking-[0.25em] text-brand-gold">
                   TaraForge3D
