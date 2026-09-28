@@ -310,6 +310,14 @@ function updatePhotoStage() {
   const item = selected(); if (!item || collection !== "gallery") return;
   const photo = galleryPhotos(item)[selectedPhotoIndex(item)]; const stage = $("photo-stage"); const image = $("photo-preview");
   if (!photo || !stage || !image) return;
+  // Model the media area of the desktop gallery card, including its grid spans.
+  const widthSpan = item.presentation?.widthSpan || 1;
+  const heightSpan = item.presentation?.heightSpan || 1;
+  const cardWidth = ((1120 - 32 - 48) / 3) * widthSpan + 24 * (widthSpan - 1);
+  const cardHeight = 360 * heightSpan + 24 * (heightSpan - 1);
+  const mediaWidth = cardWidth - 48;
+  const mediaHeight = Math.max(180, cardHeight - 48 - 20 - 160);
+  stage.parentElement.style.setProperty("--photo-ratio", String(mediaWidth / mediaHeight));
   stage.classList.toggle("unframed", !photo.framed);
   image.classList.toggle("cover", photo.fit === "cover");
   image.style.objectPosition = `${photo.focusX}% ${photo.focusY}%`;
@@ -322,8 +330,8 @@ function renderGalleryMedia(parent, item) {
   const presentation = item.presentation || { widthSpan: 1, heightSpan: 1, autoplay: false, photos: galleryPhotos(item) };
   const layout = element("div", undefined, "fields");
   const spans = [[1, "1×"], [2, "2×"], [3, "3×"]];
-  mediaSelect(layout, "Card width", spans, presentation.widthSpan, value => { ensurePresentation(item).widthSpan = Number(value); });
-  mediaSelect(layout, "Card height", spans, presentation.heightSpan, value => { ensurePresentation(item).heightSpan = Number(value); });
+  mediaSelect(layout, "Card width", spans, presentation.widthSpan, value => { ensurePresentation(item).widthSpan = Number(value); updatePhotoStage(); renderCardPreview(); });
+  mediaSelect(layout, "Card height", spans, presentation.heightSpan, value => { ensurePresentation(item).heightSpan = Number(value); updatePhotoStage(); renderCardPreview(); });
   parent.append(layout, element("p", "Desktop uses three columns. Width reduces to two columns on tablets and one on phones; extra height stacks naturally on smaller screens.", "hint"));
   mediaToggle(parent, "Automatically advance photos", presentation.autoplay, value => { ensurePresentation(item).autoplay = value; });
   const photos = galleryPhotos(item);
@@ -336,17 +344,24 @@ function renderGalleryMedia(parent, item) {
     });
     parent.append(list);
     const index = selectedPhotoIndex(item); const photo = photos[index];
-    const stage = element("div", undefined, `image-preview photo-stage${photo.framed ? "" : " unframed"}`); stage.id = "photo-stage";
+    const frame = element("div", undefined, "photo-card-frame");
+    const stage = element("div", undefined, `photo-stage${photo.framed ? "" : " unframed"}`); stage.id = "photo-stage";
     const image = element("img"); image.id = "photo-preview"; image.src = photo.src; image.alt = photo.alt; image.draggable = false; image.className = `thumbnail${photo.fit === "cover" ? " cover" : ""}`;
-    stage.append(image); parent.append(stage); updatePhotoStage();
+    stage.append(image); frame.append(stage); parent.append(frame); updatePhotoStage();
     stage.addEventListener("pointerdown", event => {
       if (event.button !== 0) return;
       const start = { x: event.clientX, y: event.clientY, focusX: photo.focusX, focusY: photo.focusY };
       stage.setPointerCapture(event.pointerId); stage.classList.add("dragging-photo");
       const move = pointer => {
-        const direction = photo.fit === "cover" ? -1 : 1;
-        photo.focusX = Math.max(0, Math.min(100, Math.round(start.focusX + direction * (pointer.clientX - start.x) / stage.clientWidth * 100)));
-        photo.focusY = Math.max(0, Math.min(100, Math.round(start.focusY + direction * (pointer.clientY - start.y) / stage.clientHeight * 100)));
+        const fitScale = photo.fit === "cover"
+          ? Math.max(stage.clientWidth / photo.width, stage.clientHeight / photo.height)
+          : Math.min(stage.clientWidth / photo.width, stage.clientHeight / photo.height);
+        const remainingX = stage.clientWidth - photo.width * fitScale * photo.zoom;
+        const remainingY = stage.clientHeight - photo.height * fitScale * photo.zoom;
+        const reposition = (startFocus, delta, remaining) => Math.abs(remaining) < 1
+          ? startFocus : Math.max(0, Math.min(100, Math.round(startFocus + delta / remaining * 100)));
+        photo.focusX = reposition(start.focusX, pointer.clientX - start.x, remainingX);
+        photo.focusY = reposition(start.focusY, pointer.clientY - start.y, remainingY);
         $("focus-x").value = String(photo.focusX); $("focus-y").value = String(photo.focusY);
         $("focus-x").closest("label").firstChild.textContent = `Horizontal position: ${photo.focusX}%`;
         $("focus-y").closest("label").firstChild.textContent = `Vertical position: ${photo.focusY}%`;
@@ -355,7 +370,7 @@ function renderGalleryMedia(parent, item) {
       const end = () => { stage.classList.remove("dragging-photo"); stage.removeEventListener("pointermove", move); stage.removeEventListener("pointerup", end); stage.removeEventListener("pointercancel", end); };
       stage.addEventListener("pointermove", move); stage.addEventListener("pointerup", end); stage.addEventListener("pointercancel", end);
     });
-    parent.append(element("p", `Photo ${index + 1} of ${photos.length} · ${photo.width} × ${photo.height} WebP · drag in the preview to reposition`, "hint"));
+    parent.append(element("p", `Photo ${index + 1} of ${photos.length} · ${photo.width} × ${photo.height} WebP · drag to reposition. Preview approximates desktop card proportions; check the website preview for the final crop.`, "hint"));
     const controls = element("div", undefined, "image-controls");
     button(controls, "← Earlier", () => moveGalleryPhoto(item, index, -1), { unavailable: index === 0, className: "quiet small" });
     button(controls, "Later →", () => moveGalleryPhoto(item, index, 1), { unavailable: index === photos.length - 1, className: "quiet small" });

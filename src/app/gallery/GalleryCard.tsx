@@ -30,7 +30,8 @@ function photosFor(item: GalleryCardItem): readonly GalleryPhoto[] {
 export function GalleryCard({ item, index }: { item: GalleryCardItem; index: number }) {
   const photos = photosFor(item);
   const [active, setActive] = React.useState(0);
-  const [paused, setPaused] = React.useState(false);
+  const [hovered, setHovered] = React.useState(false);
+  const [focusWithin, setFocusWithin] = React.useState(false);
   const [inView, setInView] = React.useState(false);
   const [pageVisible, setPageVisible] = React.useState(true);
   const [reducedMotion, setReducedMotion] = React.useState(false);
@@ -55,10 +56,10 @@ export function GalleryCard({ item, index }: { item: GalleryCardItem; index: num
     return () => observer.disconnect();
   }, []);
   React.useEffect(() => {
-    if (!item.presentation?.autoplay || photos.length < 2 || paused || !inView || !pageVisible || reducedMotion) return;
+    if (!item.presentation?.autoplay || photos.length < 2 || hovered || focusWithin || !inView || !pageVisible || reducedMotion) return;
     const timer = window.setInterval(() => setActive(value => (value + 1) % photos.length), 5000);
     return () => window.clearInterval(timer);
-  }, [item.presentation?.autoplay, photos.length, paused, inView, pageVisible, reducedMotion]);
+  }, [item.presentation?.autoplay, photos.length, hovered, focusWithin, inView, pageVisible, reducedMotion]);
 
   const current = photos[Math.min(active, photos.length - 1)];
   const width = item.presentation?.widthSpan ?? 1;
@@ -71,10 +72,10 @@ export function GalleryCard({ item, index }: { item: GalleryCardItem; index: num
       data-gallery-entry={item.id}
       {...fadeIn(index * 0.08)}
       onViewportEnter={() => trackEvent("gallery_item_view", "engagement", item.title, undefined, { category: item.category })}
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocusCapture={() => setPaused(true)}
-      onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget)) setPaused(false); }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onFocusCapture={() => setFocusWithin(true)}
+      onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget)) setFocusWithin(false); }}
       className={`group relative flex min-h-[360px] min-w-0 flex-col overflow-hidden rounded-2xl border border-slate-800/80 bg-gradient-to-br ${item.gradient} p-6 shadow-[0_20px_90px_rgba(15,23,42,0.95)] ${widthClasses[width]} ${heightClasses[height]}`}
     >
       <div className="pointer-events-none absolute inset-0 opacity-80 transition-opacity group-hover:opacity-100" style={{ background: `radial-gradient(circle at center, ${item.accent}, transparent 70%)` }} />

@@ -37,7 +37,7 @@ export default function GalleryClient() {
         <div className="section-max-width px-6 lg:px-4">
           {galleryItems.length === 0 && <p className="text-slate-300">New projects will be shared here soon.</p>}
           <div 
-            className="grid gap-6 sm:grid-cols-2 lg:auto-rows-[360px] lg:grid-cols-3"
+            className="grid gap-6 sm:grid-cols-2 lg:auto-rows-[minmax(360px,max-content)] lg:grid-cols-3"
           >
             {galleryItems.map((item, idx) => (
               <GalleryCard key={item.id} item={item} index={idx} />

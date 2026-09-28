@@ -38,13 +38,17 @@ test("public gallery and shop render managed photos, hide drafts, retain order a
     await expect(featured.getByRole("img", { name: "Managed side view" })).toBeVisible();
     await expect(featured.getByRole("button", { name: "Show photo 2 of One Piece Figurine" })).toHaveAttribute("aria-pressed", "true");
     await page.mouse.move(0, 0);
+    await page.waitForTimeout(5200);
+    await expect(featured.getByRole("img", { name: "Managed side view" })).toBeVisible();
+    await page.evaluate(() => { if (document.activeElement instanceof HTMLElement) document.activeElement.blur(); });
     await expect(featured.getByRole("img", { name: "Managed test print" })).toBeVisible({ timeout: 7000 });
     await expect(page.getByRole("heading", { name: "Mechanical Gear Assembly" })).toHaveCount(0);
     await expect(page.locator("main h3").first()).toHaveText("Ergonomic Mouse Shell");
     await expect(page.getByRole("heading", { name: "<script>not HTML</script>" })).toBeVisible();
+    const longCard = page.locator('[data-gallery-entry="architectural-scaled-model"]');
+    expect(await longCard.evaluate(card => card.scrollHeight - card.clientHeight)).toBeLessThanOrEqual(1);
     await page.setViewportSize({ width: 390, height: 844 });
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
-    const longCard = page.locator('[data-gallery-entry="architectural-scaled-model"]');
     expect(await longCard.evaluate(card => card.scrollHeight - card.clientHeight)).toBeLessThanOrEqual(1);
     await page.goto(`${website.origin}/shop/`);
     await expect(page.getByRole("img", { name: "Managed test print" })).toBeVisible();
