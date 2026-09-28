@@ -1,16 +1,16 @@
 "use client";
 
 import * as React from "react";
-import Image from "next/image";
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { fadeIn } from "@/lib/animations";
 import { TestimonialMarquee } from "@/components/TestimonialMarquee";
-import { trackCTA, trackEvent } from "@/lib/analytics";
+import { trackCTA } from "@/lib/analytics";
 import { CONTACT } from "@/data/siteContent";
 
 import { galleryItems } from "@/data/gallery";
+import { GalleryCard } from "./GalleryCard";
 
 
 export default function GalleryClient() {
@@ -37,46 +37,10 @@ export default function GalleryClient() {
         <div className="section-max-width px-6 lg:px-4">
           {galleryItems.length === 0 && <p className="text-slate-300">New projects will be shared here soon.</p>}
           <div 
-            className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+            className="grid gap-6 sm:grid-cols-2 lg:auto-rows-[360px] lg:grid-cols-3"
           >
             {galleryItems.map((item, idx) => (
-              <motion.div 
-                key={item.id}
-                data-gallery-entry={item.id}
-                {...fadeIn(idx * 0.1)}
-                onViewportEnter={() => trackEvent('gallery_item_view', 'engagement', item.title, undefined, { category: item.category })}
-                className={`relative flex min-h-64 min-w-0 flex-col overflow-hidden rounded-2xl border border-slate-800/80 bg-gradient-to-br ${item.gradient} p-6 shadow-[0_20px_90px_rgba(15,23,42,0.95)] group`}
-              >
-                <div 
-                  className="absolute inset-0 opacity-80 transition-opacity group-hover:opacity-100" 
-                  style={{ background: `radial-gradient(circle at center, ${item.accent}, transparent 70%)` }}
-                />
-                {item.image && (
-                  <div className="relative mb-5 aspect-[4/3] w-full shrink-0 overflow-hidden rounded-lg bg-slate-950/50">
-                    <Image src={item.image.src} alt={item.image.alt} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className={item.image.fit === "cover" ? "object-cover" : "object-contain"} />
-                  </div>
-                )}
-                <div className="relative flex flex-1 flex-col gap-5 justify-between">
-                  <div>
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2 block break-words">
-                      {item.category}
-                    </span>
-                    <h3 className="text-lg font-semibold text-slate-100 group-hover:text-white transition-colors break-words">
-                      {item.title}
-                    </h3>
-                    <p className="mt-2 text-xs text-slate-200 leading-relaxed font-normal break-words">
-                      {item.description}
-                    </p>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {item.tags.map(tag => (
-                      <span key={tag} className="max-w-full break-words px-2 py-0.5 rounded-full bg-slate-900/60 text-[10px] text-slate-300 border border-slate-700/50">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
+              <GalleryCard key={item.id} item={item} index={idx} />
             ))}
           </div>
         </div>

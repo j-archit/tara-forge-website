@@ -22,11 +22,19 @@ export async function startFixtureWebsite(root) {
   child.on("error", error => { spawnError = error; });
   const origin = `http://127.0.0.1:${port}`;
   async function close() {
-    if (child.exitCode !== null || spawnError) return;
+    if (child.exitCode !== null || child.signalCode !== null || spawnError) return;
     const exited = new Promise(resolve => child.once("exit", resolve));
-    if (process.platform === "win32") spawnSync("taskkill", ["/PID", String(child.pid), "/T", "/F"], { windowsHide: true, stdio: "ignore" });
-    else child.kill("SIGTERM");
-    await exited;
+    if (process.platform === "win32") {
+      const result = spawnSync("taskkill", ["/PID", String(child.pid), "/T", "/F"], { windowsHide: true, stdio: "ignore", timeout: 10000 });
+      if (result.status !== 0 && child.exitCode === null) child.kill();
+    } else child.kill("SIGTERM");
+    let timer;
+    await Promise.race([exited, new Promise(resolve => { timer = setTimeout(resolve, 10000); })]);
+    clearTimeout(timer);
+    if (child.exitCode === null && child.signalCode === null) {
+      child.kill("SIGKILL");
+      throw new Error("Fixture website did not stop within 10 seconds");
+    }
   }
   try {
     const deadline = Date.now() + 90000;

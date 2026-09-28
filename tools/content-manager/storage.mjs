@@ -47,7 +47,7 @@ export async function createStore(repoRoot) {
   }
   async function validateAssets(document) {
     const checked = new Map();
-    for (const { image } of document.items) {
+    for (const item of document.items) for (const image of [item.image, ...(item.presentation?.photos || [])]) {
       if (!image) continue;
       if (!checked.has(image.src)) {
         const bytes = await readFile(await asset(image.src));

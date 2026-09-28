@@ -4,14 +4,17 @@ import { startFixtureWebsite } from "../helpers/public-site.mjs";
 import { createStore } from "../../tools/content-manager/storage.mjs";
 
 test("public gallery and shop render managed photos, hide drafts, retain order and handle empty collections", async ({ page }) => {
-  test.setTimeout(240000);
+  test.setTimeout(360000);
   const fixture = await editorFixture({ website: true });
   let website;
   try {
     const store = await createStore(fixture.root);
     const image = await store.upload(fixture.png); image.alt = "Managed test print";
     const gallery = await store.load("gallery");
-    gallery.document.items[0].image = image;
+    gallery.document.items[0].presentation = { widthSpan: 2, heightSpan: 2, autoplay: true, photos: [
+      { ...image, alt: "Managed test print", framed: false, focusX: 25, focusY: 70, zoom: 1.2, edgeFade: true },
+      { ...image, alt: "Managed side view", framed: true, focusX: 50, focusY: 50, zoom: 1, edgeFade: false },
+    ] };
     gallery.document.items[1].published = false;
     gallery.document.items[2].title = "<script>not HTML</script>";
     gallery.document.items[3].title = "t".repeat(120);
@@ -28,8 +31,14 @@ test("public gallery and shop render managed photos, hide drafts, retain order a
     const photo = page.getByRole("img", { name: "Managed test print" });
     await expect(photo).toBeVisible();
     expect(await photo.evaluate(image => image.complete && image.naturalWidth > 0)).toBe(true);
-    const photoBox = await photo.boundingBox();
-    expect(photoBox.width / photoBox.height).toBeCloseTo(4 / 3, 1);
+    const featured = page.locator('[data-gallery-entry="one-piece-figurine"]');
+    await expect(featured).toHaveClass(/lg:row-span-2/);
+    await expect(photo).toHaveCSS("object-position", "25% 70%");
+    await featured.getByRole("button", { name: "Next photo of One Piece Figurine" }).click();
+    await expect(featured.getByRole("img", { name: "Managed side view" })).toBeVisible();
+    await expect(featured.getByRole("button", { name: "Show photo 2 of One Piece Figurine" })).toHaveAttribute("aria-pressed", "true");
+    await page.mouse.move(0, 0);
+    await expect(featured.getByRole("img", { name: "Managed test print" })).toBeVisible({ timeout: 7000 });
     await expect(page.getByRole("heading", { name: "Mechanical Gear Assembly" })).toHaveCount(0);
     await expect(page.locator("main h3").first()).toHaveText("Ergonomic Mouse Shell");
     await expect(page.getByRole("heading", { name: "<script>not HTML</script>" })).toBeVisible();
@@ -56,5 +65,5 @@ test("public gallery and shop render managed photos, hide drafts, retain order a
       }, { timeout: 45000, intervals: [500, 1000, 2000] }).toBe(true);
       await expect(page.getByText(message)).toBeVisible();
     }
-  } finally { if (website) await website.close(); await fixture.cleanup(); }
+  } finally { try { if (website) await website.close(); } finally { await fixture.cleanup(); } }
 });

@@ -10,6 +10,20 @@ interface GalleryEntry {
   readonly theme: ContentTheme;
   readonly published: boolean;
   readonly image: ContentImage | null;
+  readonly presentation?: {
+    readonly widthSpan: 1 | 2 | 3;
+    readonly heightSpan: 1 | 2 | 3;
+    readonly autoplay: boolean;
+    readonly photos: readonly GalleryPhoto[];
+  };
+}
+
+export interface GalleryPhoto extends ContentImage {
+  readonly framed: boolean;
+  readonly focusX: number;
+  readonly focusY: number;
+  readonly zoom: number;
+  readonly edgeFade: boolean;
 }
 
 export const galleryItems = (document.items as readonly GalleryEntry[])

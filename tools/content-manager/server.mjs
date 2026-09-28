@@ -52,7 +52,7 @@ export async function startContentManager({ repoRoot, port = 4317 }) {
         throw new ContentError("Unknown API route or method", 404);
       }
       if (request.method !== "GET") throw new ContentError("Method not allowed", 405);
-      const files = { "/": ["index.html", "text/html; charset=utf-8"], "/app.js": ["app.js", "text/javascript; charset=utf-8"], "/style.css": ["style.css", "text/css; charset=utf-8"] };
+      const files = { "/": ["index.html", "text/html; charset=utf-8"], "/app.js": ["app.js", "text/javascript; charset=utf-8"], "/schema.js": ["../schema.mjs", "text/javascript; charset=utf-8"], "/logo.svg": ["../../../public/Logo.svg", "image/svg+xml"], "/style.css": ["style.css", "text/css; charset=utf-8"] };
       if (Object.hasOwn(files, pathname)) {
         const [name, type] = files[pathname];
         const bytes = await readFile(new URL(name, UI_ROOT));

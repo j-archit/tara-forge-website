@@ -3,37 +3,38 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>TaraForge3D — Local content manager</title>
+  <title>TaraForge3D — Content studio</title>
   <link rel="stylesheet" href="/style.css">
-  <script src="/app.js" defer></script>
+  <script src="/app.js" type="module"></script>
 </head>
 <body>
-  <header>
-    <p class="eyebrow">TaraForge3D · local tools</p>
-    <h1>Content manager</h1>
-    <p>Save creates uncommitted changes in your repository. Nothing is published until you commit and push to main.</p>
-  </header>
-  <main>
+  <a class="skip-link" href="#editor">Skip to editor</a>
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-mark" aria-hidden="true"><img src="/logo.svg" alt="" width="27" height="33"></span><div>TaraForge<span>CONTENT STUDIO</span></div></div>
+    <p class="nav-label">YOUR WEBSITE</p>
     <nav aria-label="Content collections">
-      <button id="gallery-tab" type="button" aria-pressed="true">Gallery</button>
-      <button id="products-tab" type="button" aria-pressed="false">Catalogue</button>
+      <button id="gallery-tab" type="button" aria-label="Gallery" aria-pressed="true"><span aria-hidden="true">▧</span> Gallery <span id="gallery-count" class="nav-count">—</span></button>
+      <button id="products-tab" type="button" aria-label="Catalogue" aria-pressed="false"><span aria-hidden="true">◇</span> Catalogue <span id="products-count" class="nav-count">—</span></button>
     </nav>
-    <div class="toolbar">
-      <h2 id="collection-heading">Gallery</h2>
-      <span id="dirty-state">Loading…</span>
-      <button id="add" type="button">Add entry</button>
-      <button id="reload" type="button">Reload from disk</button>
-      <button id="save" class="primary" type="button">Save changes</button>
+    <div class="sidebar-bottom"><span class="local-badge"><span></span> Local workspace</span><p>Make it yours.<br>Publish when you’re ready.</p><button id="settings" type="button" class="quiet">Preview settings ↗</button><button id="help" type="button" class="quiet">How publishing works</button></div>
+  </aside>
+  <main>
+    <header class="topbar"><div><span class="eyebrow">STUDIO / CONTENT</span><h1 id="collection-heading">Gallery</h1><p id="collection-description">The projects that tell your story.</p></div><a id="preview" class="button secondary" href="http://localhost:3000/gallery/" target="_blank" rel="noopener noreferrer">Website preview ↗</a></header>
+    <section class="stats" aria-label="Collection overview"><div><span>Total entries</span><strong id="total-count">—</strong></div><div><span>Visible on website</span><strong id="visible-count">—</strong></div><div><span>Hidden entries</span><strong id="hidden-count">—</strong></div></section>
+    <div class="savebar"><div><span id="dirty-state">Opening workspace…</span><small id="save-scope">Save locally, then review and publish.</small></div><div class="save-actions"><button id="reload" class="quiet" type="button">Reload from disk</button><button id="save" class="primary" type="button">Save changes</button></div></div>
+    <div class="messages"><p id="status" role="status" aria-live="polite"></p><p id="error" role="alert"></p></div>
+    <div class="workspace">
+      <section class="library" aria-label="Content library">
+        <div class="library-heading"><h2>Entries</h2><button id="add" type="button" class="primary small">+ Add entry</button></div>
+        <label class="search-label"><span class="sr-only">Search entries</span><input id="search" type="search" placeholder="Search title, category, tags…" autocomplete="off"></label>
+        <label class="filter-label"><span>Show</span><select id="visibility" aria-label="Show"><option value="all">All entries</option><option value="visible">Visible</option><option value="hidden">Hidden</option><option value="no-image">Without a photo</option></select></label>
+        <p id="results-count" class="muted"></p><div id="entry-list" aria-label="Entries"></div>
+      </section>
+      <section id="editor" class="editor" aria-label="Entry editor" tabindex="-1"><div class="empty"><span aria-hidden="true">▧</span><h2>Your content, thoughtfully presented.</h2><p>Choose an entry to begin editing.</p></div></section>
     </div>
-    <p id="status" role="status" aria-live="polite"></p>
-    <p id="error" role="alert"></p>
-    <p class="hint">One photo per entry. PNG, JPEG or WebP up to 8 MB / 25 megapixels. Images are resized to at most 1600 px, converted to WebP, and saved immediately when uploaded. Removing an image or entry does not delete its asset. Hidden entries are not confidential.</p>
-    <div id="entries"></div>
-    <aside>
-      <h2>Review before publishing</h2>
-      <p>For the actual website preview, run <code>npm run dev</code> in another terminal, then open <a id="preview" href="http://localhost:3000/gallery" target="_blank" rel="noopener noreferrer">the website preview</a>. Save first, then refresh the preview.</p>
-      <p>When satisfied, run <code>git diff</code> and <code>git status</code>, then commit the relevant <code>content/</code> and <code>public/images/content/</code> changes and push. The editor never runs Git commands.</p>
-    </aside>
+    <footer class="workspace-footer">TaraForge3D Content Studio <span>Local edits. Your publishing workflow.</span></footer>
   </main>
+  <dialog id="settings-dialog" aria-labelledby="settings-title"><div class="dialog-heading"><h2 id="settings-title">Website preview</h2><button type="button" data-close="settings-dialog" aria-label="Close preview settings">×</button></div><p>Run your website preview separately, then enter its local address. Save your content before refreshing the preview.</p><label>Preview address<input id="preview-address" type="url" placeholder="http://localhost:3000"></label><p class="hint">Use localhost or 127.0.0.1 with the port shown by your preview server.</p><p id="settings-error" class="error-text" role="alert"></p><button id="save-settings" type="button" class="primary">Apply preview address</button></dialog>
+  <dialog id="help-dialog" aria-labelledby="help-title"><div class="dialog-heading"><h2 id="help-title">From studio to website</h2><button type="button" data-close="help-dialog" aria-label="Close publishing help">×</button></div><ol class="publishing-steps"><li><strong>Edit and save</strong><p>Save changes writes the selected collection into your local repository. Switching collections keeps unsaved edits while this tab stays open.</p></li><li><strong>Check your preview</strong><p>Run <code>npm run dev</code>, open Website preview, and check your saved changes on desktop and mobile.</p></li><li><strong>Review and publish</strong><p>Review <code>git diff</code> and <code>git status</code>. Commit the intended content and image files, then push main. GitHub Pages publishes after checks pass.</p></li></ol><p class="hint">Uploads create local image files immediately. Removing a photo keeps its file. Hidden content and committed images are not confidential.</p></dialog>
 </body>
 </html>

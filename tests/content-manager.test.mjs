@@ -47,6 +47,26 @@ test("schema rejects remote/traversing images, missing alt text and invalid dime
   assert.throws(() => validateDocument("unknown", gallery()));
 });
 
+test("gallery presentation validates spans, slide metadata and legacy-image exclusivity", () => {
+  const photo = { src: `/images/content/${"a".repeat(64)}.webp`, alt: "Front of a print", width: 30, height: 20, fit: "contain", framed: false, focusX: 25, focusY: 75, zoom: 1.25, edgeFade: true };
+  const valid = gallery(); valid.items[0].presentation = { widthSpan: 3, heightSpan: 2, autoplay: true, photos: [photo] };
+  validateDocument("gallery", valid);
+  for (const change of [
+    doc => { doc.items[0].presentation.widthSpan = 4; },
+    doc => { doc.items[0].presentation.heightSpan = "2"; },
+    doc => { doc.items[0].presentation.autoplay = "true"; },
+    doc => { doc.items[0].presentation.photos = Array(13).fill(photo); },
+    doc => { doc.items[0].presentation.photos[0].focusX = -1; },
+    doc => { doc.items[0].presentation.photos[0].focusY = 101; },
+    doc => { doc.items[0].presentation.photos[0].zoom = 2.01; },
+    doc => { doc.items[0].presentation.photos[0].framed = "false"; },
+    doc => { doc.items[0].presentation.photos[0].edgeFade = "yes"; },
+    doc => { doc.items[0].presentation.photos[0].src = "https://evil.example/x.webp"; },
+    doc => { doc.items[0].presentation.photos[0].script = "alert(1)"; },
+    doc => { doc.items[0].image = { src: photo.src, alt: photo.alt, width: 30, height: 20, fit: "contain" }; },
+  ]) { const doc = structuredClone(valid); change(doc); assert.throws(() => validateDocument("gallery", doc)); }
+});
+
 test("save writes versioned JSON atomically and retains a recovery backup", async t => {
   const fixture = await editorFixture(); t.after(fixture.cleanup);
   const store = await createStore(fixture.root);
@@ -122,6 +142,19 @@ test("save rejects missing or tampered image assets", async t => {
   await assert.rejects(store.save("gallery", loaded.document, loaded.revision), /checksum/);
   image.src = `/images/content/${"a".repeat(64)}.webp`;
   await assert.rejects(store.save("gallery", loaded.document, loaded.revision));
+});
+
+test("save verifies every slide asset in a multi-photo gallery item", async t => {
+  const fixture = await editorFixture(); t.after(fixture.cleanup);
+  const store = await createStore(fixture.root);
+  const loaded = await store.load("gallery");
+  const image = await store.upload(fixture.png);
+  loaded.document.items[0].presentation = { widthSpan: 2, heightSpan: 3, autoplay: true, photos: [{ ...image, alt: "Front", framed: false, focusX: 50, focusY: 50, zoom: 1, edgeFade: true }] };
+  const saved = await store.save("gallery", loaded.document, loaded.revision);
+  assert.equal(saved.document.items[0].presentation.photos.length, 1);
+  const bad = structuredClone(saved.document);
+  bad.items[0].presentation.photos.push({ ...bad.items[0].presentation.photos[0], src: `/images/content/${"b".repeat(64)}.webp` });
+  await assert.rejects(store.save("gallery", bad, saved.revision));
 });
 
 test("write boundaries reject symlink/junction directories", async t => {
