@@ -3,81 +3,290 @@
   "items": [
     {
       "id": "one-piece-figurine",
-      "title": "One Piece Figurine",
-      "category": "Artistic Prints",
-      "description": "High-detail resin-like finish on a custom anime collectible. Optimized for fine features and smooth surfaces.",
-      "tags": [
-        "PLA+",
-        "0.12mm Layer"
-      ],
+      "title": "One Piece Display Figurine",
+      "category": "Display Pieces",
+      "description": "A One Piece character display figurine made as a personal gift, with a seated pose, sculpted details and a dedicated base.",
+      "tags": ["Gift", "Display Piece"],
       "theme": "blue",
       "published": true,
-      "image": null
+      "image": null,
+      "presentation": {
+        "widthSpan": 1,
+        "heightSpan": 2,
+        "autoplay": false,
+        "photos": [
+          {
+            "src": "/images/content/23bc75b4b1fe56f0f3d92d79efd4322abb3a25c7fa24ae23fc4d1d2700f2fdfc.webp",
+            "alt": "Blue One Piece gift display figurine held in a hand, isolated from the background",
+            "width": 640,
+            "height": 751,
+            "fit": "contain",
+            "framed": false,
+            "focusX": 50,
+            "focusY": 50,
+            "zoom": 1,
+            "edgeFade": true
+          },
+          {
+            "src": "/images/content/2d9d5848bac69d4abf4de148b31206b84f578db2fbd81436a88ea9ccff4ed0a7.webp",
+            "alt": "Original photograph of the blue One Piece gift display figurine held in a hand",
+            "width": 320,
+            "height": 427,
+            "fit": "cover",
+            "framed": true,
+            "focusX": 50,
+            "focusY": 50,
+            "zoom": 1,
+            "edgeFade": false
+          }
+        ]
+      }
     },
     {
-      "id": "mechanical-gear-assembly",
-      "title": "Mechanical Gear Assembly",
-      "category": "Functional Parts",
-      "description": "Multi-part assembly with tight tolerances. Tested for fit and durability in a mechanical prototype.",
-      "tags": [
-        "PETG",
-        "40% Infill"
-      ],
-      "theme": "green",
-      "published": true,
-      "image": null
-    },
-    {
-      "id": "custom-drone-frame",
-      "title": "Custom Drone Frame",
-      "category": "Prototyping",
-      "description": "Lightweight and rigid frame design for a custom quadcopter. Iterated through 3 design cycles.",
-      "tags": [
-        "Carbon PLA",
-        "Rigid"
-      ],
-      "theme": "purple",
-      "published": true,
-      "image": null
-    },
-    {
-      "id": "architectural-scaled-model",
-      "title": "Architectural Scaled Model",
-      "category": "Visualization",
-      "description": "Detailed scale model of a modern villa. Used for client presentation and spatial analysis.",
-      "tags": [
-        "Matte PLA",
-        "Scalable"
-      ],
-      "theme": "cyan",
-      "published": true,
-      "image": null
-    },
-    {
-      "id": "industrial-cable-organizer",
-      "title": "Industrial Cable Organizer",
-      "category": "Batching",
-      "description": "Small-batch run of 50 units for a server room setup. Consistent quality across the entire batch.",
-      "tags": [
-        "PETG",
-        "Batch Run"
-      ],
+      "id": "jet-engine-display-model",
+      "title": "Jet Engine Display Model",
+      "category": "Engineering Models",
+      "description": "A cutaway display model showing the engine's blade stages and internal structure.",
+      "tags": ["Cutaway", "Display Model"],
       "theme": "gold",
       "published": true,
-      "image": null
+      "image": null,
+      "presentation": {
+        "widthSpan": 2,
+        "heightSpan": 1,
+        "autoplay": false,
+        "photos": [
+          {
+            "src": "/images/content/0400bd2b00410247e69d9132b0a755ef45cb5c3b343f5000a80908ddff9c9711.webp",
+            "alt": "Cutaway jet-engine display model isolated from its background",
+            "width": 1149,
+            "height": 620,
+            "fit": "contain",
+            "framed": false,
+            "focusX": 50,
+            "focusY": 50,
+            "zoom": 1,
+            "edgeFade": false
+          },
+          {
+            "src": "/images/content/8b4db6d981a879f87ee9781e5f7ff4beb44ac924fbc288f556b978a07d4ad65f.webp",
+            "alt": "Jet-engine display model on a table, showing its exposed blade stages",
+            "width": 1600,
+            "height": 900,
+            "fit": "cover",
+            "framed": true,
+            "focusX": 50,
+            "focusY": 50,
+            "zoom": 1,
+            "edgeFade": false
+          }
+        ]
+      }
     },
     {
-      "id": "ergonomic-mouse-shell",
-      "title": "Ergonomic Mouse Shell",
-      "category": "Design Validation",
-      "description": "Prototype for a custom vertical mouse. Used to validate grip comfort before final production.",
-      "tags": [
-        "PLA",
-        "Ergonomic"
-      ],
+      "id": "wizard-chess-piece",
+      "title": "Wizard Chess Piece",
+      "category": "Character Miniatures",
+      "description": "A compact black chess piece with layered sculpting, photographed in hand to show its scale.",
+      "tags": ["Miniature", "Chess Piece"],
+      "theme": "cyan",
+      "published": true,
+      "image": null,
+      "presentation": {
+        "widthSpan": 1,
+        "heightSpan": 1,
+        "autoplay": false,
+        "photos": [
+          {
+            "src": "/images/content/18df3c58540312a26275d158a45ec192083725f5447ca8916a121d5f55463c41.webp",
+            "alt": "Black wizard chess piece held between fingers, isolated from the background",
+            "width": 757,
+            "height": 787,
+            "fit": "contain",
+            "framed": false,
+            "focusX": 50,
+            "focusY": 50,
+            "zoom": 1,
+            "edgeFade": true
+          },
+          {
+            "src": "/images/content/d982f0d30b87006448d0e28bbeb2b56306aa67caa73d66e94788696b95a7b0e6.webp",
+            "alt": "Original photograph of a black wizard chess piece held between fingers",
+            "width": 901,
+            "height": 1600,
+            "fit": "cover",
+            "framed": true,
+            "focusX": 50,
+            "focusY": 52,
+            "zoom": 1,
+            "edgeFade": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "star-wars-sith-lord-miniature",
+      "title": "Star Wars Sith Lord Miniature",
+      "category": "Character Miniatures",
+      "description": "A Star Wars Sith Lord miniature with layered hooded robes, a long saber and a round display base.",
+      "tags": ["Star Wars", "Miniature"],
+      "theme": "purple",
+      "published": true,
+      "image": null,
+      "presentation": {
+        "widthSpan": 1,
+        "heightSpan": 1,
+        "autoplay": false,
+        "photos": [
+          {
+            "src": "/images/content/54f0c4de592548d815f570b57e2a23ccec1f116d18285b32179225aea70ba6dd.webp",
+            "alt": "Star Wars Sith Lord miniature with hooded robes and a saber, isolated from the background",
+            "width": 375,
+            "height": 666,
+            "fit": "contain",
+            "framed": false,
+            "focusX": 50,
+            "focusY": 50,
+            "zoom": 1.7,
+            "edgeFade": false
+          },
+          {
+            "src": "/images/content/2756ace807f3eec1f07843aac7673a6a3ece14ee6a1e76bcac9bce88366f273e.webp",
+            "alt": "Original photograph of the Star Wars Sith Lord miniature standing on a display base",
+            "width": 901,
+            "height": 1600,
+            "fit": "cover",
+            "framed": true,
+            "focusX": 50,
+            "focusY": 52,
+            "zoom": 1,
+            "edgeFade": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "james-webb-space-telescope-model",
+      "title": "James Webb Space Telescope Model",
+      "category": "Space Models",
+      "description": "A display model of the James Webb Space Telescope, showing its gold hexagonal mirror, layered sunshield and support structure.",
+      "tags": ["JWST", "Display Model"],
+      "theme": "slate",
+      "published": true,
+      "image": null,
+      "presentation": {
+        "widthSpan": 1,
+        "heightSpan": 1,
+        "autoplay": false,
+        "photos": [
+          {
+            "src": "/images/content/882ae89012db28a65253ef40df8208a36e0cdf88563edf1537a7ad177928f36e.webp",
+            "alt": "James Webb Space Telescope model with gold mirror, sunshield and display stand isolated on a transparent background",
+            "width": 1086,
+            "height": 1448,
+            "fit": "contain",
+            "framed": false,
+            "focusX": 50,
+            "focusY": 50,
+            "zoom": 1,
+            "edgeFade": false
+          },
+          {
+            "src": "/images/content/e3f796b0c25588b6b3d0e4a0fee278544dbaaf0af6d9c4eda20f92b48b205504.webp",
+            "alt": "James Webb Space Telescope display model with a gold hexagonal mirror and layered sunshield",
+            "width": 1200,
+            "height": 1600,
+            "fit": "contain",
+            "framed": true,
+            "focusX": 50,
+            "focusY": 50,
+            "zoom": 1,
+            "edgeFade": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "ribbed-vase",
+      "title": "Ribbed Vase",
+      "category": "Home Decor",
+      "description": "A small vase with a gently flared rim and twisting vertical ribs, photographed in hand to show its scale and surface detail.",
+      "tags": ["Vase", "Decor"],
       "theme": "rose",
       "published": true,
-      "image": null
+      "image": null,
+      "presentation": {
+        "widthSpan": 1,
+        "heightSpan": 1,
+        "autoplay": false,
+        "photos": [
+          {
+            "src": "/images/content/697907b96f096bc922251e9726829df390b4730d6748fd266522b53b72054996.webp",
+            "alt": "Beige spiral-ribbed vase held in a hand, isolated on a transparent background",
+            "width": 1078,
+            "height": 1459,
+            "fit": "contain",
+            "framed": false,
+            "focusX": 50,
+            "focusY": 50,
+            "zoom": 1,
+            "edgeFade": true
+          },
+          {
+            "src": "/images/content/5afb6337f7e3089ca8218c63fa2eeb3c70f721a9f317219050288a39e0ffc12f.webp",
+            "alt": "Beige vase with spiraling vertical ribs held in a hand",
+            "width": 739,
+            "height": 1600,
+            "fit": "contain",
+            "framed": true,
+            "focusX": 50,
+            "focusY": 50,
+            "zoom": 1,
+            "edgeFade": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "star-wars-jedi-figurine",
+      "title": "Star Wars Jedi Figurine",
+      "category": "Display Pieces",
+      "description": "A Star Wars Jedi figurine in olive-green robes, holding a red saber and standing on a round display base.",
+      "tags": ["Star Wars", "Jedi"],
+      "theme": "green",
+      "published": true,
+      "image": null,
+      "presentation": {
+        "widthSpan": 1,
+        "heightSpan": 1,
+        "autoplay": false,
+        "photos": [
+          {
+            "src": "/images/content/dba8ce7dc2c2d91043c9713b607c9abee5d0930981661087b7d894712dfb1b89.webp",
+            "alt": "Olive-green Jedi figurine with a red saber on its round base, isolated on a transparent background",
+            "width": 1086,
+            "height": 1448,
+            "fit": "contain",
+            "framed": false,
+            "focusX": 50,
+            "focusY": 50,
+            "zoom": 1,
+            "edgeFade": false
+          },
+          {
+            "src": "/images/content/09dd2c1a1223591c4f0290427283ee08c445abeb9cc8b4f54d352a67c8c6042d.webp",
+            "alt": "Olive-green robed Jedi figurine holding a red saber on a round display base",
+            "width": 1200,
+            "height": 1600,
+            "fit": "contain",
+            "framed": true,
+            "focusX": 50,
+            "focusY": 50,
+            "zoom": 1,
+            "edgeFade": false
+          }
+        ]
+      }
     }
   ]
 }

@@ -19,7 +19,7 @@ interface GalleryCardItem {
   presentation?: { widthSpan: 1 | 2 | 3; heightSpan: 1 | 2 | 3; autoplay: boolean; photos: readonly GalleryPhoto[] };
 }
 
-const widthClasses = { 1: "", 2: "sm:col-span-2", 3: "sm:col-span-2 lg:col-span-3" };
+const widthClasses = { 1: "", 2: "lg:col-span-2", 3: "lg:col-span-3" };
 const heightClasses = { 1: "", 2: "lg:row-span-2", 3: "lg:row-span-3" };
 
 function photosFor(item: GalleryCardItem): readonly GalleryPhoto[] {
@@ -27,7 +27,7 @@ function photosFor(item: GalleryCardItem): readonly GalleryPhoto[] {
   return item.image ? [{ ...item.image, framed: true, focusX: 50, focusY: 50, zoom: 1, edgeFade: false }] : [];
 }
 
-export function GalleryCard({ item, index }: { item: GalleryCardItem; index: number }) {
+export function GalleryCard({ item, index, fillTabletRow = false }: { item: GalleryCardItem; index: number; fillTabletRow?: boolean }) {
   const photos = photosFor(item);
   const [active, setActive] = React.useState(0);
   const [hovered, setHovered] = React.useState(false);
@@ -64,6 +64,7 @@ export function GalleryCard({ item, index }: { item: GalleryCardItem; index: num
   const current = photos[Math.min(active, photos.length - 1)];
   const width = item.presentation?.widthSpan ?? 1;
   const height = item.presentation?.heightSpan ?? 1;
+  const horizontalAtTablet = fillTabletRow && width > 1;
   const move = (direction: number) => setActive(value => (value + direction + photos.length) % photos.length);
 
   return (
@@ -76,11 +77,11 @@ export function GalleryCard({ item, index }: { item: GalleryCardItem; index: num
       onMouseLeave={() => setHovered(false)}
       onFocusCapture={() => setFocusWithin(true)}
       onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget)) setFocusWithin(false); }}
-      className={`group relative flex min-h-[360px] min-w-0 flex-col overflow-hidden rounded-2xl border border-slate-800/80 bg-gradient-to-br ${item.gradient} p-6 shadow-[0_20px_90px_rgba(15,23,42,0.95)] ${widthClasses[width]} ${heightClasses[height]}`}
+      className={`group relative flex min-h-[390px] min-w-0 flex-col overflow-hidden rounded-2xl border border-slate-800/80 bg-gradient-to-br ${item.gradient} p-6 shadow-[0_20px_90px_rgba(15,23,42,0.95)] ${horizontalAtTablet ? "sm:flex-row sm:items-stretch sm:gap-6" : width > 1 ? "lg:flex-row lg:items-stretch lg:gap-6" : ""} ${fillTabletRow ? `sm:col-span-2 ${width === 1 ? "lg:col-span-1" : ""}` : ""} ${widthClasses[width]} ${heightClasses[height]}`}
     >
       <div className="pointer-events-none absolute inset-0 opacity-80 transition-opacity group-hover:opacity-100" style={{ background: `radial-gradient(circle at center, ${item.accent}, transparent 70%)` }} />
       {current && (
-        <div className={`relative mb-5 min-h-[180px] w-full flex-1 ${current.framed ? "overflow-hidden rounded-lg border border-white/10 bg-slate-950/50" : "overflow-visible"}`}>
+        <div className={`relative mb-5 min-h-[210px] w-full flex-1 ${horizontalAtTablet ? "sm:mb-0 sm:min-h-0 sm:w-[55%] sm:flex-none" : width > 1 ? "lg:mb-0 lg:min-h-0 lg:w-[55%] lg:flex-none" : ""} ${current.framed ? "overflow-hidden rounded-lg border border-white/10 bg-slate-950/50" : "overflow-visible"}`}>
           <div className={`absolute inset-0 ${current.framed ? "overflow-hidden rounded-lg" : "overflow-visible"}`}>
             <Image
               key={current.src}
@@ -89,7 +90,7 @@ export function GalleryCard({ item, index }: { item: GalleryCardItem; index: num
               fill
               sizes={width === 3 ? "(max-width: 1024px) 100vw, 90vw" : width === 2 ? "(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 60vw" : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"}
               className={current.fit === "cover" ? "object-cover" : "object-contain"}
-              style={{ objectPosition: `${current.focusX}% ${current.focusY}%`, transform: `scale(${current.zoom})`, transformOrigin: `${current.focusX}% ${current.focusY}%`, maskImage: current.edgeFade ? "radial-gradient(ellipse 74% 76% at center, black 58%, transparent 100%)" : undefined }}
+              style={{ objectPosition: `${current.focusX}% ${current.focusY}%`, transform: `scale(${current.zoom})`, transformOrigin: `${current.focusX}% ${current.focusY}%`, maskImage: current.edgeFade ? "radial-gradient(ellipse 74% 76% at center, black 58%, transparent 100%), linear-gradient(to bottom, black 75%, transparent 100%)" : undefined, maskComposite: current.edgeFade ? "intersect" : undefined }}
             />
           </div>
           {photos.length > 1 && (
@@ -105,7 +106,7 @@ export function GalleryCard({ item, index }: { item: GalleryCardItem; index: num
           )}
         </div>
       )}
-      <div className="relative flex flex-col gap-5 justify-between">
+      <div className={`relative flex flex-col gap-5 justify-between ${horizontalAtTablet ? "sm:min-w-0 sm:flex-1 sm:py-3" : width > 1 ? "lg:min-w-0 lg:flex-1 lg:py-3" : ""}`}>
         <div>
           <span className="mb-2 block break-words text-[10px] font-bold uppercase tracking-widest text-slate-400">{item.category}</span>
           <h3 className="break-words text-lg font-semibold text-slate-100 transition-colors group-hover:text-white">{item.title}</h3>

@@ -40,7 +40,7 @@ export default function GalleryClient() {
             className="grid gap-6 sm:grid-cols-2 lg:auto-rows-[minmax(360px,max-content)] lg:grid-cols-3"
           >
             {galleryItems.map((item, idx) => (
-              <GalleryCard key={item.id} item={item} index={idx} />
+              <GalleryCard key={item.id} item={item} index={idx} fillTabletRow={galleryItems.length % 2 === 1 && idx === galleryItems.length - 1} />
             ))}
           </div>
         </div>
