@@ -7,8 +7,10 @@
     "build": "npm run content:validate && next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --test tests/frontend.test.mjs tests/content-manager.test.mjs tests/branding-only.test.mjs",
+    "test": "node --test tests/frontend.test.mjs tests/content-manager.test.mjs tests/content-publish.test.mjs tests/branding-only.test.mjs",
     "content:manage": "node tools/content-manager/start.mjs",
+    "content:review": "node tools/content-manager/publish-cli.mjs review",
+    "content:publish": "node tools/content-manager/publish-cli.mjs publish",
     "content:validate": "node tools/content-manager/validate.mjs",
     "test:browser": "playwright test"
   },

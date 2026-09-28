@@ -2,6 +2,7 @@ import { createServer } from "node:http";
 import { randomBytes, timingSafeEqual } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { createStore, ContentError, MAX_IMAGE_BYTES } from "./storage.mjs";
+import { createPublisher } from "./publish.mjs";
 
 const UI_ROOT = new URL("./ui/", import.meta.url);
 const MAX_BODY = Math.ceil(MAX_IMAGE_BYTES / 3) * 4 + 1024;
@@ -10,11 +11,13 @@ const MAX_BODY = Math.ceil(MAX_IMAGE_BYTES / 3) * 4 + 1024;
 export const MAX_SAVE_BODY = 4 * 1024 * 1024;
 const CSP = "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' blob:; connect-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'";
 
-export async function startContentManager({ repoRoot, port = 4317 }) {
+export async function startContentManager({ repoRoot, port = 4317, previewOrigin = null }) {
   const store = await createStore(repoRoot);
+  const publisher = createPublisher(store);
   const token = randomBytes(32).toString("hex");
   let origin;
   let uploading = false;
+  let saving = false;
   const server = createServer(async (request, response) => {
     response.setHeader("Content-Security-Policy", CSP);
     response.setHeader("X-Content-Type-Options", "nosniff");
@@ -32,13 +35,28 @@ export async function startContentManager({ repoRoot, port = 4317 }) {
         const expected = Buffer.from(token);
         if (supplied.length !== expected.length || !timingSafeEqual(supplied, expected)) throw new ContentError("Invalid editor session. Open the current private launch link.", 403);
         const match = /^\/api\/content\/(gallery|products)$/.exec(pathname);
+        if (pathname === "/api/config" && request.method === "GET") return json(response, { previewOrigin });
+        if (pathname === "/api/publish/review" && request.method === "GET") return json(response, await publisher.review());
+        if (pathname === "/api/publish" && request.method === "POST") {
+          if (saving || uploading) throw new ContentError("A save or upload is in progress. Please retry after it finishes.", 409);
+          const body = await readJson(request, 512);
+          if (saving || uploading) throw new ContentError("A save or upload is in progress. Please retry after it finishes.", 409);
+          if (Object.keys(body).length !== 1 || typeof body.reviewId !== "string") throw new ContentError("A publish review is required.");
+          return json(response, await publisher.publish(body.reviewId));
+        }
         if (match && request.method === "GET") return json(response, await store.load(match[1]));
         if (match && request.method === "PUT") {
-          const body = await readJson(request, MAX_SAVE_BODY);
-          if (Object.keys(body).some(key => !["document", "revision"].includes(key))) throw new ContentError("Unsupported save fields");
-          return json(response, await store.save(match[1], body.document, body.revision));
+          if (publisher.isPublishing()) throw new ContentError("Publishing is in progress. Please retry after it finishes.", 409);
+          if (saving) throw new ContentError("Another save is in progress. Please retry.", 409);
+          saving = true;
+          try {
+            const body = await readJson(request, MAX_SAVE_BODY);
+            if (Object.keys(body).some(key => !["document", "revision"].includes(key))) throw new ContentError("Unsupported save fields");
+            return json(response, await store.save(match[1], body.document, body.revision));
+          } finally { saving = false; }
         }
         if (pathname === "/api/upload" && request.method === "POST") {
+          if (publisher.isPublishing()) throw new ContentError("Publishing is in progress. Please retry after it finishes.", 409);
           if (uploading) throw new ContentError("An image is already processing. Please retry.", 429);
           uploading = true;
           try {

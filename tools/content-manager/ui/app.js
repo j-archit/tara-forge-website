@@ -14,6 +14,7 @@ const drafts = {};
 let collection = "gallery";
 let busy = false;
 let previewOrigin = "http://localhost:3000";
+let publishReview = null;
 const current = () => drafts[collection];
 const selected = () => current()?.document.items.find(item => item.id === current().selected);
 const galleryPhotos = item => item.presentation?.photos || (item.image ? [{ ...item.image, framed: true, focusX: 50, focusY: 50, zoom: 1, edgeFade: false }] : []);
@@ -49,9 +50,10 @@ function updateToolbar() {
   $("dirty-state").textContent = busy ? "Working…" : !draft ? "Workspace not loaded" : dirty(draft) ? "Unsaved changes" : "Saved on disk";
   $("dirty-state").classList.toggle("unsaved", dirty(draft));
   const otherDirty = Object.entries(drafts).filter(([key, value]) => key !== collection && dirty(value)).map(([key]) => names[key]);
-  $("save-scope").textContent = otherDirty.length ? `${otherDirty.join(" and ")} also has unsaved changes.` : `Save updates ${names[collection]} locally. Commit and push to publish.`;
+  $("save-scope").textContent = otherDirty.length ? `${otherDirty.join(" and ")} also has unsaved changes.` : `Save ${names[collection]} locally, preview, then Publish.`;
   $("save").disabled = busy || !dirty(draft);
   $("save").textContent = busy ? "Working…" : "Save changes";
+  $("publish-open").disabled = busy || !draft;
   $("add").disabled = busy || !draft || draft.document.items.length >= 200;
   for (const id of ["reload", "gallery-tab", "products-tab"]) $(id).disabled = busy;
   for (const id of ["search", "visibility"]) $(id).disabled = busy || !draft;
@@ -515,8 +517,54 @@ async function save() {
     const draft = current(); const snapshot = JSON.stringify(draft.document);
     const result = await api(`/api/content/${collection}`, { method: "PUT", body: JSON.stringify({ document: JSON.parse(snapshot), revision: draft.revision }) });
     draft.revision = result.revision; draft.baseline = snapshot;
-    $("status").textContent = `Saved locally. ${names[collection]} is ready to preview. Commit and push to publish.`;
+    $("status").textContent = `Saved locally. ${names[collection]} is ready to preview and publish.`;
   });
+}
+async function openPublish() {
+  if (anyDirty()) { $("error").textContent = "Save changes in both collections before publishing."; return; }
+  await operation(async () => {
+    publishReview = await api("/api/publish/review");
+    $("publish-summary").textContent = publishReview.pending
+      ? `A content commit is waiting to be pushed. Branch: ${publishReview.branch}.`
+      : `${publishReview.files.length} managed file${publishReview.files.length === 1 ? "" : "s"} ready. Branch: ${publishReview.branch}.`;
+    const list = $("publish-files"); list.replaceChildren();
+    for (const file of publishReview.files.length ? publishReview.files : publishReview.pending?.files || []) {
+      const entry = element("li", `${publishReview.newAssets.includes(file) ? "New photo: " : ""}${file}`);
+      list.append(entry);
+    }
+    if (!list.children.length) list.append(element("li", "No saved content changes."));
+    $("publish-diff").textContent = publishReview.diff || "No text changes. New image files are listed above.";
+    $("publish-diff").hidden = true;
+    $("publish-diff-toggle").textContent = "View text diff";
+    $("publish-error").textContent = publishReview.reason || "";
+    $("publish-confirm").disabled = !publishReview.canPublish;
+    $("publish-confirm").textContent = publishReview.pending ? "Retry push to main" : "Commit and push to main";
+    $("publish-preview").href = $("preview").href;
+    $("publish-dialog").showModal();
+  });
+}
+async function confirmPublish() {
+  if (!publishReview?.canPublish || anyDirty() || busy) return;
+  $("publish-error").textContent = "";
+  $("publish-confirm").disabled = true;
+  $("publish-confirm").textContent = "Publishing…";
+  try {
+    const result = await api("/api/publish", { method: "POST", body: JSON.stringify({ reviewId: publishReview.reviewId }) });
+    if (!result.pushed) {
+      $("publish-error").textContent = result.message;
+      publishReview = await api("/api/publish/review");
+      $("publish-confirm").disabled = !publishReview.canPublish;
+      $("publish-confirm").textContent = "Retry push to main";
+      return;
+    }
+    $("publish-dialog").close();
+    $("status").textContent = result.message;
+    publishReview = null;
+  } catch (error) {
+    $("publish-error").textContent = error.message;
+    publishReview = null;
+    $("publish-confirm").textContent = "Open a fresh review to retry";
+  }
 }
 function localOrigin(value) {
   const url = new URL(value);
@@ -535,6 +583,12 @@ $("help").addEventListener("click", () => $("help-dialog").showModal());
 document.querySelectorAll("[data-close]").forEach(node => node.addEventListener("click", () => $(node.dataset.close).close()));
 $("add").addEventListener("click", addEntry);
 $("save").addEventListener("click", save);
+$("publish-open").addEventListener("click", openPublish);
+$("publish-confirm").addEventListener("click", confirmPublish);
+$("publish-diff-toggle").addEventListener("click", () => {
+  const diff = $("publish-diff"); diff.hidden = !diff.hidden;
+  $("publish-diff-toggle").textContent = diff.hidden ? "View text diff" : "Hide text diff";
+});
 $("reload").addEventListener("click", () => {
   if (dirty(current()) && !confirm(`Discard unsaved ${names[collection]} edits and reload from disk? Uploaded images will be kept.`)) return;
   operation(async () => { await fetchCollection(collection); render(); $("status").textContent = `${names[collection]} reloaded from disk.`; });
@@ -544,5 +598,9 @@ $("search").addEventListener("input", () => { if (current()) { current().query =
 $("visibility").addEventListener("change", () => { if (current()) { current().filter = $("visibility").value; renderList(); updateToolbar(); } });
 window.addEventListener("beforeunload", event => { if (anyDirty() || busy) { event.preventDefault(); event.returnValue = ""; } });
 document.addEventListener("keydown", event => { if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "s") { event.preventDefault(); if (!document.querySelector("dialog[open]")) save(); } });
-if (/^[a-f0-9]{64}$/.test(token)) await switchCollection("gallery");
+if (/^[a-f0-9]{64}$/.test(token)) {
+  try { const config = await api("/api/config"); if (config.previewOrigin) previewOrigin = localOrigin(config.previewOrigin); }
+  catch { /* The editor still works if preview startup is unavailable. */ }
+  await switchCollection("gallery");
+}
 else { $("error").textContent = "Open the private launch link printed by npm run content:manage to access the editor."; updateToolbar(); }

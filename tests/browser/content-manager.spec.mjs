@@ -1,6 +1,9 @@
 import { test, expect } from "@playwright/test";
-import { readFile, writeFile, readdir, mkdir } from "node:fs/promises";
+import { readFile, writeFile, readdir, mkdir, mkdtemp, rm } from "node:fs/promises";
 import { join } from "node:path";
+import { tmpdir } from "node:os";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
 import { startContentManager } from "../../tools/content-manager/server.mjs";
 import { editorFixture } from "../helpers/content-manager.mjs";
 
@@ -19,6 +22,71 @@ const save = async page => {
   await expect(page.locator("#status")).toContainText("Saved locally");
 };
 const readContent = async (root, name) => JSON.parse(await readFile(join(root, "content", `${name}.json`), "utf8"));
+const run = promisify(execFile);
+
+test("publish dialog lists saved changes, optionally shows a diff, and blocks feature-branch publishing", async ({ page }) => {
+  const fixture = await editorFixture();
+  try {
+    const git = async (...args) => run("git", ["-c", `safe.directory=${fixture.root.replaceAll("\\", "/")}`, ...args], { cwd: fixture.root, windowsHide: true });
+    await git("init", "--initial-branch=main");
+    await git("config", "user.name", "Content Test");
+    await git("config", "user.email", "content-test@example.invalid");
+    await git("add", "--", "content/gallery.json", "content/products.json");
+    await git("commit", "-m", "initial content");
+    await git("switch", "-c", "feature");
+    const manager = await startContentManager({ repoRoot: fixture.root, port: 0, previewOrigin: "http://127.0.0.1:8765" });
+    try {
+      await page.goto(manager.launchUrl);
+      await expect(page.locator("#preview")).toHaveAttribute("href", "http://127.0.0.1:8765/gallery/");
+      await title(page).fill("A saved project change");
+      await page.getByRole("button", { name: "Publish…" }).click();
+      await expect(page.locator("#error")).toContainText("Save changes in both collections");
+      await save(page);
+      await page.getByRole("button", { name: "Publish…" }).click();
+      await expect(page.locator("#publish-dialog")).toBeVisible();
+      await expect(page.locator("#publish-files")).toContainText("content/gallery.json");
+      await expect(page.locator("#publish-confirm")).toBeDisabled();
+      await expect(page.locator("#publish-error")).toContainText("only on main");
+      await page.getByRole("button", { name: "View text diff" }).click();
+      await expect(page.locator("#publish-diff")).toBeVisible();
+      await expect(page.locator("#publish-diff")).toContainText("A saved project change");
+    } finally { await manager.close(); }
+  } finally { await fixture.cleanup(); }
+});
+
+test("main-branch publish dialog commits and pushes after website review", async ({ page }) => {
+  const fixture = await editorFixture();
+  const remote = await mkdtemp(join(tmpdir(), "taraforge-browser-remote-"));
+  try {
+    const git = async (cwd, ...args) => run("git", ["-c", `safe.directory=${cwd.replaceAll("\\", "/")}`, ...args], { cwd, windowsHide: true });
+    await git(fixture.root, "init", "--initial-branch=main");
+    await git(fixture.root, "config", "user.name", "Content Test");
+    await git(fixture.root, "config", "user.email", "content-test@example.invalid");
+    await git(remote, "init", "--bare", "--initial-branch=main");
+    await git(fixture.root, "remote", "add", "origin", remote);
+    await git(fixture.root, "add", "--", "content/gallery.json", "content/products.json");
+    await git(fixture.root, "commit", "-m", "initial content");
+    await git(fixture.root, "push", "-u", "origin", "main");
+    const manager = await startContentManager({ repoRoot: fixture.root, port: 0 });
+    try {
+      await page.goto(manager.launchUrl);
+      await title(page).fill("Published project title");
+      await save(page);
+      await page.getByRole("button", { name: "Publish…" }).click();
+      await expect(page.locator("#publish-confirm")).toBeEnabled();
+      await expect(page.locator("#publish-files")).toContainText("content/gallery.json");
+      if (process.env.CAPTURE_PUBLISH_PREVIEW) {
+        await mkdir("output/playwright", { recursive: true });
+        await page.screenshot({ path: "output/playwright/content-publish-review.png" });
+      }
+      await page.getByRole("button", { name: "Commit and push to main" }).click();
+      await expect(page.locator("#status")).toContainText("Published to origin/main");
+      const local = (await git(fixture.root, "rev-parse", "HEAD")).stdout.trim();
+      const pushed = (await git(fixture.root, "ls-remote", "origin", "refs/heads/main")).stdout.split(/\s+/)[0];
+      expect(local).toBe(pushed);
+    } finally { await manager.close(); }
+  } finally { await fixture.cleanup(); await rm(remote, { recursive: true, force: true }); }
+});
 
 test("studio edits and reorders selected entries without losing selection, then saves locally", async ({ page }) => {
   await withEditor(page, async ({ root }) => {

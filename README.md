@@ -48,7 +48,7 @@ Install a Playwright browser once with `npx playwright install chromium` (Window
 | Quote email template | `src/lib/contact.ts` |
 | Shipping, returns and refunds policy | `src/app/shipping-returns/page.tsx` |
 
-Run `npm run content:manage` to open the localhost-only gallery/catalogue editor. Save writes uncommitted JSON and processed image assets into this repository; review, commit and push `main` to publish. The editor never commits or pushes for you and is not deployed to GitHub Pages. See [the local editor guide](docs/local-content-manager.md) for image limits, backups, security and publishing steps.
+On Windows, double-click **Launch Content Manager.cmd** in the repository root. It installs locked dependencies on first use, starts the localhost-only gallery/catalogue editor and website preview, and opens its private launch link in your browser. Keep its terminal window open while editing. Alternatively run `npm run content:manage` from a terminal. Save locally, check **Website preview**, then use **Publish…** to commit and push managed content from `main` without Git commands. The editor itself is not deployed to GitHub Pages. See [the local editor guide](docs/local-content-manager.md) for image limits, backups, security and publishing steps.
 
 Other content files remain manual edits. Product cards are inquiries, not a checkout. Check every product description and indicative price against what can actually be supplied before publishing it.
 
