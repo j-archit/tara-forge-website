@@ -1,0 +1,87 @@
+import { test, expect } from "@playwright/test";
+import { mkdir } from "node:fs/promises";
+
+test("hero reveal aligns the generated model and print canvases and supports keyboard and pointer control", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  const slider = page.getByRole("slider", { name: "Reveal finished 3D print" });
+  const modelLayer = page.getByTestId("hero-model-layer");
+  const printLayer = page.getByTestId("hero-print-layer");
+  await expect(slider).toBeVisible();
+  await expect(slider).toHaveAttribute("aria-valuenow", "50");
+  await expect(modelLayer).toHaveAttribute("style", "clip-path:polygon(0 0, 59% 0, 41% 100%, 0 100%)");
+  await expect(printLayer).toHaveAttribute("style", "clip-path:polygon(59% 0, 100% 0, 100% 100%, 41% 100%)");
+  const images = page.locator('img[src="/images/sith-lord-model-generated.png"], img[src="/images/sith-lord-print-hero.png"]');
+  await expect(images).toHaveCount(2);
+  await expect(page.locator('img[src="/images/sith-lord-model-generated.png"]')).toHaveCount(1);
+  await expect(page.locator('img[src="/images/sith-lord-print-hero.png"]')).toHaveCount(1);
+  await expect.poll(() => images.evaluateAll(elements => elements.every(image => (image as HTMLImageElement).complete && (image as HTMLImageElement).naturalWidth > 0))).toBe(true);
+  const imageBounds = await images.evaluateAll(elements => elements.map(image => {
+    const { x, y, width, height } = image.getBoundingClientRect();
+    return { x, y, width, height };
+  }));
+  expect(imageBounds[0]).toEqual(imageBounds[1]);
+  await slider.focus();
+  await page.keyboard.press("End");
+  await expect(slider).toHaveAttribute("aria-valuenow", "100");
+  await expect(modelLayer).toHaveAttribute("style", /inset\(0(?:px)? 100% 0(?:px)? 0(?:px)?\)/);
+  await expect(printLayer).toHaveAttribute("style", /inset\(0(?:px)?\)/);
+  await page.keyboard.press("ArrowLeft");
+  await expect(slider).toHaveAttribute("aria-valuenow", "95");
+  await page.keyboard.press("Home");
+  await expect(slider).toHaveAttribute("aria-valuenow", "0");
+  await expect(modelLayer).toHaveAttribute("style", /inset\(0(?:px)?\)/);
+  await expect(printLayer).toHaveAttribute("style", /inset\(0(?:px)? 0(?:px)? 0(?:px)? 100%\)/);
+  const box = await slider.boundingBox();
+  expect(box).not.toBeNull();
+  await page.mouse.move(box!.x + box!.width * 0.65, box!.y + box!.height * 0.5);
+  await page.mouse.down();
+  await page.mouse.move(box!.x + box!.width * 0.8, box!.y + box!.height * 0.5, { steps: 4 });
+  await page.mouse.up();
+  await expect(slider).toHaveAttribute("aria-valuenow", "80");
+  if (process.env.CAPTURE_HERO_PREVIEW) {
+    const figure = page.getByRole("figure", { name: "Generated 3D model render compared with the finished Sith Lord print" });
+    await mkdir("output/playwright", { recursive: true });
+    await slider.focus();
+    await page.keyboard.press("Home");
+    await page.getByRole("heading", { name: /Your best ideas/i }).click();
+    await figure.screenshot({ path: "output/playwright/hero-model-only.png" });
+    await slider.focus();
+    await page.keyboard.press("End");
+    await page.getByRole("heading", { name: /Your best ideas/i }).click();
+    await figure.screenshot({ path: "output/playwright/hero-print-only.png" });
+    await slider.focus();
+    await page.keyboard.press("Home");
+    for (let i = 0; i < 10; i++) await page.keyboard.press("ArrowRight");
+    await page.getByRole("heading", { name: /Your best ideas/i }).click();
+    await figure.screenshot({ path: "output/playwright/hero-halfway.png" });
+    await page.screenshot({ path: "output/playwright/hero-model-print-desktop.png" });
+  }
+});
+
+test("hero reveal auto-sweeps only when motion is allowed, and remains usable on mobile", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/");
+  const slider = page.getByRole("slider", { name: "Reveal finished 3D print" });
+  await slider.scrollIntoViewIfNeeded();
+  await expect(page.getByRole("button", { name: "Pause reveal animation" })).toBeVisible();
+  const start = Number(await slider.getAttribute("aria-valuenow"));
+  await expect.poll(async () => Number(await slider.getAttribute("aria-valuenow")), { timeout: 3000 }).not.toBe(start);
+  await page.getByRole("button", { name: "Pause reveal animation" }).click();
+  const stopped = await slider.getAttribute("aria-valuenow");
+  await page.waitForTimeout(200);
+  await expect(slider).toHaveAttribute("aria-valuenow", stopped!);
+  await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
+  if (process.env.CAPTURE_HERO_PREVIEW) {
+    await slider.focus();
+    await page.keyboard.press("Home");
+    for (let i = 0; i < 11; i++) await page.keyboard.press("ArrowRight");
+    await page.locator("#hero-transform-hint").click();
+    await page.setViewportSize({ width: 390, height: 1700 });
+    await page.evaluate(() => scrollTo(0, 0));
+    await mkdir("output/playwright", { recursive: true });
+    await page.screenshot({ path: "output/playwright/hero-model-print-mobile.png" });
+  }
+});

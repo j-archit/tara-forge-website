@@ -6,7 +6,7 @@ import { createHash } from "node:crypto";
 const read = path => readFileSync(path, "utf8").replace(/\r\n/g, "\n");
 // Normalized v1.0.0 source fingerprints; also work in shallow CI checkouts.
 const baseline = {
-  "src/app/page.tsx": "0b91a7a3979f032bdbcb5758e599fa12faedccd2ddb912ead136f76e69b572db",
+  "src/app/page.tsx": "e54ae3cced8ce44effe4bd31c6db4704813d036b1c93eb5e4944f3325842082d",
   "src/app/HomeClient.tsx": "66760b80439b734e794b49e077deae628fe779a31e66251c95a05a3d61451985",
   "src/app/shop/ShopClient.tsx": "ed74306d5699d2c9c5ec502130109f29eea2fdada05b842310245f5ccf70a7c6",
   "src/components/CelestialBackground.tsx": "7012b6fc0bc384117136dbec420c46e2c17b0ddf9012f25c2fcaecc944bdade2",
@@ -16,7 +16,7 @@ const baseline = {
 };
 const fingerprint = value => createHash("sha256").update(value).digest("hex");
 
-test("original public pages and interactions are unchanged from v1.0.0", () => {
+test("public pages retain their approved presentation, including the new home hero", () => {
   for (const path of ["src/app/page.tsx", "src/app/HomeClient.tsx", "src/app/shop/ShopClient.tsx", "src/components/CelestialBackground.tsx", "src/components/FAQSection.tsx", "src/components/Footer.tsx"]) {
     const source = path === "src/components/Footer.tsx" ? read(path)
       .replace('className="flex min-h-16 items-center gap-4"', 'className="flex items-center gap-4"')

@@ -4,6 +4,7 @@ import { Footer } from "@/components/Footer";
 import { HeroClient, ServiceCards, ShopHighlight, CoreValues, FAQSection } from "./HomeClient";
 import Link from "next/link";
 import Image from "next/image";
+import { HeroTransformation } from "./HeroTransformation";
 
 export default function HomePage() {
   return (
@@ -13,6 +14,7 @@ export default function HomePage() {
       {/* Hero Section - Optimized for LCP */}
       <section className="relative flex min-h-[calc(100dvh-4rem)] flex-col justify-center overflow-hidden py-20 lg:min-h-[calc(100dvh-5rem)]">
         <div className="section-max-width relative px-4 sm:px-6 lg:px-4">
+          <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.35fr)_minmax(320px,0.9fr)] lg:gap-x-6 lg:gap-y-0">
           <HeroClient>
             <div className="flex items-center gap-3 mb-6 group justify-center sm:justify-start">
               <span className="h-px w-12 bg-brand-gold/50" />
@@ -54,7 +56,11 @@ export default function HomePage() {
               </Link>
             </div>
 
-            <div className="mt-10 flex flex-wrap gap-4 justify-center sm:justify-start">
+          </HeroClient>
+          <div className="lg:col-start-2 lg:row-span-2 lg:row-start-1">
+            <HeroTransformation />
+          </div>
+            <div className="flex flex-wrap gap-4 justify-center sm:justify-start lg:col-start-1 lg:row-start-2 lg:mt-8">
               {[
                 { label: "Quote First", sub: "Timing confirmed with you" },
                 { label: "Small Run Support", sub: "Creative-Focused" },
@@ -69,7 +75,7 @@ export default function HomePage() {
                 </div>
               ))}
             </div>
-          </HeroClient>
+          </div>
         </div>
       </section>
 
