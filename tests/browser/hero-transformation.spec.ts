@@ -6,9 +6,11 @@ test("hero reveal aligns the generated model and print canvases and supports key
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
   const slider = page.getByRole("slider", { name: "Reveal finished 3D print" });
+  const figure = page.getByRole("figure", { name: "Generated 3D model render compared with the finished Sith Lord print" });
   const modelLayer = page.getByTestId("hero-model-layer");
   const printLayer = page.getByTestId("hero-print-layer");
   await expect(slider).toBeVisible();
+  expect((await figure.boundingBox())!.width).toBeLessThanOrEqual(340);
   await expect(slider).toHaveAttribute("aria-valuenow", "50");
   await expect(modelLayer).toHaveAttribute("style", "clip-path:polygon(0 0, 59% 0, 41% 100%, 0 100%)");
   await expect(printLayer).toHaveAttribute("style", "clip-path:polygon(59% 0, 100% 0, 100% 100%, 41% 100%)");
@@ -41,7 +43,6 @@ test("hero reveal aligns the generated model and print canvases and supports key
   await page.mouse.up();
   await expect(slider).toHaveAttribute("aria-valuenow", "80");
   if (process.env.CAPTURE_HERO_PREVIEW) {
-    const figure = page.getByRole("figure", { name: "Generated 3D model render compared with the finished Sith Lord print" });
     await mkdir("output/playwright", { recursive: true });
     await slider.focus();
     await page.keyboard.press("Home");
@@ -66,9 +67,23 @@ test("hero reveal auto-sweeps only when motion is allowed, and remains usable on
   await page.goto("/");
   const slider = page.getByRole("slider", { name: "Reveal finished 3D print" });
   await slider.scrollIntoViewIfNeeded();
+  const figure = page.getByRole("figure", { name: "Generated 3D model render compared with the finished Sith Lord print" });
+  expect((await figure.boundingBox())!.width).toBeLessThanOrEqual(300);
   await expect(page.getByRole("button", { name: "Pause reveal animation" })).toBeVisible();
   const start = Number(await slider.getAttribute("aria-valuenow"));
   await expect.poll(async () => Number(await slider.getAttribute("aria-valuenow")), { timeout: 3000 }).not.toBe(start);
+  const box = (await slider.boundingBox())!;
+  await page.mouse.move(box.x + box.width * 0.5, box.y + box.height * 0.5);
+  await page.mouse.down();
+  await page.mouse.move(box.x + box.width * 0.8, box.y + box.height * 0.5);
+  await page.mouse.up();
+  await expect(page.getByRole("button", { name: "Play reveal animation" })).toBeVisible();
+  const held = await slider.getAttribute("aria-valuenow");
+  await page.waitForTimeout(400);
+  await expect(slider).toHaveAttribute("aria-valuenow", held!);
+  await expect(page.getByRole("button", { name: "Pause reveal animation" })).toBeVisible({ timeout: 4000 });
+  const resumed = Number(await slider.getAttribute("aria-valuenow"));
+  await expect.poll(async () => Number(await slider.getAttribute("aria-valuenow")), { timeout: 3000 }).not.toBe(resumed);
   await page.getByRole("button", { name: "Pause reveal animation" }).click();
   const stopped = await slider.getAttribute("aria-valuenow");
   await page.waitForTimeout(200);

@@ -7,26 +7,48 @@ import styles from "./HeroTransformation.module.css";
 const SLANT = 9;
 const MIN = 0;
 const MAX = 100;
+const AUTO_RESUME_DELAY_MS = 2500;
 const clamp = (value: number) => Math.min(MAX, Math.max(MIN, value));
 
 export function HeroTransformation() {
   const [reveal, setReveal] = React.useState(50);
   const [playing, setPlaying] = React.useState(false);
   const [visible, setVisible] = React.useState(false);
-  const [hovered, setHovered] = React.useState(false);
-  const [focused, setFocused] = React.useState(false);
   const [dragging, setDragging] = React.useState(false);
   const draggingNow = React.useRef(false);
   const direction = React.useRef(1);
+  const resumeTimer = React.useRef<number | null>(null);
+  const prefersReducedMotion = React.useRef(false);
   const scene = React.useRef<HTMLDivElement>(null);
+
+  const cancelResume = React.useCallback(() => {
+    if (resumeTimer.current !== null) window.clearTimeout(resumeTimer.current);
+    resumeTimer.current = null;
+  }, []);
+
+  const scheduleResume = React.useCallback(() => {
+    cancelResume();
+    if (prefersReducedMotion.current) return;
+    resumeTimer.current = window.setTimeout(() => {
+      resumeTimer.current = null;
+      setPlaying(true);
+    }, AUTO_RESUME_DELAY_MS);
+  }, [cancelResume]);
 
   React.useEffect(() => {
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    prefersReducedMotion.current = preference.matches;
     setPlaying(!preference.matches);
-    const change = () => { if (preference.matches) setPlaying(false); };
+    const change = () => {
+      prefersReducedMotion.current = preference.matches;
+      if (preference.matches) { cancelResume(); setPlaying(false); }
+      else setPlaying(true);
+    };
     preference.addEventListener("change", change);
     return () => preference.removeEventListener("change", change);
-  }, []);
+  }, [cancelResume]);
+
+  React.useEffect(() => () => cancelResume(), [cancelResume]);
 
   React.useEffect(() => {
     if (!scene.current) return;
@@ -36,7 +58,7 @@ export function HeroTransformation() {
   }, []);
 
   React.useEffect(() => {
-    if (!playing || !visible || hovered || focused || dragging) return;
+    if (!playing || !visible || dragging) return;
     let frame = 0;
     let previous = performance.now();
     const step = (now: number) => {
@@ -54,7 +76,7 @@ export function HeroTransformation() {
     };
     frame = requestAnimationFrame(step);
     return () => cancelAnimationFrame(frame);
-  }, [playing, visible, hovered, focused, dragging]);
+  }, [playing, visible, dragging]);
 
   const moveToPointer = (event: React.PointerEvent<HTMLDivElement>) => {
     if (!scene.current) return;
@@ -75,7 +97,7 @@ export function HeroTransformation() {
         <span><i className={styles.modelDot} /> 3D MODEL</span>
         <span><i className={styles.printDot} /> FINISHED PRINT</span>
       </div>
-      <div className={styles.scene} ref={scene} onPointerEnter={() => setHovered(true)} onPointerLeave={() => setHovered(false)}>
+      <div className={styles.scene} ref={scene}>
         <div className={styles.halo} aria-hidden="true" />
         <div className={styles.imageLayer} style={{ clipPath: modelClip }} data-testid="hero-model-layer" aria-hidden="true">
           <Image
@@ -110,10 +132,9 @@ export function HeroTransformation() {
           aria-valuenow={Math.round(reveal)}
           aria-valuetext={`${Math.round(reveal)} percent finished print visible`}
           aria-describedby="hero-transform-hint"
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
           onPointerDown={event => {
             if (event.button !== 0) return;
+            cancelResume();
             setPlaying(false);
             draggingNow.current = true;
             setDragging(true);
@@ -125,8 +146,9 @@ export function HeroTransformation() {
             draggingNow.current = false;
             setDragging(false);
             if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
+            scheduleResume();
           }}
-          onPointerCancel={() => { draggingNow.current = false; setDragging(false); }}
+          onPointerCancel={() => { draggingNow.current = false; setDragging(false); scheduleResume(); }}
           onKeyDown={event => {
             const step = event.shiftKey ? 10 : 5;
             if (event.key === "ArrowLeft" || event.key === "ArrowDown") setReveal(value => clamp(value - step));
@@ -136,6 +158,7 @@ export function HeroTransformation() {
             else return;
             event.preventDefault();
             setPlaying(false);
+            scheduleResume();
           }}
         >
           <span className={styles.handle} style={{ left: `clamp(21px, ${reveal}%, calc(100% - 21px))` }} aria-hidden="true">↔</span>
@@ -143,7 +166,7 @@ export function HeroTransformation() {
       </div>
       <figcaption className={styles.caption}>
         <span id="hero-transform-hint">Drag to compare the generated model render with the finished print.</span>
-        <button type="button" onClick={() => setPlaying(value => !value)} aria-label={playing ? "Pause reveal animation" : "Play reveal animation"} aria-pressed={playing}>
+        <button type="button" onClick={() => { cancelResume(); setPlaying(value => !value); }} aria-label={playing ? "Pause reveal animation" : "Play reveal animation"} aria-pressed={playing}>
           {playing ? "Pause" : "Play"} <span aria-hidden="true">{playing ? "Ⅱ" : "▶"}</span>
         </button>
       </figcaption>

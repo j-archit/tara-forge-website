@@ -1,4 +1,4 @@
-.figure { width: min(100%, 410px); margin: 0 auto; color: #dbe5f5; }
+.figure { width: min(100%, 340px); margin: 0 auto; color: #dbe5f5; }
 .labels { display: flex; justify-content: space-between; gap: 12px; padding: 0 8px; color: #a5b7d0; font: 700 10px/1.4 var(--font-geist-mono); letter-spacing: .16em; }
 .labels span { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
 .labels i { width: 6px; height: 6px; flex: none; border-radius: 50%; }
@@ -18,4 +18,4 @@
 .caption { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 7px; color: #9fb0c9; font-size: 11px; line-height: 1.5; }
 .caption button { display: inline-flex; align-items: center; gap: 7px; flex: none; padding: 7px 11px; border: 1px solid rgb(201 168 76 / 35%); border-radius: 999px; background: rgb(15 23 42 / 45%); color: #e8c46a; font-size: 11px; cursor: pointer; }
 .caption button:hover, .caption button:focus-visible { border-color: #e8c46a; background: rgb(15 23 42 / 85%); }
-@media (max-width: 640px) { .figure { width: min(100%, 360px); } .labels { font-size: 9px; letter-spacing: .11em; } .caption { font-size: 10px; } }
+@media (max-width: 640px) { .figure { width: min(100%, 300px); } .labels { font-size: 9px; letter-spacing: .11em; } .caption { font-size: 10px; } }
