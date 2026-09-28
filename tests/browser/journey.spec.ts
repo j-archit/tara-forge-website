@@ -23,6 +23,22 @@ for (const route of routes) {
   });
 }
 
+test("homepage advertises a square, crawlable TaraForge favicon", async ({ page }) => {
+  await page.goto("/");
+  const brandedIcon = page.locator('link[rel="icon"][type="image/png"]');
+  await expect(brandedIcon).toHaveAttribute("href", "/brand/app-icons/apple-touch-icon.png");
+  await expect(page.locator('link[rel*="icon"][href="/Logo.svg"]')).toHaveCount(0);
+  await expect(page.locator('link[rel="apple-touch-icon"]')).toHaveAttribute("href", "/brand/app-icons/apple-touch-icon.png");
+
+  const response = await page.request.get("/brand/app-icons/apple-touch-icon.png");
+  expect(response.status()).toBe(200);
+  expect(response.headers()["content-type"]).toBe("image/png");
+  const png = await response.body();
+  expect(png.subarray(0, 8).toString("hex")).toBe("89504e470d0a1a0a");
+  expect(png.readUInt32BE(16)).toBe(180);
+  expect(png.readUInt32BE(20)).toBe(180);
+});
+
 test("footer FAQs link reaches the home FAQ section from another page", async ({ page }) => {
   await page.goto("/shipping-returns/");
   await page.locator("footer").getByRole("link", { name: "FAQs" }).click();

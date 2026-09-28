@@ -43,12 +43,8 @@ export const metadata: Metadata = {
     canonical: "https://taraforge.in/",
   },
   icons: {
-    icon: [
-      { url: "/Logo.svg", type: "image/svg+xml" },
-      { url: "/Logo.svg", sizes: "32x32", type: "image/svg+xml" },
-    ],
-    shortcut: "/Logo.svg",
-    apple: "/Logo.svg",
+    icon: [{ url: "/brand/app-icons/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+    apple: [{ url: "/brand/app-icons/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
   openGraph: {
     title: "TaraForge3D • 3D Printing Studio",
