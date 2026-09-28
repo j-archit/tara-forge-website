@@ -1,5 +1,5 @@
 import { createServer } from "node:http";
-import { randomBytes, timingSafeEqual } from "node:crypto";
+import { randomBytes, randomInt, timingSafeEqual } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { createStore, ContentError, MAX_IMAGE_BYTES } from "./storage.mjs";
 import { createPublisher } from "./publish.mjs";
@@ -96,10 +96,24 @@ export async function startContentManager({ repoRoot, port = 4317, previewOrigin
   server.maxHeadersCount = 50;
   server.maxConnections = 32;
   server.maxRequestsPerSocket = 100;
-  await new Promise((resolve, reject) => {
-    server.once("error", reject);
-    server.listen(port, "127.0.0.1", () => { origin = `http://127.0.0.1:${server.address().port}`; resolve(); });
+  const listen = selected => new Promise((resolve, reject) => {
+    const fail = error => { server.off("listening", ready); reject(error); };
+    const ready = () => { server.off("error", fail); origin = `http://127.0.0.1:${server.address().port}`; resolve(); };
+    server.once("error", fail);
+    server.once("listening", ready);
+    server.listen(selected, "127.0.0.1");
   });
+  if (port !== 0) await listen(port);
+  else {
+    // Browser/Node fetch rejects certain OS-chosen ephemeral ports. Test and
+    // embedded callers get a loopback-only port from a fetch-safe range.
+    let bound = false;
+    for (let attempt = 0; attempt < 20 && !bound; attempt++) {
+      try { await listen(randomInt(43000, 49000)); bound = true; }
+      catch (error) { if (error.code !== "EADDRINUSE") throw error; }
+    }
+    if (!bound) throw new ContentError("No local editor port is available.", 503);
+  }
   return { origin, token, launchUrl: `${origin}/#session=${token}`, store, close: async () => { server.closeAllConnections(); await new Promise((resolve, reject) => server.close(error => error ? reject(error) : resolve())); } };
 }
 
