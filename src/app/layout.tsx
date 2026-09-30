@@ -1,141 +1,38 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { CelestialBackground } from "@/components/CelestialBackground";
+import { Analytics } from "@/components/Analytics";
+import { createPageMetadata, SITE_NAME, SITE_URL } from "@/lib/siteMetadata";
+import { businessSchema, serializeJsonLd } from "@/lib/structuredData";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://taraforge.in"),
-  title: {
-    default: "TaraForge3D • 3D Printing Studio",
-    template: "%s | TaraForge3D"
-  },
-  description:
-    "TaraForge3D is a 3D printing studio providing refined prototypes, functional parts, and custom components with a premium quality finish.",
-  keywords: [
-    "TaraForge3D",
-    "3D printing India",
-    "3D printing Bangalore",
-    "custom 3D parts",
-    "functional prototyping",
-    "Small batch 3D printing",
-    "PLA printing services",
-    "PETG printing India",
-    "bespoke 3D prints",
-  ],
-  authors: [{ name: "TaraForge3D" }],
-  creator: "TaraForge3D",
-  publisher: "TaraForge3D",
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
+  ...createPageMetadata(
+    "Custom 3D Printing in Bangalore",
+    "Bangalore-based 3D printing for prototypes, functional parts, figurines and small batches in PLA and PETG. Quotes within 24 hours; shipping across India.",
+    "/"
+  ),
+  metadataBase: new URL(SITE_URL),
+  title: { default: `Custom 3D Printing in Bangalore | ${SITE_NAME}`, template: `%s | ${SITE_NAME}` },
+  authors: [{ name: SITE_NAME }], creator: SITE_NAME, publisher: SITE_NAME,
+  formatDetection: { email: false, address: false, telephone: false },
   robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
-  alternates: {
-    canonical: "https://taraforge.in/",
+    index: true, follow: true,
+    googleBot: { index: true, follow: true, "max-video-preview": -1, "max-image-preview": "large", "max-snippet": -1 },
   },
   icons: {
     icon: [{ url: "/brand/app-icons/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
     apple: [{ url: "/brand/app-icons/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
-  openGraph: {
-    title: "TaraForge3D • 3D Printing Studio",
-    description:
-      "TaraForge3D is a 3D printing studio providing refined prototypes, functional parts, and custom components with a premium quality finish.",
-    url: "https://taraforge.in/",
-    siteName: "TaraForge3D",
-    locale: "en_IN",
-    type: "website",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "TaraForge3D • 3D Printing Studio Showcase",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "TaraForge3D • 3D Printing Studio",
-    description:
-      "TaraForge3D is a 3D printing studio providing refined prototypes, functional parts, and custom components with a premium quality finish.",
-    images: ["/og-image.png"],
-  },
 };
 
-import { CelestialBackground } from "@/components/CelestialBackground";
-import { Analytics } from "@/components/Analytics";
-
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <head>
         <link rel="preload" href="/fonts/archivo-5.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html:            JSON.stringify({
-              "@context": "https://schema.org",
-              "@graph": [
-                {
-                  "@type": "Organization",
-                  "@id": "https://taraforge.in/#organization",
-                  "name": "TaraForge3D",
-                  "url": "https://taraforge.in",
-                  "logo": "https://taraforge.in/Logo.svg",
-                  "image": "https://taraforge.in/Logo.svg",
-                  "description": "Boutique 3D printing studio specializing in refined prototypes, functional parts, and small-batch manufacturing.",
-                  "address": {
-                    "@type": "PostalAddress",
-                    "addressLocality": "Bangalore",
-                    "addressRegion": "Karnataka",
-                    "addressCountry": "IN"
-                  }
-                },
-                {
-                  "@type": "LocalBusiness",
-                  "@id": "https://taraforge.in/#localbusiness",
-                  "name": "TaraForge3D",
-                  "description": "Specialized 3D printing services based in Bangalore, serving all of India.",
-                  "url": "https://taraforge.in",
-                  "address": {
-                    "@type": "PostalAddress",
-                    "addressLocality": "Bangalore",
-                    "addressRegion": "Karnataka",
-                    "addressCountry": "IN"
-                  },
-                  "areaServed": [
-                    { "@type": "Country", "name": "India" }
-                  ]
-                },
-                {
-                  "@type": "Service",
-                  "name": "Custom 3D Printing & Prototyping",
-                  "provider": { "@id": "https://taraforge.in/#organization" },
-                  "description": "Functional prototypes, custom parts, and small batch 3D printing in PLA and PETG.",
-                  "areaServed": "IN"
-                }
-              ]
-            }),
-          }}
-        />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(businessSchema()) }} />
       </head>
-      <body
-        className="relative isolate antialiased bg-background text-foreground"
-      >
+      <body className="relative isolate antialiased bg-background text-foreground">
         <CelestialBackground />
         {children}
         <Analytics />

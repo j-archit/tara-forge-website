@@ -1,52 +1,13 @@
-import { MetadataRoute } from 'next';
+import { MetadataRoute } from "next";
+import { canonicalUrl } from "@/lib/siteMetadata";
+import { galleryItems } from "@/data/gallery";
+import { galleryImageUrls } from "@/lib/structuredData";
 
-export const dynamic = 'force-static';
+export const dynamic = "force-static";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://taraforge.in';
-  
-  return [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/services`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/gallery`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/shop`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/team`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/quote`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/shipping-returns`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.5,
-    },
-  ];
+  // No build timestamps: lastmod should describe a real content update.
+  // The coming-soon catalogue is intentionally noindex until it is ready.
+  return ["/", "/services/", "/gallery/", "/team/", "/quote/", "/shipping-returns/"]
+    .map(path => ({ url: canonicalUrl(path), ...(path === "/gallery/" ? { images: galleryImageUrls(galleryItems) } : {}) }));
 }

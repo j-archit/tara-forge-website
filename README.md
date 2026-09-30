@@ -1,6 +1,6 @@
 # TaraForge3D website
 
-The public TaraForge3D site is a Next.js application exported as static files and hosted on GitHub Pages at [taraforge.in](https://taraforge.in). It presents services, a gallery, a preview catalogue, and a manual quote path. The old standalone dashboard has been retired. `main` is the public static site; it does not deploy an admin interface or a functional intake backend.
+The public TaraForge3D site is a Next.js application exported as static files and hosted on GitHub Pages at [taraforge3d.in](https://taraforge3d.in). It presents services, a gallery, a preview catalogue, and a manual quote path. The old standalone dashboard has been retired. `main` is the public static site; it does not deploy an admin interface or a functional intake backend.
 
 ## Customer journey today
 
@@ -12,7 +12,7 @@ The public TaraForge3D site is a Next.js application exported as static files an
 
 The quote page deliberately shows an inactive form behind a contact overlay. The overlay's email and WhatsApp actions are the active intake paths. The form is inert and hidden from assistive technology so it cannot submit on the static site.
 
-The [shipping, returns and refunds page](https://taraforge.in/shipping-returns/) explains pan-India shipping at actual cost, pre-dispatch images, delivery-damage claims, custom-print returns, and refund processing. The shop and quote pages link to it.
+The [shipping, returns and refunds page](https://taraforge3d.in/shipping-returns/) explains pan-India shipping at actual cost, pre-dispatch images, delivery-damage claims, custom-print returns, and refund processing. The shop and quote pages link to it.
 
 ## Local development
 

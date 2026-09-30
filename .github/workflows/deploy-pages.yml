@@ -1,4 +1,4 @@
-# Build and deploy Next.js static export to GitHub Pages (custom domain: taraforge.in)
+# Build and deploy Next.js static export to GitHub Pages (custom domain: taraforge3d.in)
 name: Deploy to GitHub Pages
 
 on:
