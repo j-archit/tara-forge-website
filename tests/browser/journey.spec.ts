@@ -23,6 +23,25 @@ for (const route of routes) {
   });
 }
 
+test("lotus ring holder gallery shows both cutouts and original views", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/gallery/");
+  const card = page.locator('[data-gallery-entry="lotus-ring-holder"]');
+  await expect(card.getByRole("heading", { name: "Lotus Ring Holder" })).toBeVisible();
+  const photo = card.getByRole("img");
+  await expect(photo).toHaveAttribute("alt", /Top view.*isolated from the background/);
+  for (const [number, alt] of [
+    [2, /Side view.*isolated from the background/],
+    [3, /Original top-view photograph/],
+    [4, /Original side-view photograph/],
+  ] as const) {
+    const select = card.getByRole("button", { name: `Show photo ${number} of Lotus Ring Holder` });
+    await select.click();
+    await expect(select).toHaveAttribute("aria-pressed", "true");
+    await expect(photo).toHaveAttribute("alt", alt);
+  }
+});
+
 test("homepage advertises a square, crawlable TaraForge favicon", async ({ page }) => {
   await page.goto("/");
   const brandedIcon = page.locator('link[rel="icon"][type="image/png"]');
