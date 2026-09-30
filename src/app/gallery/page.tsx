@@ -1,6 +1,8 @@
 import { Metadata } from "next";
 import GalleryClient from "./GalleryClient";
 import { createPageMetadata } from "@/lib/siteMetadata";
+import { gallerySchema, serializeJsonLd } from "@/lib/structuredData";
+import { galleryItems } from "@/data/gallery";
 
 export const metadata: Metadata = createPageMetadata(
   "Gallery",
@@ -9,5 +11,5 @@ export const metadata: Metadata = createPageMetadata(
 );
 
 export default function GalleryPage() {
-  return <GalleryClient />;
+  return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(gallerySchema(galleryItems)) }} /><GalleryClient /></>;
 }
