@@ -29,17 +29,25 @@ test("lotus ring holder gallery shows both cutouts and original views", async ({
   const card = page.locator('[data-gallery-entry="lotus-ring-holder"]');
   await expect(card.getByRole("heading", { name: "Lotus Ring Holder" })).toBeVisible();
   const photo = card.getByRole("img");
-  await expect(photo).toHaveAttribute("alt", /Top view.*isolated from the background/);
+  await expect(photo).toHaveAttribute("alt", /Side view.*isolated from the background/);
   for (const [number, alt] of [
-    [2, /Side view.*isolated from the background/],
-    [3, /Original top-view photograph/],
-    [4, /Original side-view photograph/],
+    [2, /Top view.*isolated from the background/],
+    [3, /Original side-view photograph/],
+    [4, /Original top-view photograph/],
   ] as const) {
     const select = card.getByRole("button", { name: `Show photo ${number} of Lotus Ring Holder` });
     await select.click();
     await expect(select).toHaveAttribute("aria-pressed", "true");
     await expect(photo).toHaveAttribute("alt", alt);
   }
+});
+
+test("gallery cards use the selected wide and tall spans", async ({ page }) => {
+  await page.goto("/gallery/");
+  await expect(page.locator('[data-gallery-entry="one-piece-figurine"]')).not.toHaveClass(/lg:row-span-2/);
+  await expect(page.locator('[data-gallery-entry="james-webb-space-telescope-model"]')).toHaveClass(/lg:col-span-2/);
+  await expect(page.locator('[data-gallery-entry="ribbed-vase"]')).toHaveClass(/lg:row-span-2/);
+  await expect(page.locator('[data-gallery-entry]').nth(2)).toHaveAttribute("data-gallery-entry", "lotus-ring-holder");
 });
 
 test("homepage advertises a square, crawlable TaraForge favicon", async ({ page }) => {

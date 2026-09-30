@@ -108,6 +108,29 @@ test("studio edits and reorders selected entries without losing selection, then 
   });
 });
 
+test("dragging library entries changes the saved website order and filtered lists cannot be reordered", async ({ page }) => {
+  await withEditor(page, async ({ root }) => {
+    const rows = page.locator(".content-row");
+    await expect(page.locator("#reorder-hint")).toContainText("Drag the grip");
+    await rows.nth(2).locator(".row-grip").dragTo(rows.first(), { targetPosition: { x: 20, y: 5 } });
+    await expect(rows.first()).toHaveAttribute("data-id", "custom-drone-frame");
+    await expect(page.locator("#dirty-state")).toHaveText("Unsaved changes");
+    await save(page);
+    expect((await readContent(root, "gallery")).items[0].id).toBe("custom-drone-frame");
+    await page.reload();
+    await expect(page.locator(".content-row").first()).toHaveAttribute("data-id", "custom-drone-frame");
+    const secondRow = page.locator(".content-row").nth(1);
+    const secondBox = await secondRow.boundingBox();
+    await page.locator(".content-row").first().locator(".row-grip").dragTo(secondRow, { targetPosition: { x: 50, y: secondBox.height - 5 } });
+    await expect(secondRow).toHaveAttribute("data-id", "custom-drone-frame");
+    await save(page);
+    expect((await readContent(root, "gallery")).items[1].id).toBe("custom-drone-frame");
+    await page.getByLabel("Search entries").fill("drone");
+    await expect(page.locator(".row-grip")).toHaveAttribute("data-reorderable", "false");
+    await expect(page.locator("#reorder-hint")).toContainText("Clear search");
+  });
+});
+
 test("catalogue supports adding, validating, duplicating and deleting products", async ({ page }) => {
   await withEditor(page, async ({ root }) => {
     await page.getByRole("button", { name: "Catalogue", exact: true }).click();

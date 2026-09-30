@@ -12,7 +12,7 @@
       "image": null,
       "presentation": {
         "widthSpan": 1,
-        "heightSpan": 2,
+        "heightSpan": 1,
         "autoplay": false,
         "photos": [
           {
@@ -73,6 +73,71 @@
             "alt": "Jet-engine display model on a table, showing its exposed blade stages",
             "width": 1600,
             "height": 900,
+            "fit": "cover",
+            "framed": true,
+            "focusX": 50,
+            "focusY": 50,
+            "zoom": 1,
+            "edgeFade": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "lotus-ring-holder",
+      "title": "Lotus Ring Holder",
+      "category": "Home Decor",
+      "description": "A lotus-inspired ring holder with layered red petals nestled in a dark, scalloped dish, shown from above and the side.",
+      "tags": ["Ring Holder", "Decor"],
+      "theme": "rose",
+      "published": true,
+      "image": null,
+      "presentation": {
+        "widthSpan": 1,
+        "heightSpan": 1,
+        "autoplay": true,
+        "photos": [
+          {
+            "src": "/images/content/a5e73741a54a90b4d2c9689c28b35fc94434ac371fec4cf72bea57a0911cbb36.webp",
+            "alt": "Side view of the red lotus petals and dark scalloped base of the ring holder, isolated from the background",
+            "width": 1448,
+            "height": 1086,
+            "fit": "contain",
+            "framed": false,
+            "focusX": 50,
+            "focusY": 50,
+            "zoom": 1,
+            "edgeFade": false
+          },
+          {
+            "src": "/images/content/fd289fe1ac3ffee87765fdd30a17cb49a0b82d2a188500ab762338b4720d0207.webp",
+            "alt": "Top view of a red lotus ring holder nestled in a dark scalloped dish, isolated from the background",
+            "width": 1086,
+            "height": 1448,
+            "fit": "contain",
+            "framed": false,
+            "focusX": 50,
+            "focusY": 50,
+            "zoom": 1,
+            "edgeFade": false
+          },
+          {
+            "src": "/images/content/e983ddcf1a25304de19789d07bd07f03214d604f41d52237c317ea3a2dc168f0.webp",
+            "alt": "Original side-view photograph of the red lotus ring holder and its dark scalloped base",
+            "width": 1200,
+            "height": 1600,
+            "fit": "cover",
+            "framed": true,
+            "focusX": 50,
+            "focusY": 50,
+            "zoom": 1,
+            "edgeFade": false
+          },
+          {
+            "src": "/images/content/c9cc70a7093b5d8388cf5b87e1e86d3020fe9d00165562f1670a3c414e6114c2.webp",
+            "alt": "Original top-view photograph of the red lotus ring holder in its dark scalloped dish",
+            "width": 1200,
+            "height": 1600,
             "fit": "cover",
             "framed": true,
             "focusX": 50,
@@ -175,7 +240,7 @@
       "published": true,
       "image": null,
       "presentation": {
-        "widthSpan": 1,
+        "widthSpan": 2,
         "heightSpan": 1,
         "autoplay": false,
         "photos": [
@@ -217,7 +282,7 @@
       "image": null,
       "presentation": {
         "widthSpan": 1,
-        "heightSpan": 1,
+        "heightSpan": 2,
         "autoplay": false,
         "photos": [
           {
@@ -238,71 +303,6 @@
             "width": 739,
             "height": 1600,
             "fit": "contain",
-            "framed": true,
-            "focusX": 50,
-            "focusY": 50,
-            "zoom": 1,
-            "edgeFade": false
-          }
-        ]
-      }
-    },
-    {
-      "id": "lotus-ring-holder",
-      "title": "Lotus Ring Holder",
-      "category": "Home Decor",
-      "description": "A lotus-inspired ring holder with layered red petals nestled in a dark, scalloped dish, shown from above and the side.",
-      "tags": ["Ring Holder", "Decor"],
-      "theme": "rose",
-      "published": true,
-      "image": null,
-      "presentation": {
-        "widthSpan": 1,
-        "heightSpan": 1,
-        "autoplay": true,
-        "photos": [
-          {
-            "src": "/images/content/fd289fe1ac3ffee87765fdd30a17cb49a0b82d2a188500ab762338b4720d0207.webp",
-            "alt": "Top view of a red lotus ring holder nestled in a dark scalloped dish, isolated from the background",
-            "width": 1086,
-            "height": 1448,
-            "fit": "contain",
-            "framed": false,
-            "focusX": 50,
-            "focusY": 50,
-            "zoom": 1,
-            "edgeFade": false
-          },
-          {
-            "src": "/images/content/a5e73741a54a90b4d2c9689c28b35fc94434ac371fec4cf72bea57a0911cbb36.webp",
-            "alt": "Side view of the red lotus petals and dark scalloped base of the ring holder, isolated from the background",
-            "width": 1448,
-            "height": 1086,
-            "fit": "contain",
-            "framed": false,
-            "focusX": 50,
-            "focusY": 50,
-            "zoom": 1,
-            "edgeFade": false
-          },
-          {
-            "src": "/images/content/c9cc70a7093b5d8388cf5b87e1e86d3020fe9d00165562f1670a3c414e6114c2.webp",
-            "alt": "Original top-view photograph of the red lotus ring holder in its dark scalloped dish",
-            "width": 1200,
-            "height": 1600,
-            "fit": "cover",
-            "framed": true,
-            "focusX": 50,
-            "focusY": 50,
-            "zoom": 1,
-            "edgeFade": false
-          },
-          {
-            "src": "/images/content/e983ddcf1a25304de19789d07bd07f03214d604f41d52237c317ea3a2dc168f0.webp",
-            "alt": "Original side-view photograph of the red lotus ring holder and its dark scalloped base",
-            "width": 1200,
-            "height": 1600,
-            "fit": "cover",
             "framed": true,
             "focusX": 50,
             "focusY": 50,

@@ -15,6 +15,7 @@ let collection = "gallery";
 let busy = false;
 let previewOrigin = "http://localhost:3000";
 let publishReview = null;
+let draggedEntry = null;
 const current = () => drafts[collection];
 const selected = () => current()?.document.items.find(item => item.id === current().selected);
 const galleryPhotos = item => item.presentation?.photos || (item.image ? [{ ...item.image, framed: true, focusX: 50, focusY: 50, zoom: 1, edgeFade: false }] : []);
@@ -57,9 +58,11 @@ function updateToolbar() {
   $("add").disabled = busy || !draft || draft.document.items.length >= 200;
   for (const id of ["reload", "gallery-tab", "products-tab"]) $(id).disabled = busy;
   for (const id of ["search", "visibility"]) $(id).disabled = busy || !draft;
-  document.querySelectorAll("#editor button, #editor input, #editor textarea, #editor select, .content-row").forEach(node => {
+  document.querySelectorAll("#editor button, #editor input, #editor textarea, #editor select").forEach(node => {
     node.disabled = busy || node.dataset.unavailable === "true";
   });
+  document.querySelectorAll(".content-row").forEach(row => { row.setAttribute("aria-disabled", String(busy)); });
+  updateReorderAvailability();
   for (const key of Object.keys(names)) {
     $(`${key}-tab`).setAttribute("aria-pressed", String(key === collection));
     $(`${key}-count`).textContent = drafts[key] ? `${drafts[key].document.items.length}${dirty(drafts[key]) ? " •" : ""}` : "—";
@@ -115,6 +118,43 @@ function visibleItems() {
   const draft = current();
   return draft ? draft.document.items.filter(item => matchesItem(item, draft)) : [];
 }
+function canReorder() {
+  const draft = current();
+  return !!draft && !busy && !draft.query.trim() && draft.filter === "all";
+}
+function updateReorderAvailability() {
+  const allowed = canReorder();
+  $("reorder-hint").textContent = !current() || busy ? "Reordering is available when the editor is ready." : allowed ? "Drag the grip on an entry to change its website order. Save changes when done. You can also use Move up/down in the editor." : "Clear search and show all entries to drag-reorder.";
+  document.querySelectorAll("#entry-list .row-grip").forEach(grip => { grip.dataset.reorderable = String(allowed); });
+}
+function clearDropMarkers() {
+  document.querySelectorAll(".content-row.drop-before, .content-row.drop-after, .content-row.is-dragging").forEach(row => {
+    row.classList.remove("drop-before", "drop-after", "is-dragging");
+  });
+}
+function markDropTarget(clientX, clientY) {
+  clearDropMarkers();
+  const row = document.elementFromPoint(clientX, clientY)?.closest(".content-row");
+  if (!row || row.dataset.id === draggedEntry?.id) return null;
+  const after = clientY >= row.getBoundingClientRect().top + row.offsetHeight / 2;
+  row.classList.add(after ? "drop-after" : "drop-before");
+  return { id: row.dataset.id, after };
+}
+function reorderEntry(sourceId, targetId, after) {
+  if (!canReorder() || sourceId === targetId) return;
+  const items = current().document.items;
+  const sourceIndex = items.findIndex(item => item.id === sourceId);
+  const targetIndex = items.findIndex(item => item.id === targetId);
+  if (sourceIndex < 0 || targetIndex < 0) return;
+  const destination = targetIndex + Number(after) - Number(sourceIndex < targetIndex + Number(after));
+  if (destination === sourceIndex) return;
+  const [entry] = items.splice(sourceIndex, 1);
+  items.splice(destination, 0, entry);
+  current().selected = sourceId;
+  renderList(); renderEditor(); updateToolbar();
+  $("status").textContent = "Order updated. Save changes to keep it.";
+  [...$("entry-list").querySelectorAll(".content-row")].find(row => row.dataset.id === sourceId)?.focus({ preventScroll: true });
+}
 function renderList() {
   const activeId = document.activeElement?.closest(".content-row")?.dataset.id;
   const list = $("entry-list");
@@ -123,20 +163,50 @@ function renderList() {
   const items = visibleItems();
   $("results-count").textContent = `${items.length} of ${current()?.document.items.length || 0} entries`;
   for (const item of items) {
-    const row = button(list, "", () => {
+    const row = element("div", undefined, "content-row");
+    row.setAttribute("role", "button"); row.tabIndex = 0;
+    row.setAttribute("aria-label", `Edit ${item.title || "Untitled entry"}`);
+    const selectEntry = () => {
+      if (busy) return;
       current().selected = item.id; renderList(); renderEditor(); updateToolbar();
       $("entry-title").focus({ preventScroll: true });
       if (matchMedia("(max-width: 650px)").matches) $("editor").scrollIntoView({ block: "start" });
-    }, { className: "content-row", label: `Edit ${item.title || "Untitled entry"}` });
+    };
+    row.addEventListener("click", selectEntry);
+    row.addEventListener("keydown", event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); selectEntry(); } });
+    list.append(row);
     row.dataset.id = item.id;
+    const grip = element("span", "⋮⋮", "row-grip"); grip.setAttribute("aria-hidden", "true"); grip.dataset.reorderable = String(canReorder()); grip.title = "Drag to reorder";
+    grip.addEventListener("pointerdown", event => {
+      if (!canReorder() || draggedEntry) return;
+      event.preventDefault();
+      draggedEntry = { collection, id: item.id, pointerId: event.pointerId, x: event.clientX, y: event.clientY, active: false };
+      grip.setPointerCapture(event.pointerId);
+    });
+    grip.addEventListener("pointermove", event => {
+      if (draggedEntry?.pointerId !== event.pointerId) return;
+      if (!draggedEntry.active && Math.hypot(event.clientX - draggedEntry.x, event.clientY - draggedEntry.y) < 6) return;
+      draggedEntry.active = true;
+      markDropTarget(event.clientX, event.clientY);
+      row.classList.add("is-dragging");
+    });
+    grip.addEventListener("pointerup", event => {
+      if (draggedEntry?.pointerId !== event.pointerId) return;
+      const source = draggedEntry;
+      const target = source.active ? markDropTarget(event.clientX, event.clientY) : null;
+      draggedEntry = null;
+      clearDropMarkers();
+      if (target && source.collection === collection) reorderEntry(source.id, target.id, target.after);
+    });
+    grip.addEventListener("pointercancel", () => { draggedEntry = null; clearDropMarkers(); });
     row.setAttribute("aria-pressed", String(item.id === current().selected));
     const cover = primaryImage(item);
     const thumb = element("span", cover ? undefined : "◇", "row-thumb");
-    if (cover) { const image = element("img"); image.src = cover.src; image.alt = ""; image.loading = "lazy"; thumb.append(image); }
+    if (cover) { const image = element("img"); image.src = cover.src; image.alt = ""; image.loading = "lazy"; image.draggable = false; thumb.append(image); }
     thumb.setAttribute("aria-hidden", "true");
     const copy = element("span", undefined, "row-copy");
     copy.append(element("span", item.title || "Untitled entry", "row-title"), element("span", item.category || "No category", "row-meta"), element("span", item.published ? "● Visible" : "○ Hidden", `row-state${item.published ? "" : " hidden-state"}`));
-    row.append(thumb, copy);
+    row.append(grip, thumb, copy);
   }
   if (!items.length) {
     const empty = element("div", undefined, "empty");
