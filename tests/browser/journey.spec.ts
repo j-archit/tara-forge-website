@@ -23,6 +23,23 @@ for (const route of routes) {
   });
 }
 
+test("hero gallery action stays distinct from the quote action on desktop and mobile", async ({ page }) => {
+  const quote = page.locator('[data-track="hero_primary_cta"]');
+  const gallery = page.locator('[data-track="hero_secondary_cta"]');
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.goto("/");
+  await expect(gallery).toHaveAttribute("href", "/gallery/");
+  await expect(gallery).toHaveCSS("font-size", "14px");
+  const wideQuote = await quote.boundingBox();
+  const wideGallery = await gallery.boundingBox();
+  expect(wideGallery!.x - (wideQuote!.x + wideQuote!.width)).toBeGreaterThanOrEqual(20);
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  const narrowQuote = await quote.boundingBox();
+  const narrowGallery = await gallery.boundingBox();
+  expect(narrowGallery!.y - (narrowQuote!.y + narrowQuote!.height)).toBeGreaterThanOrEqual(12);
+});
+
 test("lotus ring holder gallery shows both cutouts and original views", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/gallery/");
@@ -47,7 +64,17 @@ test("gallery cards use the selected wide and tall spans", async ({ page }) => {
   await expect(page.locator('[data-gallery-entry="one-piece-figurine"]')).not.toHaveClass(/lg:row-span-2/);
   await expect(page.locator('[data-gallery-entry="james-webb-space-telescope-model"]')).toHaveClass(/lg:col-span-2/);
   await expect(page.locator('[data-gallery-entry="ribbed-vase"]')).toHaveClass(/lg:row-span-2/);
-  await expect(page.locator('[data-gallery-entry]').nth(2)).toHaveAttribute("data-gallery-entry", "lotus-ring-holder");
+  const cards = page.locator("[data-gallery-entry]");
+  await expect(cards.nth(0)).toHaveAttribute("data-gallery-entry", "jet-engine-display-model");
+  await expect(cards.nth(1)).toHaveAttribute("data-gallery-entry", "lotus-ring-holder");
+  await expect(cards.nth(2)).toHaveAttribute("data-gallery-entry", "one-piece-figurine");
+});
+
+test("gallery testimonials include Divyansh's ring-holder review", async ({ page }) => {
+  await page.goto("/gallery/");
+  await expect(page.getByText("Got this beautiful ring holder printed. Amazing print quality. Reasonable rates. Very polite and professional behaviour. 100% recommended.", { exact: true }).first()).toBeAttached();
+  await expect(page.getByText("Divyansh", { exact: true }).first()).toBeAttached();
+  await expect(page.getByText("Customer from Delhi", { exact: true }).first()).toBeAttached();
 });
 
 test("homepage advertises a square, crawlable TaraForge favicon", async ({ page }) => {

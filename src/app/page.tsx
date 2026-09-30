@@ -36,7 +36,7 @@ export default function HomePage() {
               </span>
             </p>
 
-            <div className="mt-6 flex flex-col gap-3 text-sm sm:flex-row sm:items-center">
+            <div className="mt-6 flex flex-col gap-4 text-sm sm:flex-row sm:items-center sm:gap-6">
               <Link
                 href="/quote"
                 data-track="hero_primary_cta"
@@ -48,11 +48,11 @@ export default function HomePage() {
               <Link
                 href="/gallery"
                 data-track="hero_secondary_cta"
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-600/70 bg-slate-900/40 px-4 py-2 text-xs font-medium text-slate-100 transition hover:border-brand-gold hover:text-brand-gold hover:scale-105"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-brand-gold/60 bg-slate-900/75 px-5 py-2.5 text-sm font-semibold text-slate-50 shadow-[0_6px_24px_rgba(217,174,84,0.14)] transition-all hover:border-brand-gold hover:bg-slate-800/90 hover:shadow-[0_8px_28px_rgba(217,174,84,0.22)] hover:scale-105"
                 aria-label="Explore our custom 3D print gallery and portfolio"
               >
                 Explore Custom Print Gallery
-                <span className="h-1.5 w-1.5 rounded-full bg-brand-gold opacity-50" />
+                <span className="h-1.5 w-1.5 rounded-full bg-brand-gold shadow-[0_0_8px_rgba(217,174,84,0.7)]" />
               </Link>
             </div>
 

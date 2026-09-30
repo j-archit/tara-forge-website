@@ -20,5 +20,12 @@ export const testimonials: Testimonial[] = [
     author: "Bangalore Chess Club",
     role: "Community Partner",
     accent: "from-blue-500/20"
+  },
+  {
+    id: 3,
+    quote: "Got this beautiful ring holder printed. Amazing print quality. Reasonable rates. Very polite and professional behaviour. 100% recommended.",
+    author: "Divyansh",
+    role: "Customer from Delhi",
+    accent: "from-rose-500/20"
   }
 ];

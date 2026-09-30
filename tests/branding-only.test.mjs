@@ -4,9 +4,9 @@ import { readFileSync, existsSync } from "node:fs";
 import { createHash } from "node:crypto";
 
 const read = path => readFileSync(path, "utf8").replace(/\r\n/g, "\n");
-// Normalized v1.0.0 source fingerprints; also work in shallow CI checkouts.
+// Approved source fingerprints; also work in shallow CI checkouts.
 const baseline = {
-  "src/app/page.tsx": "e54ae3cced8ce44effe4bd31c6db4704813d036b1c93eb5e4944f3325842082d",
+  "src/app/page.tsx": "02d6732dcb0f3c268d7dfffb032319d9d2f17b0b7b15bd3f864e39d8873ea1b3",
   "src/app/HomeClient.tsx": "66760b80439b734e794b49e077deae628fe779a31e66251c95a05a3d61451985",
   "src/app/shop/ShopClient.tsx": "ed74306d5699d2c9c5ec502130109f29eea2fdada05b842310245f5ccf70a7c6",
   "src/components/CelestialBackground.tsx": "7012b6fc0bc384117136dbec420c46e2c17b0ddf9012f25c2fcaecc944bdade2",

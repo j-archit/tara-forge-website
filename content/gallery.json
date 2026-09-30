@@ -2,47 +2,6 @@
   "schemaVersion": 1,
   "items": [
     {
-      "id": "one-piece-figurine",
-      "title": "One Piece Display Figurine",
-      "category": "Display Pieces",
-      "description": "A One Piece character display figurine made as a personal gift, with a seated pose, sculpted details and a dedicated base.",
-      "tags": ["Gift", "Display Piece"],
-      "theme": "blue",
-      "published": true,
-      "image": null,
-      "presentation": {
-        "widthSpan": 1,
-        "heightSpan": 1,
-        "autoplay": false,
-        "photos": [
-          {
-            "src": "/images/content/23bc75b4b1fe56f0f3d92d79efd4322abb3a25c7fa24ae23fc4d1d2700f2fdfc.webp",
-            "alt": "Blue One Piece gift display figurine held in a hand, isolated from the background",
-            "width": 640,
-            "height": 751,
-            "fit": "contain",
-            "framed": false,
-            "focusX": 50,
-            "focusY": 50,
-            "zoom": 1,
-            "edgeFade": true
-          },
-          {
-            "src": "/images/content/2d9d5848bac69d4abf4de148b31206b84f578db2fbd81436a88ea9ccff4ed0a7.webp",
-            "alt": "Original photograph of the blue One Piece gift display figurine held in a hand",
-            "width": 320,
-            "height": 427,
-            "fit": "cover",
-            "framed": true,
-            "focusX": 50,
-            "focusY": 50,
-            "zoom": 1,
-            "edgeFade": false
-          }
-        ]
-      }
-    },
-    {
       "id": "jet-engine-display-model",
       "title": "Jet Engine Display Model",
       "category": "Engineering Models",
@@ -138,6 +97,47 @@
             "alt": "Original top-view photograph of the red lotus ring holder in its dark scalloped dish",
             "width": 1200,
             "height": 1600,
+            "fit": "cover",
+            "framed": true,
+            "focusX": 50,
+            "focusY": 50,
+            "zoom": 1,
+            "edgeFade": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "one-piece-figurine",
+      "title": "One Piece Display Figurine",
+      "category": "Display Pieces",
+      "description": "A One Piece character display figurine made as a personal gift, with a seated pose, sculpted details and a dedicated base.",
+      "tags": ["Gift", "Display Piece"],
+      "theme": "blue",
+      "published": true,
+      "image": null,
+      "presentation": {
+        "widthSpan": 1,
+        "heightSpan": 1,
+        "autoplay": false,
+        "photos": [
+          {
+            "src": "/images/content/23bc75b4b1fe56f0f3d92d79efd4322abb3a25c7fa24ae23fc4d1d2700f2fdfc.webp",
+            "alt": "Blue One Piece gift display figurine held in a hand, isolated from the background",
+            "width": 640,
+            "height": 751,
+            "fit": "contain",
+            "framed": false,
+            "focusX": 50,
+            "focusY": 50,
+            "zoom": 1,
+            "edgeFade": true
+          },
+          {
+            "src": "/images/content/2d9d5848bac69d4abf4de148b31206b84f578db2fbd81436a88ea9ccff4ed0a7.webp",
+            "alt": "Original photograph of the blue One Piece gift display figurine held in a hand",
+            "width": 320,
+            "height": 427,
             "fit": "cover",
             "framed": true,
             "focusX": 50,
