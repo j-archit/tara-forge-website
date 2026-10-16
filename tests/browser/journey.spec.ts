@@ -63,11 +63,34 @@ test("gallery cards use the selected wide and tall spans", async ({ page }) => {
   await page.goto("/gallery/");
   await expect(page.locator('[data-gallery-entry="one-piece-figurine"]')).not.toHaveClass(/lg:row-span-2/);
   await expect(page.locator('[data-gallery-entry="james-webb-space-telescope-model"]')).toHaveClass(/lg:col-span-2/);
+  await expect(page.locator('[data-gallery-entry="upper-chest-anatomy-model"]')).toHaveClass(/lg:row-span-2/);
   await expect(page.locator('[data-gallery-entry="ribbed-vase"]')).toHaveClass(/lg:row-span-2/);
   const cards = page.locator("[data-gallery-entry]");
   await expect(cards.nth(0)).toHaveAttribute("data-gallery-entry", "jet-engine-display-model");
   await expect(cards.nth(1)).toHaveAttribute("data-gallery-entry", "lotus-ring-holder");
   await expect(cards.nth(2)).toHaveAttribute("data-gallery-entry", "one-piece-figurine");
+});
+
+test("anatomy model gallery starts with the cutout and offers all original views", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/gallery/");
+  const card = page.locator('[data-gallery-entry="upper-chest-anatomy-model"]');
+  await expect(card.getByRole("heading", { name: "Upper-Chest Anatomy Model" })).toBeVisible();
+  await expect(card).toContainText("a vein and an artery");
+  const photo = card.getByRole("img");
+  await expect(photo).toHaveAttribute("alt", /isolated from the background/);
+  await expect(card.getByRole("button", { name: /Show photo \d of Upper-Chest Anatomy Model/ })).toHaveCount(5);
+  for (const [number, alt] of [
+    [2, /Original front-oblique photograph/],
+    [3, /Side view of the anatomy print/],
+    [4, /Opposite side view/],
+    [5, /Rear view/],
+  ] as const) {
+    const select = card.getByRole("button", { name: `Show photo ${number} of Upper-Chest Anatomy Model` });
+    await select.click();
+    await expect(select).toHaveAttribute("aria-pressed", "true");
+    await expect(photo).toHaveAttribute("alt", alt);
+  }
 });
 
 test("gallery testimonials include Divyansh's ring-holder review", async ({ page }) => {

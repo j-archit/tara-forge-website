@@ -272,6 +272,83 @@
       }
     },
     {
+      "id": "upper-chest-anatomy-model",
+      "title": "Upper-Chest Anatomy Model",
+      "category": "Anatomical Models",
+      "description": "An assembled upper-chest anatomy print showing ribs, part of a lung, a vein and an artery. Multiple views reveal how the printed components come together.",
+      "tags": ["Anatomy", "Multi-Part Print"],
+      "theme": "cyan",
+      "published": true,
+      "image": null,
+      "presentation": {
+        "widthSpan": 1,
+        "heightSpan": 2,
+        "autoplay": true,
+        "photos": [
+          {
+            "src": "/images/content/02935320b6468220b7f8cebbcd7a5bcfdec909cdfb8bb854df3e721705eefe19.webp",
+            "alt": "Assembled upper-chest anatomy print held in a hand, isolated from the background",
+            "width": 900,
+            "height": 1600,
+            "fit": "contain",
+            "framed": false,
+            "focusX": 50,
+            "focusY": 55,
+            "zoom": 1.1,
+            "edgeFade": true
+          },
+          {
+            "src": "/images/content/5c11cbfa9a94f02aeb05f2dc48c74450d1b24f0ac14f870fc34d677820fc4438.webp",
+            "alt": "Original front-oblique photograph of the assembled anatomy print showing ribs, a vein and an artery",
+            "width": 900,
+            "height": 1600,
+            "fit": "cover",
+            "framed": true,
+            "focusX": 50,
+            "focusY": 55,
+            "zoom": 1,
+            "edgeFade": false
+          },
+          {
+            "src": "/images/content/12ac655614e0fd16a2b4cf1e3cba9522710751475bdc1e6fd0a763f5ef221b00.webp",
+            "alt": "Side view of the anatomy print showing a vein and an artery beside the rib and spine sections",
+            "width": 900,
+            "height": 1600,
+            "fit": "cover",
+            "framed": true,
+            "focusX": 50,
+            "focusY": 55,
+            "zoom": 1,
+            "edgeFade": false
+          },
+          {
+            "src": "/images/content/f7c8ada822a5b8e1ec992d9bdf67ba3c1a629843a93df08d546fc6b7788831d5.webp",
+            "alt": "Opposite side view of the assembled anatomy print showing the artery and white spine",
+            "width": 900,
+            "height": 1600,
+            "fit": "cover",
+            "framed": true,
+            "focusX": 50,
+            "focusY": 55,
+            "zoom": 1,
+            "edgeFade": false
+          },
+          {
+            "src": "/images/content/a381ee5b6ef6b1d80627c77323763e00b36d56ab2582efea69d019f54cef94b9.webp",
+            "alt": "Rear view of the upper-chest anatomy model showing the white ribs and spine",
+            "width": 900,
+            "height": 1600,
+            "fit": "cover",
+            "framed": true,
+            "focusX": 50,
+            "focusY": 55,
+            "zoom": 1,
+            "edgeFade": false
+          }
+        ]
+      }
+    },
+    {
       "id": "ribbed-vase",
       "title": "Ribbed Vase",
       "category": "Home Decor",
