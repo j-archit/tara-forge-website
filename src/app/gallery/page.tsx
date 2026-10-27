@@ -5,8 +5,8 @@ import { gallerySchema, serializeJsonLd } from "@/lib/structuredData";
 import { galleryItems } from "@/data/gallery";
 
 export const metadata: Metadata = createPageMetadata(
-  "Gallery",
-  "Explore our collection of 3D printed prototypes, functional parts, and small-batch manufacturing projects.",
+  "Custom 3D Print Gallery Bangalore & Across India",
+  "Explore custom 3D prints from our Bangalore studio: prototypes, functional parts, display models and gifts. Made for customers locally and across India.",
   "/gallery"
 );
 

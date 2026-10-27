@@ -5,8 +5,8 @@ import { serviceCatalogSchema, serializeJsonLd } from "@/lib/structuredData";
 import { detailedServices } from "@/data/services";
 
 export const metadata: Metadata = createPageMetadata(
-  "3D Printing Services in Bangalore",
-  "Custom 3D printing in Bangalore for prototypes, functional parts, small batches and figurines in PLA and PETG, with shipping across India. Request a quote.",
+  "3D Printing Services Bangalore & Across India",
+  "Custom 3D prints from Bangalore for prototypes, functional parts, figurines and small batches in PLA and PETG. Request a quote with shipping across India.",
   "/services"
 );
 

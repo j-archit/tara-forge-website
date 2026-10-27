@@ -3,8 +3,8 @@ import ShopClient from "./ShopClient";
 import { createPageMetadata } from "@/lib/siteMetadata";
 
 export const metadata: Metadata = createPageMetadata(
-  "The Shop",
-  "Preview the Stellar Collection and ask about availability of our signature 3D printed designs and small-batch orders.",
+  "3D Printed Designs Bangalore & Across India",
+  "Preview TaraForge3D's 3D printed designs from our Bangalore studio. Ask about availability, small-batch orders and shipping across India.",
   "/shop",
   { index: false }
 );

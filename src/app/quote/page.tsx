@@ -10,8 +10,8 @@ import { createPageMetadata } from "@/lib/siteMetadata";
 import { CUSTOMER_JOURNEY, PAYMENT_TERMS, PRODUCTION_TIMING, QUOTE_RESPONSE_TIME } from "@/data/siteContent";
 
 export const metadata: Metadata = createPageMetadata(
-  "Get a Quote",
-  "Email us your design for a custom 3D print quote. We handle everything from personal keepsakes to community projects with care.",
+  "3D Print Quotes Bangalore & Across India",
+  "Request a custom 3D print quote from our Bangalore studio. Email your design for a response within 24 hours, with shipping available across India.",
   "/quote"
 );
 

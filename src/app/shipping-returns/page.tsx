@@ -6,8 +6,8 @@ import { CONTACT } from "@/data/siteContent";
 import { createPageMetadata } from "@/lib/siteMetadata";
 
 export const metadata: Metadata = createPageMetadata(
-  "Shipping, Returns & Refunds",
-  "How TaraForge3D handles pan-India shipping, delivery damage, custom-print returns, and verified refunds.",
+  "Shipping Across India, Returns & Refunds",
+  "Shipping from Bangalore across India, charged at actual carrier cost. Read our custom-print returns, shipping-damage claims and verified-refund policies.",
   "/shipping-returns"
 );
 

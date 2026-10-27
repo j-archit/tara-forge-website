@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { validateDocument } from "../tools/content-manager/schema.mjs";
-import { canonicalUrl, createPageMetadata, SITE_URL } from "../src/lib/siteMetadata.ts";
+import { canonicalUrl, createPageMetadata, HOME_PAGE_TITLE, HOME_PAGE_DESCRIPTION, SITE_URL } from "../src/lib/siteMetadata.ts";
 import { businessSchema, BUSINESS_ID, galleryImageUrls, gallerySchema, serializeJsonLd, serviceCatalogSchema } from "../src/lib/structuredData.ts";
 import { MAX_DESIGN_FILE_SIZE_BYTES, validateDesignFile } from "../src/lib/intakeFile.ts";
 import { QUOTE_EMAIL, productInquiryHref, quoteMailtoHref } from "../src/lib/contact.ts";
@@ -27,6 +27,17 @@ test("page metadata uses its own canonical and social URL", () => {
   assert.equal(metadata.openGraph.url, `${SITE_URL}/services/`);
   assert.equal(metadata.openGraph.title, "Services | TaraForge3D");
   assert.equal(metadata.twitter.description, "Service description");
+});
+
+test("homepage search and social metadata use the approved local and nationwide positioning", () => {
+  const metadata = createPageMetadata(HOME_PAGE_TITLE, HOME_PAGE_DESCRIPTION, "/");
+  assert.equal(metadata.title, "Custom 3D Prints Bangalore & Across India");
+  assert.equal(metadata.openGraph.title, "Custom 3D Prints Bangalore & Across India | TaraForge3D");
+  assert.equal(metadata.twitter.title, metadata.openGraph.title);
+  assert.equal(metadata.openGraph.description, metadata.description);
+  assert.equal(metadata.twitter.description, metadata.description);
+  assert.match(metadata.description, /Bangalore/);
+  assert.match(metadata.description, /shipping across India/);
 });
 
 test("canonical URLs use the live host and normalize trailing slashes", () => {

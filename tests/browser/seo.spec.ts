@@ -7,6 +7,17 @@ const routes = ["/", "/services/", "/gallery/", "/shop/", "/team/", "/quote/", "
 test("production metadata and business schema consistently identify the public domain", async ({ page }) => {
   for (const path of routes) {
     await page.goto(path);
+    const title = await page.title();
+    if (path === "/") expect(title).toBe("Custom 3D Prints Bangalore & Across India | TaraForge3D");
+    expect(title.endsWith(" | TaraForge3D")).toBe(true);
+    expect(title.match(/TaraForge3D/g)).toHaveLength(1);
+    const description = await page.locator('meta[name="description"]').getAttribute("content");
+    expect(description).toMatch(/Bangalore/);
+    expect(description).toMatch(/India/);
+    await expect(page.locator('meta[property="og:title"]')).toHaveAttribute("content", title);
+    await expect(page.locator('meta[name="twitter:title"]')).toHaveAttribute("content", title);
+    await expect(page.locator('meta[property="og:description"]')).toHaveAttribute("content", description!);
+    await expect(page.locator('meta[name="twitter:description"]')).toHaveAttribute("content", description!);
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", `${origin}${path}`);
     await expect(page.locator('meta[property="og:url"]')).toHaveAttribute("content", `${origin}${path}`);
     await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", `${origin}/og-image.png`);
@@ -17,6 +28,8 @@ test("production metadata and business schema consistently identify the public d
     expect(business[0]["@id"]).toBe(`${origin}/#business`);
     expect(business[0].email).toBe("taraforge3d@gmail.com");
     expect(business[0].telephone).toBe("+917042337788");
+    expect(business[0].address.addressLocality).toBe("Bangalore");
+    expect(business[0].areaServed).toEqual({ "@type": "Country", name: "India" });
     expect(scripts.join(" ")).not.toContain("https://taraforge.in");
     expect(await page.locator('meta[name="robots"]').getAttribute("content")).toContain(path === "/shop/" ? "noindex" : "index");
     if (path === "/shop/") {

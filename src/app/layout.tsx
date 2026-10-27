@@ -2,17 +2,17 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { CelestialBackground } from "@/components/CelestialBackground";
 import { Analytics } from "@/components/Analytics";
-import { createPageMetadata, SITE_NAME, SITE_URL } from "@/lib/siteMetadata";
+import { createPageMetadata, HOME_PAGE_TITLE, HOME_PAGE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/siteMetadata";
 import { businessSchema, serializeJsonLd } from "@/lib/structuredData";
 
 export const metadata: Metadata = {
   ...createPageMetadata(
-    "Custom 3D Printing in Bangalore",
-    "Bangalore-based 3D printing for prototypes, functional parts, figurines and small batches in PLA and PETG. Quotes within 24 hours; shipping across India.",
+    HOME_PAGE_TITLE,
+    HOME_PAGE_DESCRIPTION,
     "/"
   ),
   metadataBase: new URL(SITE_URL),
-  title: { default: `Custom 3D Printing in Bangalore | ${SITE_NAME}`, template: `%s | ${SITE_NAME}` },
+  title: { default: `${HOME_PAGE_TITLE} | ${SITE_NAME}`, template: `%s | ${SITE_NAME}` },
   authors: [{ name: SITE_NAME }], creator: SITE_NAME, publisher: SITE_NAME,
   formatDetection: { email: false, address: false, telephone: false },
   robots: {
