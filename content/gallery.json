@@ -429,6 +429,47 @@
           }
         ]
       }
+    },
+    {
+      "id": "horse-drawn-carriage",
+      "title": "Horse-Drawn Carriage",
+      "category": "Display Pieces",
+      "description": "A white horse-drawn carriage display model with a detailed cabin, spoked wheels and harness, shown from the side and rear.",
+      "tags": ["Carriage", "Display Model"],
+      "theme": "blue",
+      "published": true,
+      "image": null,
+      "presentation": {
+        "widthSpan": 2,
+        "heightSpan": 1,
+        "autoplay": false,
+        "photos": [
+          {
+            "src": "/images/content/0ffd347029443f5dd16758127a9754da3e0f5f05fa75e38066a61d908e036481.webp",
+            "alt": "Side view of a white horse-drawn carriage print with spoked wheels, a detailed cabin and harness, isolated from the background",
+            "width": 1388,
+            "height": 676,
+            "fit": "contain",
+            "framed": false,
+            "focusX": 50,
+            "focusY": 50,
+            "zoom": 1,
+            "edgeFade": false
+          },
+          {
+            "src": "/images/content/fcad263db1954e7af071887cca00f480b37852ebd49707013b87e374d2cada29.webp",
+            "alt": "Rear view of the white horse-drawn carriage print showing its cabin, roof, rear axle and spoked wheels, isolated from the background",
+            "width": 999,
+            "height": 1213,
+            "fit": "contain",
+            "framed": false,
+            "focusX": 50,
+            "focusY": 50,
+            "zoom": 1,
+            "edgeFade": false
+          }
+        ]
+      }
     }
   ]
 }
