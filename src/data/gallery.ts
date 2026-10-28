@@ -29,3 +29,5 @@ export interface GalleryPhoto extends ContentImage {
 export const galleryItems = (document.items as readonly GalleryEntry[])
   .filter(item => item.published)
   .map(item => ({ ...item, gradient: contentThemes[item.theme].gallery, accent: contentThemes[item.theme].accent }));
+
+export type GalleryItem = (typeof galleryItems)[number];

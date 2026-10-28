@@ -11,9 +11,12 @@ import { CONTACT } from "@/data/siteContent";
 
 import { galleryItems } from "@/data/gallery";
 import { GalleryCard } from "./GalleryCard";
+import { GalleryProjectModal } from "./GalleryProjectModal";
 
 
 export default function GalleryClient() {
+  const [selection, setSelection] = React.useState<{ index: number; photoIndex: number; trigger: HTMLElement } | null>(null);
+  const closeProject = React.useCallback(() => setSelection(null), []);
   return (
     <main className="relative flex min-h-screen flex-col text-slate-50">
       <Navbar />
@@ -40,7 +43,7 @@ export default function GalleryClient() {
             className="grid gap-6 sm:grid-cols-2 lg:auto-rows-[minmax(360px,max-content)] lg:grid-cols-3"
           >
             {galleryItems.map((item, idx) => (
-              <GalleryCard key={item.id} item={item} index={idx} fillTabletRow={galleryItems.length % 2 === 1 && idx === galleryItems.length - 1} />
+              <GalleryCard key={item.id} item={item} index={idx} fillTabletRow={galleryItems.length % 2 === 1 && idx === galleryItems.length - 1} paused={selection !== null} onOpen={(photoIndex, trigger) => setSelection({ index: idx, photoIndex, trigger })} />
             ))}
           </div>
         </div>
@@ -79,6 +82,14 @@ export default function GalleryClient() {
       </section>
 
       <Footer />
+      {selection && (
+        <GalleryProjectModal
+          item={galleryItems[selection.index]}
+          initialPhotoIndex={selection.photoIndex}
+          returnFocusTo={selection.trigger}
+          onClose={closeProject}
+        />
+      )}
     </main>
   );
 }

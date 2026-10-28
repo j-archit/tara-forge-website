@@ -3,32 +3,23 @@
 import * as React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { Expand } from "lucide-react";
 import { fadeIn } from "@/lib/animations";
 import { trackEvent } from "@/lib/analytics";
-import type { GalleryPhoto } from "@/data/gallery";
-
-interface GalleryCardItem {
-  id: string;
-  title: string;
-  category: string;
-  description: string;
-  tags: readonly string[];
-  gradient: string;
-  accent: string;
-  image: { src: string; alt: string; width: number; height: number; fit: "contain" | "cover" } | null;
-  presentation?: { widthSpan: 1 | 2 | 3; heightSpan: 1 | 2 | 3; autoplay: boolean; photos: readonly GalleryPhoto[] };
-}
+import type { GalleryItem } from "@/data/gallery";
+import { galleryPhotosFor } from "@/lib/galleryPhotos";
 
 const widthClasses = { 1: "", 2: "lg:col-span-2", 3: "lg:col-span-3" };
 const heightClasses = { 1: "", 2: "lg:row-span-2", 3: "lg:row-span-3" };
 
-function photosFor(item: GalleryCardItem): readonly GalleryPhoto[] {
-  if (item.presentation) return item.presentation.photos;
-  return item.image ? [{ ...item.image, framed: true, focusX: 50, focusY: 50, zoom: 1, edgeFade: false }] : [];
-}
-
-export function GalleryCard({ item, index, fillTabletRow = false }: { item: GalleryCardItem; index: number; fillTabletRow?: boolean }) {
-  const photos = photosFor(item);
+export function GalleryCard({ item, index, fillTabletRow = false, paused = false, onOpen }: {
+  item: GalleryItem;
+  index: number;
+  fillTabletRow?: boolean;
+  paused?: boolean;
+  onOpen: (photoIndex: number, trigger: HTMLElement) => void;
+}) {
+  const photos = galleryPhotosFor(item);
   const [active, setActive] = React.useState(0);
   const [hovered, setHovered] = React.useState(false);
   const [focusWithin, setFocusWithin] = React.useState(false);
@@ -36,6 +27,8 @@ export function GalleryCard({ item, index, fillTabletRow = false }: { item: Gall
   const [pageVisible, setPageVisible] = React.useState(true);
   const [reducedMotion, setReducedMotion] = React.useState(false);
   const cardRef = React.useRef<HTMLElement | null>(null);
+  const imageButtonRef = React.useRef<HTMLButtonElement | null>(null);
+  const titleButtonRef = React.useRef<HTMLButtonElement | null>(null);
 
   React.useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -56,10 +49,10 @@ export function GalleryCard({ item, index, fillTabletRow = false }: { item: Gall
     return () => observer.disconnect();
   }, []);
   React.useEffect(() => {
-    if (!item.presentation?.autoplay || photos.length < 2 || hovered || focusWithin || !inView || !pageVisible || reducedMotion) return;
+    if (paused || !item.presentation?.autoplay || photos.length < 2 || hovered || focusWithin || !inView || !pageVisible || reducedMotion) return;
     const timer = window.setInterval(() => setActive(value => (value + 1) % photos.length), 5000);
     return () => window.clearInterval(timer);
-  }, [item.presentation?.autoplay, photos.length, hovered, focusWithin, inView, pageVisible, reducedMotion]);
+  }, [paused, item.presentation?.autoplay, photos.length, hovered, focusWithin, inView, pageVisible, reducedMotion]);
 
   const current = photos[Math.min(active, photos.length - 1)];
   const width = item.presentation?.widthSpan ?? 1;
@@ -77,12 +70,24 @@ export function GalleryCard({ item, index, fillTabletRow = false }: { item: Gall
       onMouseLeave={() => setHovered(false)}
       onFocusCapture={() => setFocusWithin(true)}
       onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget)) setFocusWithin(false); }}
+      onClick={event => {
+        if ((event.target as Element).closest("button, a")) return;
+        const trigger = imageButtonRef.current ?? titleButtonRef.current;
+        if (trigger) onOpen(Math.min(active, Math.max(0, photos.length - 1)), trigger);
+      }}
       className={`group relative flex min-h-[390px] min-w-0 flex-col overflow-hidden rounded-2xl border border-slate-800/80 bg-gradient-to-br ${item.gradient} p-6 shadow-[0_20px_90px_rgba(15,23,42,0.95)] ${horizontalAtTablet ? "sm:flex-row sm:items-stretch sm:gap-6" : width > 1 ? "lg:flex-row lg:items-stretch lg:gap-6" : ""} ${fillTabletRow ? `sm:col-span-2 ${width === 1 ? "lg:col-span-1" : ""}` : ""} ${widthClasses[width]} ${heightClasses[height]}`}
     >
       <div className="pointer-events-none absolute inset-0 opacity-80 transition-opacity group-hover:opacity-100" style={{ background: `radial-gradient(circle at center, ${item.accent}, transparent 70%)` }} />
       {current && (
         <div className={`relative mb-5 min-h-[210px] w-full flex-1 ${horizontalAtTablet ? "sm:mb-0 sm:min-h-0 sm:w-[55%] sm:flex-none" : width > 1 ? "lg:mb-0 lg:min-h-0 lg:w-[55%] lg:flex-none" : ""} ${current.framed ? "overflow-hidden rounded-lg border border-white/10 bg-slate-950/50" : "overflow-visible"}`}>
-          <div className={`absolute inset-0 ${current.framed ? "overflow-hidden rounded-lg" : "overflow-visible"}`}>
+          <button
+            ref={imageButtonRef}
+            type="button"
+            aria-label={`View photos and details of ${item.title}`}
+            aria-haspopup="dialog"
+            onClick={event => onOpen(Math.min(active, photos.length - 1), event.currentTarget)}
+            className={`absolute inset-0 cursor-zoom-in rounded-lg text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-gold ${current.framed ? "overflow-hidden" : "overflow-visible"}`}
+          >
             <Image
               key={current.src}
               src={current.src}
@@ -92,7 +97,10 @@ export function GalleryCard({ item, index, fillTabletRow = false }: { item: Gall
               className={current.fit === "cover" ? "object-cover" : "object-contain"}
               style={{ objectPosition: `${current.focusX}% ${current.focusY}%`, transform: `scale(${current.zoom})`, transformOrigin: `${current.focusX}% ${current.focusY}%`, maskImage: current.edgeFade ? "radial-gradient(ellipse 74% 76% at center, black 58%, transparent 100%), linear-gradient(to bottom, black 75%, transparent 100%)" : undefined, maskComposite: current.edgeFade ? "intersect" : undefined }}
             />
-          </div>
+            <span className="pointer-events-none absolute right-2 top-2 inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-slate-950/85 px-3 py-2 text-[10px] font-semibold text-slate-100 opacity-100 transition-opacity sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100 motion-reduce:transition-none">
+              <Expand className="size-3.5" aria-hidden="true" /> View project
+            </span>
+          </button>
           {photos.length > 1 && (
             <div className="absolute inset-x-2 bottom-2 flex items-center justify-between gap-2" aria-label={`Photos of ${item.title}`}>
               <button type="button" aria-label={`Previous photo of ${item.title}`} onClick={() => move(-1)} className="grid size-9 place-items-center rounded-full border border-white/20 bg-slate-950/80 text-white hover:bg-slate-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-gold">‹</button>
@@ -109,7 +117,9 @@ export function GalleryCard({ item, index, fillTabletRow = false }: { item: Gall
       <div className={`relative flex flex-col gap-5 justify-between ${horizontalAtTablet ? "sm:min-w-0 sm:flex-1 sm:py-3" : width > 1 ? "lg:min-w-0 lg:flex-1 lg:py-3" : ""}`}>
         <div>
           <span className="mb-2 block break-words text-[10px] font-bold uppercase tracking-widest text-slate-400">{item.category}</span>
-          <h3 className="break-words text-lg font-semibold text-slate-100 transition-colors group-hover:text-white">{item.title}</h3>
+          <h3 className="break-words text-lg font-semibold text-slate-100 transition-colors group-hover:text-white">
+            <button ref={titleButtonRef} type="button" aria-haspopup="dialog" onClick={event => onOpen(Math.min(active, Math.max(0, photos.length - 1)), event.currentTarget)} className="cursor-zoom-in rounded text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-gold">{item.title}</button>
+          </h3>
           <p className="mt-2 break-words text-xs font-normal leading-relaxed text-slate-200">{item.description}</p>
         </div>
         <div className="flex flex-wrap gap-2">{item.tags.map(tag => <span key={tag} className="max-w-full break-words rounded-full border border-slate-700/50 bg-slate-900/60 px-2 py-0.5 text-[10px] text-slate-300">{tag}</span>)}</div>

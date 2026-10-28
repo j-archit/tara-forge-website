@@ -8,6 +8,19 @@ import { MAX_DESIGN_FILE_SIZE_BYTES, validateDesignFile } from "../src/lib/intak
 import { QUOTE_EMAIL, productInquiryHref, quoteMailtoHref } from "../src/lib/contact.ts";
 import { PAYMENT_TERMS } from "../src/data/siteContent.ts";
 import { fadeIn } from "../src/lib/animations.ts";
+import { galleryPhotosFor } from "../src/lib/galleryPhotos.ts";
+
+test("gallery photo views handle managed, legacy, single-photo and empty projects without mutating content", () => {
+  const image = { src: "/images/print.webp", alt: "A customer print", width: 640, height: 800, fit: "cover" };
+  const photo = { ...image, framed: false, focusX: 20, focusY: 70, zoom: 1.2, edgeFade: true };
+  const photos = [photo];
+  assert.equal(galleryPhotosFor({ image: null, presentation: { photos } }), photos);
+  assert.deepEqual(galleryPhotosFor({ image }), [{ ...image, framed: true, focusX: 50, focusY: 50, zoom: 1, edgeFade: false }]);
+  assert.deepEqual(galleryPhotosFor({ image: null }), []);
+  assert.deepEqual(galleryPhotosFor({ image: null, presentation: { photos: [] } }), []);
+  assert.equal(image.framed, undefined);
+  assert.equal(photo.zoom, 1.2);
+});
 
 test("card reveals preserve six-card timing and cap delays across 200 entries", () => {
   assert.equal(fadeIn().transition.delay, 0);
