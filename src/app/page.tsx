@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { HeroClient, ServiceCards, ShopHighlight, CoreValues, FAQSection } from "./HomeClient";
+import { HeroClient, ServiceCards, CoreValues, FAQSection } from "./HomeClient";
 import Link from "next/link";
 import Image from "next/image";
 import { HeroTransformation } from "./HeroTransformation";
@@ -146,7 +146,6 @@ export default function HomePage() {
       </section>
 
       <FAQSection />
-      <ShopHighlight />
 
       <Footer />
     </main>

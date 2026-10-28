@@ -1,36 +1,78 @@
-export const GA_MEASUREMENT_ID = "G-C0HLNVX14Q"; // Hardcoded to enable GitHub static export without needing Action Secrets
+export const GA_MEASUREMENT_ID = "G-C0HLNVX14Q";
+export const ANALYTICS_OPTOUT_KEY = "taraforge.analytics.disabled";
+export const MEASUREMENT_VERSION = "2026-10-28";
+
+export const isProductionAnalyticsHost = (hostname: string) =>
+  hostname === "taraforge3d.in" || hostname === "www.taraforge3d.in";
 
 // Declare the window.gtag type
 declare global {
   interface Window {
-    gtag: (...args: unknown[]) => void;
+    gtag?: (...args: unknown[]) => void;
   }
 }
 
-// Ensure gtag exists before calling it (prevents errors on server-side or if script blocked)
-export const safeGtag = (...args: unknown[]) => {
-  if (typeof window !== "undefined" && typeof window.gtag === "function") {
-    window.gtag(...args);
-  } else if (process.env.NODE_ENV === "development") {
-    console.log("[GA4 Offline Event]", args);
+// Keep the production property free of local previews, browser tests and opted-out staff browsers.
+export const isAnalyticsAllowed = () => {
+  if (typeof window === "undefined" || !isProductionAnalyticsHost(window.location.hostname)) return false;
+  if (window.location.protocol !== "https:" || window.navigator.webdriver) return false;
+  try {
+    return window.localStorage.getItem(ANALYTICS_OPTOUT_KEY) !== "true";
+  } catch {
+    return false;
   }
 };
 
-// 1. Pageview
-export const pageview = (url: string) => {
-  if (!GA_MEASUREMENT_ID) return;
-  safeGtag("config", GA_MEASUREMENT_ID, {
-    page_path: url,
-  });
+// The Google bootstrap queues commands while its network script loads. Never bypass the host guard.
+export const safeGtag = (...args: unknown[]) => {
+  if (isAnalyticsAllowed() && typeof window.gtag === "function") {
+    window.gtag(...args);
+    return true;
+  }
+  return false;
 };
+
+// Page views have one owner: Google's initial config + enabled history-change enhanced measurement.
+// Do not add manual page_view/config calls on route changes; those would duplicate enhanced measurement.
 
 // 2. Generic custom event wrapper
 export const trackEvent = (action: string, category?: string, label?: string, value?: number, extraParams?: Record<string, unknown>) => {
-  safeGtag("event", action, {
+  return safeGtag("event", action, {
     event_category: category,
     event_label: label,
     value: value,
+    measurement_version: MEASUREMENT_VERSION,
     ...extraParams,
+  });
+};
+
+export type ContactMethod = "email" | "whatsapp";
+export type ContactPlacement = "quote" | "footer" | "page";
+
+export const contactMethodFromHref = (href: string): ContactMethod | null => {
+  if (/^mailto:/i.test(href)) return "email";
+  try {
+    const url = new URL(href, "https://taraforge3d.in");
+    if (url.protocol === "https:" && ["wa.me", "api.whatsapp.com"].includes(url.hostname)) return "whatsapp";
+  } catch {
+    // Ignore malformed or non-contact links.
+  }
+  return null;
+};
+
+// These are intent events, never confirmed leads or purchases. Distinct event names are reportable
+// immediately without custom-dimension setup. Do not send mail/WhatsApp URLs or message contents.
+export const trackContactIntent = (
+  method: ContactMethod,
+  action: "click" | "copy",
+  placement: ContactPlacement,
+) => {
+  if (method === "whatsapp" && action === "copy") return false;
+  return trackEvent(`contact_${method}_${action}`, "contact_intent", method, undefined, {
+    contact_method: method,
+    contact_action: action,
+    contact_placement: placement,
+    page_path: typeof window === "undefined" ? undefined : window.location.pathname,
   });
 };
 

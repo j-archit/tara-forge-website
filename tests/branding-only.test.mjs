@@ -6,12 +6,12 @@ import { createHash } from "node:crypto";
 const read = path => readFileSync(path, "utf8").replace(/\r\n/g, "\n");
 // Approved source fingerprints; also work in shallow CI checkouts.
 const baseline = {
-  "src/app/page.tsx": "02d6732dcb0f3c268d7dfffb032319d9d2f17b0b7b15bd3f864e39d8873ea1b3",
+  "src/app/page.tsx": "b5c24f29b95c5deda3ec780b83186179ff9ebeeefa3d136e1a68dcc30b95e995",
   "src/app/HomeClient.tsx": "66760b80439b734e794b49e077deae628fe779a31e66251c95a05a3d61451985",
   "src/app/shop/ShopClient.tsx": "ed74306d5699d2c9c5ec502130109f29eea2fdada05b842310245f5ccf70a7c6",
   "src/components/CelestialBackground.tsx": "7012b6fc0bc384117136dbec420c46e2c17b0ddf9012f25c2fcaecc944bdade2",
   "src/components/FAQSection.tsx": "efe1fbda8e28ba24edbb3705d1d6c2c2bd93555896178ed85788f7c5087d0f4c",
-  "src/components/Footer.tsx": "6d17b84b682f33afdc0c9b5c363b986f4fd9214f50148cf91efe3dd98571c559",
+  "src/components/Footer.tsx": "eaf3156898e2523d85632af4839538e43aebbc14c4f98437cf177fd7c3b2b538",
   "src/app/globals.css": "2a1226f4b1913ff2fac0aa38376b486130b760479294fc1c54558e10e429f3cb",
 };
 const fingerprint = value => createHash("sha256").update(value).digest("hex");

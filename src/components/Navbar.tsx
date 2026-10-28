@@ -33,7 +33,6 @@ export function Navbar() {
     { href: "/", label: "Home" },
     { href: "/services", label: "Services" },
     { href: "/gallery", label: "Gallery" },
-    { href: "/shop", label: "Shop" },
     { href: "/#about", label: "Why TaraForge3D" },
     { href: "/team", label: "Team" },
   ], []);

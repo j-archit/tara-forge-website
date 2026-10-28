@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Clock, Zap, MessageSquare, Copy, Check } from "lucide-react";
 import { QUOTE_EMAIL, quoteMailtoHref } from "@/lib/contact";
 import { CONTACT, QUOTE_RESPONSE_TIME } from "@/data/siteContent";
+import { trackContactIntent } from "@/lib/analytics";
 
 export function ManualIntake() {
   const [copyStatus, setCopyStatus] = React.useState<"idle" | "copied" | "failed">("idle");
@@ -24,6 +25,7 @@ export function ManualIntake() {
     try {
       await navigator.clipboard.writeText(QUOTE_EMAIL);
       setCopyStatus("copied");
+      trackContactIntent("email", "copy", "quote");
     } catch {
       setCopyStatus("failed");
     }

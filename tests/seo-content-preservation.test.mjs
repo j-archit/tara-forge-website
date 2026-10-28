@@ -16,7 +16,7 @@ const approved = {
   "src/app/quote/page.tsx": "5c3f65d5d1be9e95b3d9a20382c1be2a9a73e57448c91862e3592f86c02eeed8",
   "src/app/HeroTransformation.tsx": "88e445a7c99d76ea0cacc408e593ee70201e11943a544389bf6f50b2aaceb3a2",
   "src/lib/animations.ts": "2600a9aa71cce5ef8c996e6b2cb81c2af81ca26355a8c4460eb77989d2f7086c",
-  "src/components/ManualIntake.tsx": "2c36abd1ac4820cc49a008a124b01f515ab0e1de7e2f10dffc97d5e765051e54",
+  "src/components/ManualIntake.tsx": "7649a1847d246905d7efb5bd02ced0fb53dd4e2c70523ea5c73e1861dca48bf3",
 };
 
 test("SEO changes retain approved page copy, gallery controls and quote overlay", () => {

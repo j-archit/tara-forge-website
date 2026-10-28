@@ -23,6 +23,86 @@ for (const route of routes) {
   });
 }
 
+test("local previews do not initialize or contact production analytics", async ({ page }) => {
+  const analyticsRequests: string[] = [];
+  page.on("request", request => {
+    if (/google-analytics\.com|googletagmanager\.com/.test(new URL(request.url()).hostname)) {
+      analyticsRequests.push(request.url());
+    }
+  });
+  await page.goto("/quote/");
+  await expect(page.getByRole("heading", { name: /Request a Quote/i })).toBeVisible();
+  await page.getByRole("button", { name: "Copy email address" }).click();
+  await expect(page.locator('script[src*="googletagmanager.com"]')).toHaveCount(0);
+  expect(await page.evaluate(() => typeof window.gtag)).toBe("undefined");
+  expect(analyticsRequests).toEqual([]);
+});
+
+test("public routes have no Shop links while the retained Shop URL still works", async ({ page }) => {
+  for (const route of routes) {
+    await page.goto(route.path);
+    await expect(page.locator('a[href="/shop"], a[href="/shop/"]')).toHaveCount(0);
+  }
+  await page.goto("/shop/");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(/The Shop/i);
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/);
+});
+
+test("production tracking queues one initial config and records contact intent without confirmed leads", async ({ page }) => {
+  // Serve the actual export on its production origin without sending test data to Google.
+  await page.route("https://taraforge3d.in/**", async route => {
+    const url = new URL(route.request().url());
+    const response = await page.request.get(`http://127.0.0.1:8766${url.pathname}${url.search}`);
+    await route.fulfill({ response });
+  });
+  await page.route("https://www.googletagmanager.com/**", route => route.fulfill({
+    contentType: "text/javascript", body: "/* Inspect the real bootstrap queue without loading Google's transport. */",
+  }));
+  await page.route(/https:\/\/[^/]*google-analytics\.com\//, route => route.abort());
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, "webdriver", { configurable: true, get: () => false });
+    Object.defineProperty(navigator, "clipboard", { configurable: true, value: { writeText: async () => {} } });
+    document.addEventListener("click", event => {
+      if ((event.target as Element | null)?.closest('a[href^="mailto:"], a[href^="https://wa.me/"]')) event.preventDefault();
+    }, true);
+  });
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto("https://taraforge3d.in/quote/");
+  await page.waitForFunction(() => typeof window.gtag === "function");
+  const commands = () => page.evaluate(() => {
+    const layer = (window as unknown as { dataLayer: ArrayLike<unknown>[] }).dataLayer || [];
+    return layer.map(command => Array.from(command));
+  });
+  await page.getByRole("link", { name: "Send Email", exact: true }).click();
+  await page.getByRole("link", { name: "WhatsApp Us", exact: true }).click();
+  await page.getByTitle("Copy email address", { exact: true }).click();
+  await expect(page.getByRole("status")).toHaveText("Email address copied.");
+  await expect.poll(async () => (await commands()).filter(command => String(command[1]).startsWith("contact_")).length).toBe(3);
+
+  await page.evaluate(() => Object.defineProperty(navigator, "clipboard", { configurable: true, value: {
+    writeText: async () => { throw new Error("Clipboard denied"); },
+  } }));
+  await page.getByTitle("Copy email address", { exact: true }).click();
+  await expect(page.getByRole("status")).toHaveText("Copy unavailable. Select the address below instead.");
+
+  const recorded = await commands();
+  const configs = recorded.filter(command => command[0] === "config");
+  expect(configs).toHaveLength(1);
+  expect(configs[0][1]).toBe("G-C0HLNVX14Q");
+  expect(configs[0][2]).toMatchObject({ send_page_view: true });
+  const contact = recorded.filter(command => String(command[1]).startsWith("contact_"));
+  expect(contact.map(command => command[1])).toEqual([
+    "contact_email_click", "contact_whatsapp_click", "contact_email_copy",
+  ]);
+  for (const command of contact) expect(command[2]).toMatchObject({ page_path: "/quote/", contact_placement: "quote" });
+  expect(recorded.filter(command => ["generate_lead", "qualify_lead", "purchase"].includes(String(command[1])))).toEqual([]);
+
+  await page.locator("header").getByRole("link", { name: "Services", exact: true }).first().click();
+  await expect(page).toHaveURL("https://taraforge3d.in/services/");
+  expect((await commands()).filter(command => command[0] === "config")).toHaveLength(1);
+  expect((await commands()).filter(command => command[0] === "event" && command[1] === "page_view")).toHaveLength(0);
+});
+
 test("hero gallery action stays distinct from the quote action on desktop and mobile", async ({ page }) => {
   const quote = page.locator('[data-track="hero_primary_cta"]');
   const gallery = page.locator('[data-track="hero_secondary_cta"]');

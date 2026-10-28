@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "assets:social": "node tools/generate-social-card.mjs",
-    "test": "node --test tests/frontend.test.mjs tests/content-manager.test.mjs tests/content-publish.test.mjs tests/branding-only.test.mjs tests/seo-content-preservation.test.mjs",
+    "test": "node --test tests/analytics.test.mjs tests/frontend.test.mjs tests/content-manager.test.mjs tests/content-publish.test.mjs tests/branding-only.test.mjs tests/seo-content-preservation.test.mjs",
     "content:manage": "node tools/content-manager/start.mjs",
     "content:review": "node tools/content-manager/publish-cli.mjs review",
     "content:publish": "node tools/content-manager/publish-cli.mjs publish",

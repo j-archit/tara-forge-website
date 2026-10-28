@@ -1,38 +1,27 @@
 "use client";
 
-import { Suspense, useEffect } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState, useSyncExternalStore } from "react";
+import { usePathname } from "next/navigation";
 import Script from "next/script";
 import { 
   GA_MEASUREMENT_ID, 
-  pageview, 
+  isAnalyticsAllowed,
+  MEASUREMENT_VERSION,
+  contactMethodFromHref,
+  trackContactIntent,
   trackClickHeatmap, 
   trackScrollDepth, 
   trackSectionView, 
   trackTimeOnPage 
 } from "@/lib/analytics";
 
+const subscribeToBrowserPolicy = () => () => {};
+const serverAnalyticsPolicy = () => false;
+
 function AnalyticsInner() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
-  // 1. Route Change Tracking
-  useEffect(() => {
-    if (pathname && GA_MEASUREMENT_ID) {
-      const path = `${pathname}${searchParams?.toString() ? `?${searchParams.toString()}` : ''}`;
-      let attempts = 0;
-      let timer: number;
-      const sendPageview = () => {
-        if (typeof window.gtag === "function") {
-          pageview(path);
-        } else if (attempts++ < 20) {
-          timer = window.setTimeout(sendPageview, 100);
-        }
-      };
-      timer = window.setTimeout(sendPageview, 100);
-      return () => window.clearTimeout(timer);
-    }
-  }, [pathname, searchParams]);
+  // GA4 enhanced measurement owns initial and history-based page views.
 
   // 2. Global Click Tracker
   useEffect(() => {
@@ -42,6 +31,14 @@ function AnalyticsInner() {
 
       const closestLinkOrBtn = target.closest('a, button') as HTMLElement | null;
       const elementToTrack = closestLinkOrBtn || target;
+
+      const link = target.closest('a[href]');
+      const method = link ? contactMethodFromHref(link.getAttribute('href') || '') : null;
+      if (method) {
+        const placement = link!.closest('footer') ? 'footer'
+          : window.location.pathname.replace(/\/$/, '') === '/quote' ? 'quote' : 'page';
+        trackContactIntent(method, 'click', placement);
+      }
 
       const tag = elementToTrack.tagName.toLowerCase();
       // Only track notable clicks (links, buttons, or elements with explicit data-track attrs)
@@ -123,6 +120,7 @@ function AnalyticsInner() {
   useEffect(() => {
     let seconds = 0;
     const interval = setInterval(() => {
+      if (document.visibilityState !== "visible") return;
       seconds += 15; // Track every 15s
       trackTimeOnPage(seconds, window.location.pathname);
     }, 15000);
@@ -134,30 +132,35 @@ function AnalyticsInner() {
 }
 
 export function Analytics() {
-  if (!GA_MEASUREMENT_ID) return null;
+  const enabled = useSyncExternalStore(subscribeToBrowserPolicy, isAnalyticsAllowed, serverAnalyticsPolicy);
+  const [ready, setReady] = useState(false);
+
+  if (!enabled || !GA_MEASUREMENT_ID) return null;
 
   return (
     <>
       <Script
-        strategy="afterInteractive"
-        src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-      />
-      <Script
         id="google-analytics"
         strategy="afterInteractive"
+        onReady={() => setReady(true)}
         dangerouslySetInnerHTML={{
           __html: `
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', '${GA_MEASUREMENT_ID}', {
-              send_page_view: false,
+              send_page_view: true,
+              measurement_version: '${MEASUREMENT_VERSION}',
             });
           `,
         }}
       />
+      <Script
+        strategy="afterInteractive"
+        src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+      />
       <Suspense fallback={null}>
-        <AnalyticsInner />
+        {ready && <AnalyticsInner />}
       </Suspense>
     </>
   );
