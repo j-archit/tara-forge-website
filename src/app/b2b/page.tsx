@@ -194,7 +194,11 @@ export default function B2BPage() {
                 <Mail className="h-4 w-4 shrink-0" aria-hidden="true" /><CopySlot value={enquiry.emailAction} label="Email action label" />
               </a>
             </div>
-            <p className="mt-6 text-sm leading-relaxed text-slate-400"><CopySlot value={enquiry.terms} label="Commercial terms / policy note" /></p>
+            <p className="mt-5 text-sm">
+              <Link href="/b2b/terms/" className="inline-flex min-h-11 items-center gap-2 text-brand-gold underline underline-offset-4 hover:text-brand-gold-bright focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-gold">
+                Business order terms<ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
+            </p>
           </div>
         </section>
       </main>

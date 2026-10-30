@@ -1,4 +1,4 @@
-import { PAYMENT_TERMS, PRODUCTION_TIMING, QUOTE_RESPONSE_TIME } from "./siteContent.ts";
+import { QUOTE_RESPONSE_TIME } from "./siteContent.ts";
 import type { ContentImage } from "./managedContent";
 
 export type B2BCopy = string | null;
@@ -31,7 +31,6 @@ interface B2BContent {
   enquiry: CopyBlock & {
     emailAction: B2BCopy;
     whatsappAction: B2BCopy;
-    terms: B2BCopy;
   };
 }
 
@@ -118,17 +117,17 @@ export const b2bContent: B2BContent = {
       {
         id: "step-2",
         title: "Agree the details",
-        body: `${QUOTE_RESPONSE_TIME} Together we confirm the files, material, finish, price and estimated production time. Any design or file-preparation work is discussed separately.`,
+        body: `${QUOTE_RESPONSE_TIME} Together we confirm the files, material, finish, price and estimated production time. Any CAD development or substantial model preparation is quoted separately before it starts.`,
       },
       {
         id: "step-3",
         title: "Confirm & print",
-        body: "Once the quote and 3D files are final, your 50% UPI advance confirms the project. We then begin production to the agreed schedule.",
+        body: "Accept the quote by email and pay the project-specific advance once the production files and specifications are final. We confirm production commencement by email and follow the agreed schedule.",
       },
       {
         id: "step-4",
         title: "Review & dispatch",
-        body: "We inspect the prints and share product and packing photos before dispatch. The balance is due before shipping; delivery is charged separately at actual cost.",
+        body: "We inspect the prints and share product and packing photos before dispatch. Full payment is required before dispatch; delivery is charged separately at actual cost.",
       },
     ],
   },
@@ -148,7 +147,7 @@ export const b2bContent: B2BContent = {
       {
         id: "faq-3",
         question: "What production timeline should we plan for?",
-        answer: `${PRODUCTION_TIMING} Batch schedules are confirmed against the full quantity; shipping time is additional.`,
+        answer: "Production timelines and batch schedules are agreed by email for each project once the model, quantity and specifications are final. Required advances must be received before work begins. Shipping time is additional.",
       },
     ],
   },
@@ -157,6 +156,5 @@ export const b2bContent: B2BContent = {
     body: "WhatsApp/Email us your company/organisation’s name, a short brief, quantity required, size, files/references, delivery city/PIN code and required date. We will get back to you within 24 hours.",
     emailAction: "Email your brief",
     whatsappAction: "Discuss on WhatsApp",
-    terms: `${PAYMENT_TERMS} Shipping is available across India and charged separately at actual cost.`,
   },
 };
