@@ -187,11 +187,11 @@ export default function B2BPage() {
             <h2 id="b2b-enquiry-heading" className="text-3xl font-semibold tracking-tight"><CopySlot value={enquiry.title} label="Enquiry heading" /></h2>
             <p className="mt-4 max-w-2xl leading-relaxed text-slate-300"><CopySlot value={enquiry.body} label="Enquiry instructions" /></p>
             <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
-              <a href={`mailto:${CONTACT.email}`} className={`${actionClass} bg-brand-gold text-slate-950 hover:bg-brand-gold-bright`}>
-                <Mail className="h-4 w-4 shrink-0" aria-hidden="true" /><CopySlot value={enquiry.emailAction} label="Email action label" />
-              </a>
-              <a href={`https://wa.me/${CONTACT.whatsappNumber}`} target="_blank" rel="noopener noreferrer" className={`${actionClass} border border-slate-600 bg-slate-900/50 text-slate-100 hover:border-brand-gold`}>
+              <a href={`https://wa.me/${CONTACT.whatsappNumber}`} target="_blank" rel="noopener noreferrer" className={`${actionClass} bg-brand-gold text-slate-950 hover:bg-brand-gold-bright`}>
                 <MessageSquare className="h-4 w-4 shrink-0" aria-hidden="true" /><CopySlot value={enquiry.whatsappAction} label="WhatsApp action label" />
+              </a>
+              <a href={`mailto:${CONTACT.email}`} className={`${actionClass} border border-slate-600 bg-slate-900/50 text-slate-100 hover:border-brand-gold`}>
+                <Mail className="h-4 w-4 shrink-0" aria-hidden="true" /><CopySlot value={enquiry.emailAction} label="Email action label" />
               </a>
             </div>
             <p className="mt-6 text-sm leading-relaxed text-slate-400"><CopySlot value={enquiry.terms} label="Commercial terms / policy note" /></p>

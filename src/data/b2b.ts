@@ -42,7 +42,7 @@ export const b2bContent: B2BContent = {
   hero: {
     eyebrow: "For businesses, teams & communities",
     title: "Custom 3D prints for your business.",
-    body: "Custom gifts, event pieces and small batches, made in Bangalore and shipped across India. Share your brief, quantity and required date, and we'll work through the print requirements with you.",
+    body: "Custom gifts, event pieces in small or large batches… made in Bangalore, shipped across India. Just share your brief, quantity and date and we'll co-ordinate with you to bring it to life.",
     primaryAction: "Discuss your project",
     secondaryAction: "Explore the possibilities",
     image: {
@@ -154,7 +154,7 @@ export const b2bContent: B2BContent = {
   },
   enquiry: {
     title: "Tell us what you're planning",
-    body: `Send your company or organisation name, a short brief, quantity, size, files or references, delivery city or PIN code, and any required date. ${QUOTE_RESPONSE_TIME}`,
+    body: "WhatsApp/Email us your company/organisation’s name, a short brief, quantity required, size, files/references, delivery city/PIN code and required date. We will get back to you within 24 hours.",
     emailAction: "Email your brief",
     whatsappAction: "Discuss on WhatsApp",
     terms: `${PAYMENT_TERMS} Shipping is available across India and charged separately at actual cost.`,
