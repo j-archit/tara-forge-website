@@ -80,6 +80,26 @@ export default function HomePage() {
       </section>
 
       <ServiceCards />
+      <section id="business-printing" aria-labelledby="business-printing-heading" className="border-b border-slate-800/40 px-6 py-12 lg:px-4 lg:py-16">
+        <div className="section-max-width grid items-center gap-8 overflow-hidden rounded-3xl border border-brand-gold/25 bg-gradient-to-br from-blue-500/10 via-slate-900/60 to-purple-500/10 p-7 sm:p-10 md:grid-cols-[minmax(0,1fr)_240px] lg:gap-12">
+          <div className="min-w-0">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-gold">For businesses, teams & communities</p>
+            <h2 id="business-printing-heading" className="mt-5 text-balance text-3xl font-semibold tracking-tight sm:text-4xl">
+              Custom prints for your <span className="celestial-gradient-text">next business project.</span>
+            </h2>
+            <p className="mt-5 max-w-xl leading-relaxed text-slate-300">
+              Custom gifts, event pieces and branded batches, made in Bangalore and shipped across India.
+            </p>
+            <Link href="/b2b" data-track="home_business_cta" className="mt-7 inline-flex min-h-12 items-center justify-center gap-3 rounded-full bg-brand-gold px-6 py-3 text-sm font-semibold text-slate-950 transition-colors hover:bg-brand-gold-bright focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-gold">
+              Explore business printing<span aria-hidden="true">↗</span>
+            </Link>
+          </div>
+          <figure className="min-w-0 text-center">
+            <Image src="/images/b2b/bcc-bag-tag-cutout.webp" alt="White Bangalore Chess Club event bag tag with a black knight emblem" width={688} height={1200} sizes="240px" className="mx-auto h-56 w-auto object-contain drop-shadow-[0_18px_20px_rgba(0,0,0,0.35)] sm:h-64" />
+            <figcaption className="mt-4 text-xs leading-relaxed text-slate-400">Bangalore Chess Club · Custom event bag tags</figcaption>
+          </figure>
+        </div>
+      </section>
       <CoreValues />
       <section id="about" className="relative border-b border-slate-800/40 bg-slate-950/30 px-6 py-12 lg:px-4 lg:py-20">
         <div className="section-max-width">

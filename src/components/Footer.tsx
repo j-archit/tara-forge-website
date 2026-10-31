@@ -12,6 +12,7 @@ export function Footer() {
   const footerLinks = {
     explore: [
       { label: "Services", href: "/services" },
+      { label: "For businesses", href: "/b2b" },
       { label: "Gallery", href: "/gallery" },
       { label: "Team", href: "/team" },
       { label: "Why TaraForge3D", href: "/#about" },

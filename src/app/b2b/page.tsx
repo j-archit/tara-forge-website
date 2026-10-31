@@ -12,12 +12,11 @@ import { testimonials } from "@/data/testimonials";
 import { galleryPhotosFor } from "@/lib/galleryPhotos";
 import { createPageMetadata } from "@/lib/siteMetadata";
 
-// Keep the page out of search and navigation until the draft has been reviewed.
+// Public business offering; its separate order-terms page remains noindex.
 export const metadata: Metadata = createPageMetadata(
   "Business 3D Printing Bangalore & Across India",
   "Custom 3D prints for businesses, teams and communities. Discuss gifts, branded pieces, prototypes and small batches from Bangalore, with shipping across India.",
   "/b2b",
-  { index: false },
 );
 
 function CopySlot({ value, label }: { value: B2BCopy; label: string }) {

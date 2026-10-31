@@ -3,6 +3,7 @@ export interface HomeService {
   readonly title: string;
   readonly body: string;
   readonly tag: string;
+  readonly href?: string;
 }
 
 export const homeServices: readonly HomeService[] = [
@@ -20,6 +21,7 @@ export const homeServices: readonly HomeService[] = [
   },
   {
     label: "Component batching",
+    href: "/b2b",
     title: "Go Beyond One-Offs. Reliable Batch Manufacturing.",
     body: "Ask about a repeatable batch run. We confirm quantity, print time, and requirements in your quote.",
     tag: "Small-batch printing",

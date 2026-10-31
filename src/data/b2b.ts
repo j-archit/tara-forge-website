@@ -36,7 +36,7 @@ interface B2BContent {
 
 // Keep page copy together; null or blank values render labelled placeholders.
 // Gallery IDs select existing published photos; they do not create customer claims.
-// The route stays noindex and outside site navigation until publication is approved.
+// Business order terms are maintained separately from the general customer terms.
 export const b2bContent: B2BContent = {
   hero: {
     eyebrow: "For businesses, teams & communities",

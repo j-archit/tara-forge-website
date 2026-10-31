@@ -5,13 +5,14 @@ import { createHash } from "node:crypto";
 
 const read = path => readFileSync(path, "utf8").replace(/\r\n/g, "\n");
 // Approved source fingerprints; also work in shallow CI checkouts.
+// Includes the approved B2B entry points; the original hero, colours and logo are retained.
 const baseline = {
-  "src/app/page.tsx": "b5c24f29b95c5deda3ec780b83186179ff9ebeeefa3d136e1a68dcc30b95e995",
-  "src/app/HomeClient.tsx": "66760b80439b734e794b49e077deae628fe779a31e66251c95a05a3d61451985",
+  "src/app/page.tsx": "ab99a229eeb997644ed10f37e0f188658aa18f93b2558eac07a7429cbc1b6243",
+  "src/app/HomeClient.tsx": "b8a6b95b0e4d368d384709f75ac06a20fa0735b05cdaff40b12f952b4df1bcc7",
   "src/app/shop/ShopClient.tsx": "ed74306d5699d2c9c5ec502130109f29eea2fdada05b842310245f5ccf70a7c6",
   "src/components/CelestialBackground.tsx": "7012b6fc0bc384117136dbec420c46e2c17b0ddf9012f25c2fcaecc944bdade2",
-  "src/components/FAQSection.tsx": "efe1fbda8e28ba24edbb3705d1d6c2c2bd93555896178ed85788f7c5087d0f4c",
-  "src/components/Footer.tsx": "eaf3156898e2523d85632af4839538e43aebbc14c4f98437cf177fd7c3b2b538",
+  "src/components/FAQSection.tsx": "76d8a01cf250215c99993811efd47190884fee5a7620633e1430cf092155ccf0",
+  "src/components/Footer.tsx": "7d8b1ac7c9617f6d5a1f27fef2b828969756e328d276e2c7bb1c1eba21be060e",
   "src/app/globals.css": "2a1226f4b1913ff2fac0aa38376b486130b760479294fc1c54558e10e429f3cb",
 };
 const fingerprint = value => createHash("sha256").update(value).digest("hex");

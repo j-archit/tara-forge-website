@@ -155,8 +155,7 @@ export function TestimonialMarquee() {
           />
         ))}
       </div>
-      {!reduceMotion && (
-        <div className="mt-5 text-center">
+        <div className="mt-5 text-center motion-reduce:hidden">
           <button
             type="button"
             onClick={() => setIsPausedByUser((paused) => !paused)}
@@ -166,7 +165,6 @@ export function TestimonialMarquee() {
             {isPausedByUser ? "Play testimonials" : "Pause testimonials"}
           </button>
         </div>
-      )}
     </div>
   );
 }

@@ -18,6 +18,7 @@ import {
 import Link from "next/link";
 import { detailedServices, type ServiceIcon } from "@/data/services";
 import { CUSTOMER_JOURNEY, PRODUCTION_TIMING } from "@/data/siteContent";
+import { trackCTA } from "@/lib/analytics";
 
 const serviceIcons: Record<ServiceIcon, typeof Timer> = {
   timer: Timer,
@@ -72,12 +73,12 @@ export default function ServicesClient() {
               </div>
 
               {/* Content */}
-              <div className="flex-1 space-y-6">
+              <div className="min-w-0 flex-1 space-y-6">
                 <div>
                   <span className={`text-xs font-bold uppercase tracking-[0.2em] ${service.accent}`}>
                     {service.label}
                   </span>
-                  <h2 className="mt-2 text-3xl font-semibold text-slate-50 uppercase tracking-tight">
+                  <h2 className="mt-2 text-3xl font-semibold text-slate-50 uppercase tracking-tight [overflow-wrap:anywhere]">
                     {service.title.split('. ').map((part, i, arr) => (
                       <span key={i} className="block">
                         {part}{i < arr.length - 1 ? '.' : ''}
@@ -99,14 +100,20 @@ export default function ServicesClient() {
                   ))}
                 </ul>
 
-                <div className="pt-4">
+                <div className="flex flex-wrap gap-x-6 gap-y-4 pt-4">
                   <Link 
-                    href="/quote"
+                    href={service.id === "batching" ? "/b2b" : "/quote"}
+                    onClick={() => trackCTA(`service_${service.id}_cta`, service.id === "batching" ? "/b2b" : "/quote")}
                     className="inline-flex items-center gap-2 text-sm font-semibold text-brand-gold hover:text-brand-gold-bright transition-colors group"
                   >
-                    Start your {service.label.toLowerCase()} project
+                    {service.id === "batching" ? "Plan a business order" : `Start your ${service.label.toLowerCase()} project`}
                     <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                   </Link>
+                  {service.id === "artistic" && (
+                    <Link href="/b2b" onClick={() => trackCTA("service_gifts_business_cta", "/b2b")} className="inline-flex items-center gap-2 text-sm font-semibold text-brand-gold hover:text-brand-gold-bright">
+                      Business & event orders<ArrowRight className="h-4 w-4" aria-hidden="true" />
+                    </Link>
+                  )}
                 </div>
               </div>
             </motion.div>

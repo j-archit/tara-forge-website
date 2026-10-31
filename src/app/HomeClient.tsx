@@ -57,7 +57,7 @@ export function ServiceCards() {
             
             <div className="mt-auto flex items-center justify-between pt-6 border-t border-slate-800/50">
               <Link 
-                href="/services"
+                href={item.href ?? "/services"}
                 onClick={() => trackCTA('learn_more_service', item.label)}
                 className="text-[11px] font-bold uppercase tracking-widest text-brand-gold hover:text-brand-gold-bright transition-colors flex items-center gap-1.5 group/link"
               >

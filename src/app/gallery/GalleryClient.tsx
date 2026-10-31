@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -70,13 +71,18 @@ export default function GalleryClient() {
         <div className="section-max-width px-6 text-center">
           <motion.div {...fadeIn(0.1)}>
             <h2 className="text-3xl font-semibold text-slate-50 mb-6">Ready to start your next project?</h2>
-            <a
-              href={`mailto:${CONTACT.email}`}
-              onClick={() => trackCTA('get_quote_gallery', `mailto:${CONTACT.email}`)}
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-gold px-8 py-3 text-base font-semibold text-slate-950 shadow-[var(--brand-glow-gold)] transition hover:bg-brand-gold-bright hover:scale-105"
-            >
-              Get a Quote Now
-            </a>
+            <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:flex-wrap">
+              <a
+                href={`mailto:${CONTACT.email}`}
+                onClick={() => trackCTA('get_quote_gallery', `mailto:${CONTACT.email}`)}
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-gold px-8 py-3 text-base font-semibold text-slate-950 shadow-[var(--brand-glow-gold)] transition hover:bg-brand-gold-bright hover:scale-105"
+              >
+                Get a Quote Now
+              </a>
+              <Link href="/b2b" onClick={() => trackCTA("gallery_business_cta", "/b2b")} className="inline-flex min-h-12 items-center justify-center rounded-full border border-brand-gold/60 bg-slate-900/50 px-8 py-3 text-base font-semibold text-slate-100 transition-colors hover:border-brand-gold hover:bg-slate-800/70 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-gold">
+                Business & event orders
+              </Link>
+            </div>
           </motion.div>
         </div>
       </section>

@@ -11,6 +11,7 @@ for (const width of [390, 1440]) {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/gallery/");
     await page.evaluate(() => document.fonts.ready);
+    await page.locator("footer img").scrollIntoViewIfNeeded();
     await expect.poll(() => page.locator("header img, footer img").evaluateAll(images => images.every(element => (element as HTMLImageElement).complete))).toBe(true);
     for (const selector of ['header a[aria-label="TaraForge3D"] > img', 'footer img']) {
       const dimensions = await page.locator(selector).evaluate(image => {

@@ -32,10 +32,13 @@ export function Navbar() {
   const navLinks = React.useMemo(() => [
     { href: "/", label: "Home" },
     { href: "/services", label: "Services" },
+    { href: "/b2b", label: "For businesses" },
     { href: "/gallery", label: "Gallery" },
-    { href: "/#about", label: "Why TaraForge3D" },
     { href: "/team", label: "Team" },
   ], []);
+
+  const currentPath = pathname.replace(/\/+$/, "") || "/";
+  const isActive = (href: string) => currentPath === href || (href !== "/" && currentPath.startsWith(`${href}/`));
 
   const [scriptIndex, setScriptIndex] = React.useState(0);
 
@@ -93,7 +96,8 @@ export function Navbar() {
               key={link.href}
               href={link.href} 
               onClick={() => trackNavigation(link.label, pathname)}
-              className={`hover:text-celestial-accent transition-colors ${pathname === link.href ? 'text-celestial-accent' : ''}`}
+              aria-current={currentPath === link.href ? "page" : undefined}
+              className={`hover:text-celestial-accent transition-colors ${isActive(link.href) ? 'text-celestial-accent' : ''}`}
             >
               {link.label}
             </Link>
@@ -133,7 +137,8 @@ export function Navbar() {
             <li key={link.href}>
               <Link
                 href={link.href}
-                className={`text-lg font-medium transition-colors ${pathname === link.href ? 'text-brand-gold' : 'text-slate-300'}`}
+                aria-current={currentPath === link.href ? "page" : undefined}
+                className={`text-lg font-medium transition-colors ${isActive(link.href) ? 'text-brand-gold' : 'text-slate-300'}`}
                 onClick={() => {
                   trackNavigation(link.label, pathname);
                   setIsMobileMenuOpen(false);

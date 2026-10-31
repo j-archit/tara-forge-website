@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { trackFAQInteraction } from "@/lib/analytics";
@@ -84,6 +85,9 @@ export function FAQSection() {
           </h2>
           <p className="mt-6 text-slate-400 font-light max-w-lg leading-relaxed ml-auto">
             Everything you need to know about our boutique 3D printing process, materials and batch capabilities. Engineered for transparency.
+          </p>
+          <p className="ml-auto mt-6 max-w-lg text-sm leading-relaxed text-slate-400">
+            Business, club and event orders have project-specific payment milestones and production schedules. <Link href="/b2b" className="text-brand-gold underline underline-offset-4 hover:text-brand-gold-bright">Explore business printing</Link>.
           </p>
         </div>
       </div>

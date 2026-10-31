@@ -5,12 +5,66 @@ import { expect, test } from "@playwright/test";
 const routes = [
   { path: "/", heading: /Your best ideas.*Tangible and tough/i },
   { path: "/services/", heading: /Specialized Capabilities/i },
+  { path: "/b2b/", heading: /Custom 3D prints for your business/i },
+  { path: "/b2b/terms/", heading: /Business order terms/i },
   { path: "/gallery/", heading: /The Gallery/i },
   { path: "/shop/", heading: /The Shop/i },
   { path: "/team/", heading: /The Team.*Behind the Forge/i },
   { path: "/quote/", heading: /Bring your ideas to life/i },
   { path: "/shipping-returns/", heading: /Shipping, returns & refunds/i },
 ];
+
+for (const width of [320, 1440]) {
+  test(`business enquiries are reachable from the approved entry points at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    const followBusinessLink = async (link: ReturnType<typeof page.getByRole>) => {
+      await expect(link).toHaveAttribute("href", /\/b2b\/?$/);
+      await link.click();
+      await expect(page).toHaveURL(/\/b2b\/$/);
+      await expect(page.getByRole("heading", { level: 1 })).toHaveText("Custom 3D prints for your business.");
+    };
+
+    await page.goto("/");
+    if (width === 320) {
+      await page.getByRole("button", { name: "Toggle navigation" }).click();
+      await followBusinessLink(page.locator("#mobile-navigation").getByRole("link", { name: "For businesses", exact: true }));
+      await expect(page.getByRole("button", { name: "Toggle navigation" })).toHaveAttribute("aria-expanded", "false");
+    } else {
+      const navigation = page.locator("header nav").first();
+      await followBusinessLink(navigation.getByRole("link", { name: "For businesses", exact: true }));
+      await expect(navigation.getByRole("link", { name: "For businesses", exact: true })).toHaveAttribute("aria-current", "page");
+    }
+    await page.goto("/");
+    await followBusinessLink(page.locator("#business-printing").getByRole("link", { name: "Explore business printing", exact: true }));
+    await page.goto("/");
+    await followBusinessLink(page.locator('#services a[href="/b2b/"], #services a[href="/b2b"]'));
+    await page.goto("/services/");
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
+    await followBusinessLink(page.getByRole("link", { name: "Plan a business order", exact: true }));
+    await page.goto("/services/");
+    await followBusinessLink(page.getByRole("link", { name: "Business & event orders", exact: true }));
+    await page.goto("/gallery/");
+    await followBusinessLink(page.getByRole("link", { name: "Business & event orders", exact: true }));
+    await page.goto("/quote/");
+    await expect(page.getByRole("heading", { name: /Request a Quote/i })).toBeVisible();
+    await followBusinessLink(page.getByRole("complementary", { name: "Business enquiries" }).getByRole("link"));
+    await followBusinessLink(page.locator("footer").getByRole("link", { name: "For businesses", exact: true }));
+    await expect(page.locator("footer").getByRole("link", { name: "Why TaraForge3D", exact: true })).toHaveAttribute("href", "/#about");
+  });
+}
+
+test("gallery reduced-motion controls hydrate without replacing the gallery", async ({ page }) => {
+  const errors: string[] = [];
+  page.on("pageerror", error => errors.push(error.message));
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/gallery/");
+  const project = page.locator('[data-gallery-entry="jet-engine-display-model"]');
+  await project.getByRole("button", { name: "Next photo of Jet Engine Display Model", exact: true }).click();
+  await expect(project.getByRole("button", { name: "Show photo 2 of Jet Engine Display Model", exact: true })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByRole("button", { name: "Pause testimonials", exact: true })).toHaveCount(0);
+  expect(errors).toEqual([]);
+});
 
 for (const route of routes) {
   test(`${route.path} renders its main heading`, async ({ page }) => {

@@ -22,6 +22,12 @@ export default function QuotePage() {
 
       <section className="relative flex flex-col items-center justify-center overflow-hidden py-24 lg:py-32">
         <div className="section-max-width relative px-6 lg:px-4">
+          <aside aria-label="Business enquiries" className="mb-10 rounded-2xl border border-brand-gold/25 bg-brand-gold/5 p-5 sm:p-6">
+            <Link href="/b2b" data-track="quote_business_cta" className="inline-flex min-h-11 items-center gap-3 text-sm font-semibold text-brand-gold underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-gold">
+              Business, club or event order?<span aria-hidden="true">↗</span>
+            </Link>
+            <p className="mt-1 text-sm leading-relaxed text-slate-300">Explore business printing for project-specific quotes, payment milestones and production schedules.</p>
+          </aside>
           <div className="grid gap-16 lg:grid-cols-2 lg:items-start">
             
             <div className="relative order-1 lg:order-2">

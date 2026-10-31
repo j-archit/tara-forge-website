@@ -25,6 +25,9 @@ export default function ShippingReturnsPage() {
           <p className="mt-6 max-w-3xl text-lg leading-relaxed text-slate-300">
             We make and inspect each print with care. Here is what to expect before dispatch and how to reach us if something is wrong when your order arrives.
           </p>
+          <aside aria-label="Business order policies" className="mt-8 rounded-2xl border border-brand-gold/25 bg-brand-gold/5 p-5 text-sm leading-relaxed text-slate-300 sm:p-6">
+            Business, club and event orders have project-specific payment and claim terms. <Link href="/b2b" className="font-semibold text-brand-gold underline underline-offset-4 hover:text-brand-gold-bright">See business ordering</Link> for those terms. The return-postage and verified-refund processing details below also apply to business orders.
+          </aside>
 
           <div className="mt-12 grid gap-6 md:grid-cols-2">
             <section aria-labelledby="shipping-heading" className="rounded-3xl border border-slate-800/80 bg-slate-900/40 p-6 sm:p-8">

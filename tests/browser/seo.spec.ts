@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 import { readFileSync } from "node:fs";
 
 const origin = "https://taraforge3d.in";
-const routes = ["/", "/services/", "/gallery/", "/shop/", "/team/", "/quote/", "/shipping-returns/"];
+const routes = ["/", "/services/", "/b2b/", "/gallery/", "/shop/", "/team/", "/quote/", "/shipping-returns/"];
 
 test("production metadata and business schema consistently identify the public domain", async ({ page }) => {
   for (const path of routes) {
@@ -53,6 +53,15 @@ test("crawl files advertise only the live, indexable canonical routes", async ({
   expect(sitemap).not.toContain("https://taraforge.in");
   expect(sitemap).not.toContain("<lastmod>");
   expect(sitemap).not.toContain(`${origin}/shop/`);
+  expect(sitemap).not.toContain(`${origin}/b2b/terms/`);
+  const terms = await (await request.get("/b2b/terms/")).text();
+  expect(terms).toMatch(/<meta name="robots" content="noindex, follow"/);
+  expect(terms).toMatch(/<meta name="googlebot" content="noindex, follow"/);
+  for (const path of routes) {
+    const html = await (await request.get(path)).text();
+    const incoming = [...html.matchAll(/<a\b[^>]*href="\/b2b\/terms\/?"/g)];
+    expect(incoming).toHaveLength(path === "/b2b/" ? 1 : 0);
+  }
   for (const path of routes.filter(path => path !== "/shop/")) expect(sitemap).toContain(`<loc>${origin}${path}</loc>`);
 });
 
