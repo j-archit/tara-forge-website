@@ -7,7 +7,7 @@ const read = path => readFileSync(path, "utf8").replace(/\r\n/g, "\n");
 // Approved source fingerprints; also work in shallow CI checkouts.
 // Includes the approved B2B entry points; the original hero, colours and logo are retained.
 const baseline = {
-  "src/app/page.tsx": "ab99a229eeb997644ed10f37e0f188658aa18f93b2558eac07a7429cbc1b6243",
+  "src/app/page.tsx": "ce41d9b2719fe96c8b142d7baed8a2788248f60437d38dfc4f518327ddd3714a",
   "src/app/HomeClient.tsx": "b8a6b95b0e4d368d384709f75ac06a20fa0735b05cdaff40b12f952b4df1bcc7",
   "src/app/shop/ShopClient.tsx": "ed74306d5699d2c9c5ec502130109f29eea2fdada05b842310245f5ccf70a7c6",
   "src/components/CelestialBackground.tsx": "7012b6fc0bc384117136dbec420c46e2c17b0ddf9012f25c2fcaecc944bdade2",

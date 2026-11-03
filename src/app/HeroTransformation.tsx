@@ -97,27 +97,40 @@ export function HeroTransformation() {
         <span><i className={styles.modelDot} /> 3D MODEL</span>
         <span><i className={styles.printDot} /> FINISHED PRINT</span>
       </div>
+      {/* Static export uses pre-generated responsive sources; retain the original canvases as fallbacks. */}
       <div className={styles.scene} ref={scene}>
         <div className={styles.halo} aria-hidden="true" />
         <div className={styles.imageLayer} style={{ clipPath: modelClip }} data-testid="hero-model-layer" aria-hidden="true">
-          <Image
-            src="/images/sith-lord-model-generated.png"
-            alt=""
-            width={941}
-            height={1672}
-            priority
-            className={styles.modelImage}
-          />
+          <picture>
+            <source
+              type="image/webp"
+              srcSet="/images/performance/hero-model-400.webp 400w, /images/performance/hero-model-640.webp 640w, /images/performance/hero-model-941.webp 941w"
+              sizes="(max-width: 640px) 325px, 368px"
+            />
+            <Image
+              src="/images/sith-lord-model-generated.png"
+              alt=""
+              width={941}
+              height={1672}
+              loading="eager"
+              fetchPriority="high"
+              className={styles.modelImage}
+            />
+          </picture>
         </div>
         <div className={styles.imageLayer} style={{ clipPath: printClip }} data-testid="hero-print-layer" aria-hidden="true">
-          <Image
-            src="/images/sith-lord-print-hero.png"
-            alt=""
-            width={375}
-            height={666}
-            priority
-            className={styles.printImage}
-          />
+          <picture>
+            <source type="image/webp" srcSet="/images/performance/hero-print-375.webp" />
+            <Image
+              src="/images/sith-lord-print-hero.png"
+              alt=""
+              width={375}
+              height={666}
+              loading="eager"
+              fetchPriority="high"
+              className={styles.printImage}
+            />
+          </picture>
         </div>
         <svg className={styles.divider} viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" style={{ opacity: reveal <= 0 || reveal >= 100 ? 0 : 1 }}>
           <line x1={top} y1="0" x2={bottom} y2="100" />

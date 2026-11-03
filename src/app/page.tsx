@@ -95,7 +95,14 @@ export default function HomePage() {
             </Link>
           </div>
           <figure className="min-w-0 text-center">
-            <Image src="/images/b2b/bcc-bag-tag-cutout.webp" alt="White Bangalore Chess Club event bag tag with a black knight emblem" width={688} height={1200} sizes="240px" className="mx-auto h-56 w-auto object-contain drop-shadow-[0_18px_20px_rgba(0,0,0,0.35)] sm:h-64" />
+            <picture>
+              <source
+                type="image/webp"
+                srcSet="/images/performance/bcc-bag-tag-256.webp 256w, /images/performance/bcc-bag-tag-384.webp 384w, /images/b2b/bcc-bag-tag-cutout.webp 688w"
+                sizes="(min-width: 640px) 147px, 129px"
+              />
+              <Image src="/images/b2b/bcc-bag-tag-cutout.webp" alt="White Bangalore Chess Club event bag tag with a black knight emblem" width={688} height={1200} sizes="240px" className="mx-auto h-56 w-auto object-contain drop-shadow-[0_18px_20px_rgba(0,0,0,0.35)] sm:h-64" />
+            </picture>
             <figcaption className="mt-4 text-xs leading-relaxed text-slate-400">Bangalore Chess Club · Custom event bag tags</figcaption>
           </figure>
         </div>

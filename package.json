@@ -13,7 +13,8 @@
     "content:review": "node tools/content-manager/publish-cli.mjs review",
     "content:publish": "node tools/content-manager/publish-cli.mjs publish",
     "content:validate": "node tools/content-manager/validate.mjs",
-    "test:browser": "playwright test"
+    "test:browser": "playwright test",
+    "assets:performance": "node tools/generate-performance-images.mjs"
   },
   "dependencies": {
     "@next/third-parties": "^16.3.6",

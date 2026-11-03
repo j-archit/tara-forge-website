@@ -16,6 +16,8 @@ test("hero reveal aligns the generated model and print canvases and supports key
   await expect(printLayer).toHaveAttribute("style", "clip-path:polygon(59% 0, 100% 0, 100% 100%, 41% 100%)");
   const images = page.locator('img[src="/images/sith-lord-model-generated.png"], img[src="/images/sith-lord-print-hero.png"]');
   await expect(images).toHaveCount(2);
+  for (const image of await images.all()) await expect(image).toHaveAttribute("fetchpriority", "high");
+  await expect.poll(() => images.evaluateAll(elements => elements.every(image => (image as HTMLImageElement).currentSrc.endsWith(".webp")))).toBe(true);
   await expect(page.locator('img[src="/images/sith-lord-model-generated.png"]')).toHaveCount(1);
   await expect(page.locator('img[src="/images/sith-lord-print-hero.png"]')).toHaveCount(1);
   await expect.poll(() => images.evaluateAll(elements => elements.every(image => (image as HTMLImageElement).complete && (image as HTMLImageElement).naturalWidth > 0))).toBe(true);
@@ -88,6 +90,10 @@ test("hero reveal auto-sweeps only when motion is allowed, and remains usable on
   const stopped = await slider.getAttribute("aria-valuenow");
   await page.waitForTimeout(200);
   await expect(slider).toHaveAttribute("aria-valuenow", stopped!);
+  // Keyboard input must continue from the actual animated position, not its initial value.
+  await slider.focus();
+  await page.keyboard.press("ArrowRight");
+  await expect(slider).toHaveAttribute("aria-valuenow", String(Math.min(100, Number(stopped) + 5)));
   await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
   if (process.env.CAPTURE_HERO_PREVIEW) {
     await slider.focus();
